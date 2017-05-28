@@ -8,21 +8,16 @@ import java.util.regex.Pattern;
 
 public @Data class MarkerName implements HeaderLabel {
 
-    private String version;
-
-    private String mode;
-
-    @Transient
-    private Pattern pattern = Pattern.compile("\\d");
+    private String markerName;
 
     @Override
     public boolean parse(String line) {
+        Pattern markerNamePattern = Pattern.compile(".{1,60}");
+        Matcher matcherNamePattern = markerNamePattern.matcher(line);
 
-        Matcher m = pattern.matcher(line);
-        if (m.find()) {
-
-            return true;
+        if (matcherNamePattern.find()) {
+            markerName = matcherNamePattern.group().trim();
         }
-        return false;
+        return markerName.isEmpty();
     }
 }

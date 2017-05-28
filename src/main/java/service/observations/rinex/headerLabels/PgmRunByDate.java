@@ -12,22 +12,31 @@ import java.util.regex.Pattern;
 public @Data class PgmRunByDate implements HeaderLabel {
 
     private String program;
-
     private String agency;
-
-    @Temporal(TemporalType.DATE)
-    private Date created;
-
-    private Pattern pattern = Pattern.compile("\\d");
+    private String created;
 
     @Override
     public boolean parse(String line) {
 
-        Matcher m = pattern.matcher(line);
-        if (m.find()) {
-
-            return true;
+        Pattern pattern = Pattern.compile("^\\w{1,20}");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            program = matcher.group().trim();
         }
-        return false;
+
+        pattern = Pattern.compile("\\s{1,20}\\w{1,20}\\s{1,20}");
+        matcher= pattern.matcher(line);
+        if (matcher.find()) {
+            agency = matcher.group().trim();
+        }
+
+        pattern = Pattern.compile("\\d{1,20}\\s\\d{2}:\\d{2}:\\d{2}UTC");
+        matcher = pattern.matcher(line);
+
+        if (matcher.find(40)) {
+            created = matcher.group();
+        }
+
+        return !(program.isEmpty() && agency.isEmpty() && created.isEmpty());
     }
 }

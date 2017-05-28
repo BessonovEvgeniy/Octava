@@ -73,7 +73,8 @@ public class RinexService {
     }
 
     public static void main(String[] args) {
-        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
+//        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
+        String filename = "//home//ionex//1 IdeaProjects//Octava//X07100.17o";
         try {
             RinexService rinexService = new RinexService();
             rinexService.readRinex(filename);
