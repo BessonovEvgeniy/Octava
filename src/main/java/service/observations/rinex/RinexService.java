@@ -1,21 +1,16 @@
 package service.observations.rinex;
 
-import lombok.Data;
-import lombok.Getter;
-
 import lombok.NonNull;
 import model.observations.TNP;
 import model.rinex.Header;
-import model.rinex.Observations;
 import org.springframework.stereotype.Service;
 import service.observations.rinex.headerLabels.HeaderLabel;
-import service.observations.rinex.headerLabels.RinexVersionType;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.Size;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 @Service
 public class RinexService {
