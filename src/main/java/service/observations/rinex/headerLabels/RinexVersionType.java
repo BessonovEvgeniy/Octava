@@ -12,17 +12,26 @@ public @Data class RinexVersionType implements HeaderLabel {
 
     private String mode;
 
-    @Transient
-    private Pattern pattern = Pattern.compile("\\d");
-
     @Override
     public boolean parse(String line) {
 
-        Matcher m = pattern.matcher(line);
-        if (m.find()) {
+        Pattern versionPattern = Pattern.compile("\\d\\.\\d{2}");
+        Pattern modePattern = Pattern.compile("([G,R,S,T,M])");
 
-            return true;
+        Matcher matcher;
+        matcher = versionPattern.matcher(line);
+        boolean isParsedVersion = matcher.find();
+
+        if (isParsedVersion) {
+            version = matcher.group();
         }
-        return false;
+        matcher = modePattern.matcher(line);
+        boolean isParsedMode = matcher.find();
+
+        if (matcher.find()) {
+            mode = matcher.group();
+        }
+
+        return (isParsedMode && isParsedVersion);
     }
 }

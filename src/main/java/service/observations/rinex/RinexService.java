@@ -25,14 +25,13 @@ public class RinexService {
     private State state;
     private TNP tnp = new TNP();
 
-    RinexService () {
-        state = new ReadHeader();
-    }
-
     public TNP readRinex(@NonNull @Size(min = 1) String fileName) {
         try {
             reader = new BufferedReader(new FileReader(fileName));
+            changeState(new ReadHeader());
             state.read();
+//            changeState(new ReadObseravtions());
+//            state.read();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -41,6 +40,10 @@ public class RinexService {
         finally {
             return tnp;
         }
+    }
+
+    private void changeState(State state){
+        this.state = state;
     }
 
     private class ReadHeader implements State {
@@ -53,13 +56,15 @@ public class RinexService {
 
         @Override
         public void read() throws IOException{
-
-            while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")){
-//              Skip comments and non existing Titles
-                if (line.contains("COMMENT") || (headerLabel = headerLabelFactory.getHeaderLabel(line)) == null) {
+            if (reader == null) {
+                return;
+            }
+            while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
+//             Skip comments and non existing Titles
+                if (line.contains("COMMENT")) {
                     continue;
                 }
-                header.add(headerLabel);
+                header.set(headerLabelFactory.getHeaderLabel(line));
             }
         }
     }
