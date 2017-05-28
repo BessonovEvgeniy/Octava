@@ -6,14 +6,17 @@ import lombok.NonNull;
 import model.observations.TNP;
 import model.rinex.Header;
 import model.rinex.Observations;
+import org.springframework.stereotype.Service;
 import service.observations.rinex.headerLabels.HeaderLabel;
 import service.observations.rinex.headerLabels.RinexVersionType;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.Size;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class RinexService {
 
     private StringBuilder line = new StringBuilder();
