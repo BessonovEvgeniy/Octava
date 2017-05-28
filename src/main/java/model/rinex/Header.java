@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Header  {
-    HeaderLabel rinexVersionType = new RinexVersionType();
-    HeaderLabel pgmRunByDate = new PgmRunByDate();
-    HeaderLabel markerName = new MarkerName();
-    HeaderLabel observerAgency = new ObserverAgency();
+    private HeaderLabel rinexVersionType = new RinexVersionType();
+    private HeaderLabel pgmRunByDate = new PgmRunByDate();
+    private HeaderLabel markerName = new MarkerName();
+    private HeaderLabel observerAgency = new ObserverAgency();
 
     private List<HeaderLabel> headerLabels = new ArrayList<>();
 

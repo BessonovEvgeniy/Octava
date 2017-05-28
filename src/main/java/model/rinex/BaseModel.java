@@ -3,7 +3,7 @@ package model.rinex;
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class BaseModel{
+public abstract class BaseModel {
 
     @Id
     @GeneratedValue
@@ -14,7 +14,7 @@ public abstract class BaseModel{
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         BaseModel baseModel = (BaseModel) o;

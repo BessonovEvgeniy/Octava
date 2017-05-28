@@ -2,6 +2,7 @@ package service.observations.rinex;
 
 import lombok.Data;
 import lombok.Getter;
+
 import lombok.NonNull;
 import model.observations.TNP;
 import model.rinex.Header;
