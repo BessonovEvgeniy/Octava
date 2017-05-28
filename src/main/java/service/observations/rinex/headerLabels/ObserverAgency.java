@@ -7,12 +7,11 @@ import java.util.regex.Pattern;
 
 public @Data class ObserverAgency implements HeaderLabel {
 
-    private String observerName;
-    private String agencyName;
+    private String observerName = "";
+    private String agencyName = "";
 
     @Override
     public boolean parse(String line) {
-        int agencyStartAt = 20;
 
         Pattern pattern = Pattern.compile(".{1,20}");
         Matcher matcher = pattern.matcher(line);
@@ -22,7 +21,7 @@ public @Data class ObserverAgency implements HeaderLabel {
 
         pattern = Pattern.compile(".{1,40}");
         matcher = pattern.matcher(line);
-        if (matcher.find(agencyStartAt)) {
+        if (matcher.find(20)) {
             agencyName = matcher.group().trim();
         }
         return (observerName.isEmpty() && agencyName.isEmpty());
