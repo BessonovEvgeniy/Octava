@@ -21,7 +21,10 @@ public class HeaderLabelFactory {
         for (Map.Entry<String, HeaderLabel> item: headerLabels.entrySet()){
             String titleItem = item.getKey();
             if (title.contains(titleItem)){
-                return headerLabels.get(titleItem);
+
+                HeaderLabel label = headerLabels.get(titleItem);
+                label.parse(title);
+                return label;
             }
         }
         return null;
