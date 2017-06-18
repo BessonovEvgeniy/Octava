@@ -7,32 +7,22 @@ import java.util.regex.Pattern;
 
 public @Data class PgmRunByDate implements HeaderLabel {
 
-    private String program = "";
-    private String agency = "";
-    private String created = "";
+    private String program;
+    private String agency;
+    private String created;
 
     @Override
     public boolean parse(String line) {
 
-        Pattern pattern = Pattern.compile(".{20}");
+        Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})(PGM / RUN BY / DATE)");
         Matcher matcher = pattern.matcher(line);
-        if (matcher.find()) {
-            program = matcher.group().trim();
+
+        boolean isFind = matcher.find();
+        if (isFind) {
+            program = matcher.group(1).trim();
+            agency = matcher.group(2).trim();
+            created = matcher.group(3).trim();
         }
-
-        pattern = Pattern.compile(".{20}");
-        matcher= pattern.matcher(line);
-        if (matcher.find(20)) {
-            agency = matcher.group().trim();
-        }
-
-        pattern = Pattern.compile(".{20}");
-        matcher = pattern.matcher(line);
-
-        if (matcher.find(40)) {
-            created = matcher.group().trim();
-        }
-
-        return !(program.isEmpty() && agency.isEmpty() && created.isEmpty());
+        return isFind;
     }
 }

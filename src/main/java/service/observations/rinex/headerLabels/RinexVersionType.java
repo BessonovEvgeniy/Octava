@@ -10,26 +10,24 @@ import java.util.regex.Pattern;
 public @Data class RinexVersionType implements HeaderLabel {
 
     @NonNull @Length(min = 4, max = 4, message = "Rinex version must have X.XX format")
-    private String version = "";
-    private String mode = "";
+    private String version;
+    @NonNull @Length(min = 1, max = 1, message = "Rinex mode must have 'X' format")
+    private String mode;
 
     public RinexVersionType(){}
 
     @Override
     public boolean parse(String line) {
-
-        Pattern pattern = Pattern.compile("\\d{1}\\.\\d{2}");
+        Pattern pattern = Pattern.compile("(\\s{1,5}\\d{1}.\\d{1,2}\\s{0,1})(.{30})([M,G,E,R]{1})(.{19})(RINEX VERSION / TYPE)");
         Matcher matcher = pattern.matcher(line);
-        if (matcher.find()) {
-            version = matcher.group().trim();
+        boolean isFind = matcher.find();
+        if (isFind) {
+            version = matcher.group(1).trim();
+            mode = matcher.group(3).trim();
+        } else {
+            version = null;
+            mode = null;
         }
-
-        pattern = Pattern.compile(" .[G,R,S,T,M]{1} ");
-        matcher = pattern.matcher(line);
-        if (matcher.find()) {
-            mode = matcher.group().trim();
-        }
-
-        return (!version.isEmpty() && !version.isEmpty());
+        return isFind;
     }
 }
