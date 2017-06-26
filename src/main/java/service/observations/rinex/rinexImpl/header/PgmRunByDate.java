@@ -1,11 +1,12 @@
-package service.observations.rinex.headerLabels;
+package service.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
+import service.observations.rinex.Proccess;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public @Data class PgmRunByDate implements HeaderLabel {
+public @Data class PgmRunByDate implements Proccess {
 
     private String program;
     private String agency;
@@ -14,14 +15,17 @@ public @Data class PgmRunByDate implements HeaderLabel {
     @Override
     public boolean parse(String line) {
 
-        Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})(PGM / RUN BY / DATE)");
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = Pattern.compile("(.{20})(.{20})(.{20})(PGM / RUN BY / DATE)").matcher(line);
 
         boolean isFind = matcher.find();
         if (isFind) {
             program = matcher.group(1).trim();
             agency = matcher.group(2).trim();
             created = matcher.group(3).trim();
+        } else {
+            program = null;
+            agency = null;
+            created = null;
         }
         return isFind;
     }

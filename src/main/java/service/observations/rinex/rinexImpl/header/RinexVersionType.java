@@ -1,13 +1,14 @@
-package service.observations.rinex.headerLabels;
+package service.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
+import service.observations.rinex.Proccess;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public @Data class RinexVersionType implements HeaderLabel {
+public @Data class RinexVersionType implements Proccess {
 
     @NonNull @Length(min = 4, max = 4, message = "Rinex version must have X.XX format")
     private String version;
