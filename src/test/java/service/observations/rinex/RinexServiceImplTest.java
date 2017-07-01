@@ -1,15 +1,15 @@
 package service.observations.rinex;
 
-import model.observations.TNP;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import service.observations.rinex.rinexImpl.RinexServiceImpl;
 
 import static org.junit.Assert.assertNull;
 
-public class RinexServiceTest {
+public class RinexServiceImplTest {
 
     @Autowired
-    RinexService rinexService;
+    RinexServiceImpl rinexService;
 
     @Test
     public void testReadEmptyFileName(String fileName){

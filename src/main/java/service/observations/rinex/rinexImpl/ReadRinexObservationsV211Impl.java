@@ -7,7 +7,7 @@ import service.observations.rinex.State;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-class ReadObservationsImpl implements State {
+class ReadRinexObservationsV211Impl implements State {
 
     String line;
     @Override
@@ -21,7 +21,7 @@ class ReadObservationsImpl implements State {
                 if (numSv > 9) {
                     line = line + reader.readLine();
                 }
-                String[] metaData = line.trim().split("  | ");
+                String[] metaData = line.trim().split(" ?");
                 Integer year = Integer.parseInt(metaData[0]);
                 Integer month = Integer.parseInt(metaData[1]);
                 Integer day = Integer.parseInt(metaData[2]);
@@ -30,7 +30,7 @@ class ReadObservationsImpl implements State {
                 Double sec = Double.parseDouble(metaData[5]);
                 Integer sv = Integer.parseInt(metaData[6]);
 
-               tnp.addEpoch(hour*3600.0 + min*60.0 + sec);
+                tnp.addEpoch(hour*3600.0 + min*60.0 + sec);
 
                 StringBuilder allSv = new StringBuilder();
                 for (int i = 7; i < metaData.length; i++) {

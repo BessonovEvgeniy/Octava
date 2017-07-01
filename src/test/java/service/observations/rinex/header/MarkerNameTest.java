@@ -1,6 +1,7 @@
-package service.observations.rinex.headerLabels;
+package service.observations.rinex.header;
 
 import org.junit.Test;
+import service.observations.rinex.rinexImpl.header.MarkerName;
 
 import static org.junit.Assert.assertEquals;
 

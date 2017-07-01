@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import service.observations.rinex.RinexService;
 import service.observations.rinex.State;
 
-import javax.validation.constraints.Size;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class RinexServiceImpl implements RinexService {
@@ -20,19 +22,19 @@ public class RinexServiceImpl implements RinexService {
     private State state;
     private TNP tnp = new TNP();
 
-    public TNP readRinex(@NonNull @Size(min = 1) String fileName) {
-        try {
+    public TNP readRinex(String fileName) throws IOException {
+
+        Path path = Paths.get(fileName);
+
+        if (Files.exists(path)) {
             reader = new BufferedReader(new FileReader(fileName));
             changeState(new ReadHeaderImpl());
             state.read(reader, tnp);
-            changeState(new ReadObservationsImpl());
+            changeState(new ReadRinexObservationsDecorator());
             state.read(reader, tnp);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
+            //TODO Change return thp; -> return TNP.NULL;
+            return tnp;
+        } else {
             return tnp;
         }
     }

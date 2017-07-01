@@ -1,7 +1,8 @@
-package service.observations.rinex.headerLabels;
+package service.observations.rinex.header;
 
 import org.junit.Assert;
 import org.junit.Test;
+import service.observations.rinex.rinexImpl.header.RinexVersionType;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
