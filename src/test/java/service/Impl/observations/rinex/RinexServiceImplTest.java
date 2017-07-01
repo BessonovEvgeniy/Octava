@@ -1,8 +1,8 @@
-package service.observations.rinex;
+package service.Impl.observations.rinex;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import service.observations.rinex.rinexImpl.RinexServiceImpl;
+import service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 
 import static org.junit.Assert.assertNull;
 

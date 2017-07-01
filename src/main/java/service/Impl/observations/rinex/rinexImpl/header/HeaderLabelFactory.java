@@ -1,12 +1,12 @@
-package service.observations.rinex.rinexImpl.header;
+package service.Impl.observations.rinex.rinexImpl.header;
 
-import service.observations.rinex.Proccess;
+import service.HeaderLabel;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class HeaderLabelFactory {
-    private HashMap<String, Proccess> headerLabels = new LinkedHashMap<>();
+    private HashMap<String, HeaderLabel> headerLabels = new LinkedHashMap<>();
 
     public HeaderLabelFactory(){
         headerLabels.put("RINEX VERSION / TYPE",new RinexVersionType());
@@ -15,7 +15,7 @@ public class HeaderLabelFactory {
         headerLabels.put("OBSERVER / AGENCY",   new ObserverAgency());
     }
 
-    public Proccess getHeaderLabel(String title) {
+    public HeaderLabel getHeaderLabel(String title) {
         return headerLabels.get(title.substring(title.length()-20,title.length()).trim());
     }
 }

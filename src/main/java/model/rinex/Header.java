@@ -2,35 +2,35 @@ package model.rinex;
 
 
 import lombok.Data;
-import service.observations.rinex.Proccess;
-import service.observations.rinex.rinexImpl.header.MarkerName;
-import service.observations.rinex.rinexImpl.header.ObserverAgency;
-import service.observations.rinex.rinexImpl.header.PgmRunByDate;
-import service.observations.rinex.rinexImpl.header.RinexVersionType;
+import service.HeaderLabel;
+import service.Impl.observations.rinex.rinexImpl.header.MarkerName;
+import service.Impl.observations.rinex.rinexImpl.header.ObserverAgency;
+import service.Impl.observations.rinex.rinexImpl.header.PgmRunByDate;
+import service.Impl.observations.rinex.rinexImpl.header.RinexVersionType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public @Data class Header  {
-    private Proccess rinexVersionType = new RinexVersionType();
-    private Proccess pgmRunByDate = new PgmRunByDate();
-    private Proccess markerName = new MarkerName();
-    private Proccess observerAgency = new ObserverAgency();
+    private HeaderLabel rinexVersionType = new RinexVersionType();
+    private HeaderLabel pgmRunByDate = new PgmRunByDate();
+    private HeaderLabel markerName = new MarkerName();
+    private HeaderLabel observerAgency = new ObserverAgency();
 
-    private List<Proccess> proccesses = new ArrayList<>();
+    private List<HeaderLabel> headerLabels = new ArrayList<>();
 
-    public void set(Proccess proccess){
-        if (proccess instanceof RinexVersionType) {
-            rinexVersionType = proccess;
+    public void set(HeaderLabel headerLabel){
+        if (headerLabel instanceof RinexVersionType) {
+            rinexVersionType = headerLabel;
         }
-        else if (proccess instanceof PgmRunByDate) {
-            pgmRunByDate = proccess;
+        else if (headerLabel instanceof PgmRunByDate) {
+            pgmRunByDate = headerLabel;
         }
-        else if (proccess instanceof MarkerName) {
-            markerName = proccess;
+        else if (headerLabel instanceof MarkerName) {
+            markerName = headerLabel;
         }
-        else if (proccess instanceof ObserverAgency) {
-            observerAgency = proccess;
+        else if (headerLabel instanceof ObserverAgency) {
+            observerAgency = headerLabel;
         }
     }
 

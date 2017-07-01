@@ -1,12 +1,13 @@
-package service.observations.rinex.rinexImpl.header;
+package service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
-import service.observations.rinex.Proccess;
+import model.observations.ReceiverDataModel;
+import service.HeaderLabel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public @Data class ObserverAgency implements Proccess {
+public @Data class ObserverAgency implements HeaderLabel {
 
     private String observerName;
     private String agencyName;
