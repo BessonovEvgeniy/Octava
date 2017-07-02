@@ -6,16 +6,13 @@ import service.State;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.ParseException;
 
 class ReadRinexObservationsV211Impl implements State {
 
     String line;
     @Override
     public void read(BufferedReader reader, ReceiverDataModel data) throws IOException {
-        if (reader == null) {
-            return;
-        }
+
         while ((line = reader.readLine()) != null) {
             if (!line.contains("COMMENT")) {
                 try {
@@ -45,7 +42,6 @@ class ReadRinexObservationsV211Impl implements State {
                         line = reader.readLine();
 
                     }
-
                     data.getEpoch().add(epoch);
                 } catch (NumberFormatException e) {
                     continue; //Skip this line and read next line

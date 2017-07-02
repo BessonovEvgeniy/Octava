@@ -27,4 +27,14 @@ public @Data class ReceiverDataModel implements GPS, GLONASS {
     private Map<GNSS, Set<Observations>> obs;
 
     private Set<Double> epoch;
+
+    public static final ReceiverDataModel NULL = new NullReceiverDataModel();
+
+    private static class NullReceiverDataModel extends ReceiverDataModel {
+
+        @Override
+        public String toString() {
+            return "Null TNP";
+        }
+    }
 }

@@ -6,10 +6,13 @@ This is the demo project in Java of real project "OCTAVA" for proccessing observ
 
 ## Technologies
 1. Java SE 8
-2. Spring Boot
+2. Spring
 3. Hibernate
-4. JUnit
-5. Lombok
+4. JMockito
+5. JUnit
+6. Lombok
+7. Jersey
+8. JSP
 
 #2) Run demo
 
