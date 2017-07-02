@@ -21,12 +21,10 @@ class ReadHeaderImpl implements State {
             return;
         }
         while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
-            if (!line.contains("COMMENT")) {
-                HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
-                if (headerLabel != null) {
-                    if (headerLabel.parse(line)) {
-                        setHeaderLabel(headerLabel, data);
-                    }
+            HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
+            if (headerLabel != null) {
+                if (headerLabel.parse(line)) {
+                    setHeaderLabel(headerLabel, data);
                 }
             }
         }
@@ -38,7 +36,6 @@ class ReadHeaderImpl implements State {
             if (field.getType().getName().equals(headerLabel.getClass().getName())) {
                 field.setAccessible(true);
                 field.set(data, headerLabel);
-                field.setAccessible(false);
                 break;
             }
         }
