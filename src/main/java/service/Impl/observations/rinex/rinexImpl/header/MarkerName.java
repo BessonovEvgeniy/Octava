@@ -1,6 +1,8 @@
-package service.observations.rinex.headerLabels;
+package service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
+import model.observations.ReceiverDataModel;
+import service.HeaderLabel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,11 +16,7 @@ public @Data class MarkerName implements HeaderLabel {
         Matcher matcher = Pattern.compile(".{1,60}").matcher(line);
 
         boolean isFind = matcher.find();
-        if (isFind) {
-            markerName = matcher.group().trim();
-        } else {
-            markerName = null;
-        }
+        markerName = isFind ? matcher.group().trim() : null;
         return isFind;
     }
 }

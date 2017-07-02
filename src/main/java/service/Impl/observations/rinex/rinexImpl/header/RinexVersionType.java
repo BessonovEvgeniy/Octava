@@ -1,8 +1,10 @@
-package service.observations.rinex.headerLabels;
+package service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
 import lombok.NonNull;
+import model.observations.ReceiverDataModel;
 import org.hibernate.validator.constraints.Length;
+import service.HeaderLabel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

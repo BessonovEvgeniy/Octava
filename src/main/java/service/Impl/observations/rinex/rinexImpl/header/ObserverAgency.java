@@ -1,6 +1,8 @@
-package service.observations.rinex.headerLabels;
+package service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
+import model.observations.ReceiverDataModel;
+import service.HeaderLabel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,9 +14,7 @@ public @Data class ObserverAgency implements HeaderLabel {
 
     @Override
     public boolean parse(String line) {
-
-        Pattern pattern = Pattern.compile("(.{20})(.{40})(OBSERVER / AGENCY)");
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = Pattern.compile("(.{20})(.{40})(OBSERVER / AGENCY)").matcher(line);
         boolean isFind = matcher.find();
         if (isFind) {
             observerName = matcher.group(1).trim();

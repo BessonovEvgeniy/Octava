@@ -26,6 +26,7 @@
     <java.servlet.version>2.5</java.servlet.version>
     <jsp.api.version>2.1</jsp.api.version>
     <jstl.version>1.2</jstl.version>
+    <google.guava.version>22.0</google.guava.version>
   </properties>
 
   <dependencies>
@@ -121,10 +122,15 @@
       <artifactId>jersey-server</artifactId>
       <version>${jersey.client.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.sun.jersey.contribs</groupId>
-      <artifactId>jersey-multipart</artifactId>
-      <version>${jersey.client.version}</version>
+      <dependency>
+          <groupId>com.sun.jersey.contribs</groupId>
+          <artifactId>jersey-multipart</artifactId>
+          <version>${jersey.client.version}</version>
+      </dependency>
+      <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${google.guava.version}</version>
     </dependency>
     <!-- Servlet Api -->
     <dependency>

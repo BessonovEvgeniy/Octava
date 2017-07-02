@@ -1,3 +1,3 @@
 package model.rinex;
 
-public interface GPS {}
+public interface GPS extends GNSS {}

@@ -1,13 +1,16 @@
 package model.rinex;
 
-
-import service.observations.rinex.headerLabels.*;
+import lombok.Data;
+import service.HeaderLabel;
+import service.Impl.observations.rinex.rinexImpl.header.MarkerName;
+import service.Impl.observations.rinex.rinexImpl.header.ObserverAgency;
+import service.Impl.observations.rinex.rinexImpl.header.PgmRunByDate;
+import service.Impl.observations.rinex.rinexImpl.header.RinexVersionType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Header implements RinexData {
-
+public @Data class Header  {
     private HeaderLabel rinexVersionType = new RinexVersionType();
     private HeaderLabel pgmRunByDate = new PgmRunByDate();
     private HeaderLabel markerName = new MarkerName();
