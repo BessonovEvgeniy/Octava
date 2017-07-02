@@ -19,6 +19,9 @@ public @Data class ObserverAgency implements HeaderLabel {
         if (isFind) {
             observerName = matcher.group(1).trim();
             agencyName = matcher.group(2).trim();
+        } else {
+            observerName = null;
+            agencyName = null;
         }
         return isFind;
     }

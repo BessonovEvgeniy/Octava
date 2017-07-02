@@ -22,6 +22,10 @@ public @Data class PgmRunByDate implements HeaderLabel {
             program = matcher.group(1).trim();
             agency = matcher.group(2).trim();
             created = matcher.group(3).trim();
+        } else {
+            program = null;
+            agency = null;
+            created = null;
         }
         return isFind;
     }

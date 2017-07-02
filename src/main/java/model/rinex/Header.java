@@ -3,11 +3,11 @@ package model.rinex;
 
 import service.observations.rinex.headerLabels.*;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Header  {
+public class Header implements RinexData {
+
     private HeaderLabel rinexVersionType = new RinexVersionType();
     private HeaderLabel pgmRunByDate = new PgmRunByDate();
     private HeaderLabel markerName = new MarkerName();
@@ -27,6 +27,12 @@ public class Header  {
         }
         else if (headerLabel instanceof ObserverAgency) {
             observerAgency = headerLabel;
+        }
+    }
+
+    public static class HeaderNull extends Header {
+        public String toString() {
+            return "Null Header";
         }
     }
 

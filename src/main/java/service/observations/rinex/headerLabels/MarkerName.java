@@ -12,10 +12,13 @@ public @Data class MarkerName implements HeaderLabel {
     @Override
     public boolean parse(String line) {
         Matcher matcher = Pattern.compile(".{1,60}").matcher(line);
-        
-        if (matcher.find()) {
+
+        boolean isFind = matcher.find();
+        if (isFind) {
             markerName = matcher.group().trim();
+        } else {
+            markerName = null;
         }
-        return markerName.isEmpty();
+        return isFind;
     }
 }
