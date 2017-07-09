@@ -24,11 +24,12 @@ public class RinexController {
 
 //    @Autowired
 //    private RinexService rinexService;
-
+    @POST
+    @Path("/")
     @RequestMapping({"/","/home"})
     public String homePage(Map<String, Object> model) {
         model.put("spittles", new Object());
-        return "home";
+        return "index";
     }
 
     @POST

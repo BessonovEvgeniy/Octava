@@ -7,11 +7,24 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>dispatcher</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--Configuration for Spring-->
+    <!--<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
+
+    <!--Configuration for Jersey-->
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:spring/dispatcher-servlet.xml</param-value>
+      <!--Configuration for Spring-->
+      <!--<param-name>contextConfigLocation</param-name>-->
+      <!--<param-value>classpath:spring/dispatcher-servlet.xml</param-value>-->
+
+      <!--Configuration for Jersey-->
+        <param-name>jersey.config.server.provider.classnames</param-name>
+        <param-value>org.glassfish.jersey.jackson.JacksonFeature</param-value>
     </init-param>
+    <!--<init-param>-->
+      <!--<param-name>jersey.config.</param-name>-->
+      <!--<param-value>org.glassfish.jersey.jackson.JacksonFeature</param-value>-->
+    <!--</init-param>-->
     <load-on-startup>1</load-on-startup>
   </servlet>
 
