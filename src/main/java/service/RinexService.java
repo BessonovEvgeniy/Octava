@@ -1,10 +1,12 @@
 package service;
 
 import model.observations.ReceiverDataModel;
+import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
+import java.io.InputStream;
 
+@Service
 public interface RinexService {
 
-    ReceiverDataModel readRinex(BufferedReader reader) throws Exception;
+    ReceiverDataModel readRinex(InputStream inputStream) throws Exception;
 }
