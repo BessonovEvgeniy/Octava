@@ -2,7 +2,7 @@ package service.Impl.observations.rinex;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
+import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 
 import java.io.BufferedReader;
 
