@@ -20,7 +20,7 @@ public class RinexController {
     @Autowired
     private RinexService rinexService;
 
-    @RequestMapping({"/","/home"})
+    @RequestMapping("/")
     public String homePage(Map<String, Object> model) {
         model.put("spittles", new Object());
         return "index";
