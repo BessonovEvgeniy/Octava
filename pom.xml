@@ -24,7 +24,7 @@
     <jersey.client.version>1.19.4</jersey.client.version>
     <jersey.common.version>2.25.1</jersey.common.version>
     <jersey.json.provider.version>2.9.0.pr4</jersey.json.provider.version>
-    <java.servlet.version>2.5</java.servlet.version>
+    <java.servlet.version>3.1.0</java.servlet.version>
     <jsp.api.version>2.1</jsp.api.version>
     <jstl.version>1.2</jstl.version>
     <google.guava.version>22.0</google.guava.version>
@@ -157,7 +157,7 @@
     <!-- Servlet Api -->
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
       <version>${java.servlet.version}</version>
       <scope>provided</scope>
     </dependency>
