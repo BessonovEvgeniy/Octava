@@ -1,4 +1,4 @@
-package rinex.initialization;
+package rinex.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -23,7 +23,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
     private AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("rinex/initialization");
+        context.setConfigLocation("rinex/config");
         return context;
     }
 }
