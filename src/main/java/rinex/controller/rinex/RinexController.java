@@ -28,8 +28,8 @@ public class RinexController {
 
     @RequestMapping("/readRinex")
     public Response uploadRinexFile (
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception {
+            InputStream uploadedInputStream,
+            FormDataContentDisposition fileDetail) throws Exception {
 
         ReceiverDataModel receiverDataModel  = rinexService.readRinex(uploadedInputStream);
 
@@ -38,8 +38,8 @@ public class RinexController {
     }
 
     public static void main(String[] args) {
-//        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
-        String filename = "//home//ionex//1 IdeaProjects//Octava//X07100.17o";
+        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
+//        String filename = "//home//ionex//1 IdeaProjects//Octava//X07100.17o";
         try {
             RinexServiceImpl rinexService = new RinexServiceImpl();
             InputStream rinexData = new FileInputStream(filename);

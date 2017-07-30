@@ -2,6 +2,7 @@ package rinex.service.Impl.observations.rinex.rinexImpl;
 
 import rinex.model.observations.ReceiverDataModel;
 import org.springframework.stereotype.Service;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.RinexHeaderException;
 import rinex.service.State;
 import rinex.service.RinexService;
 
@@ -30,6 +31,10 @@ public class RinexServiceImpl implements RinexService {
                 state.read(reader, data);
                 changeState(new ReadRinexObservationsDecorator());
                 state.read(reader, data);
+            } catch (RinexHeaderException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new Exception();
             }
             return data;
         }

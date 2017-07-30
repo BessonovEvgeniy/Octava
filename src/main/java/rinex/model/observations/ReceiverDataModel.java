@@ -4,10 +4,7 @@ import lombok.Data;
 import rinex.model.rinex.GLONASS;
 import rinex.model.rinex.GPS;
 import rinex.model.rinex.Observations;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.PgmRunByDate;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.RinexVersionType;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.MarkerName;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.ObserverAgency;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +22,20 @@ public @Data class ReceiverDataModel implements GPS, GLONASS {
     private MarkerName markerName;
 
     private ObserverAgency observerAgency;
+
+    private RecTypeVers recTypeVers;
+
+    private AntType antType;
+
+    private ApproxPos approxPos;
+
+    private AntennaDelta antennaDelta;
+
+    private WavelengthFact wavelengthFact;
+
+    private TypesOfObserv typesOfObserv;
+
+    private LeapSeconds leapSeconds;
 
     private Map<GNSS, Set<Observations>> obs;
 
