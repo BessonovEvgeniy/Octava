@@ -1,13 +1,11 @@
 package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 import rinex.service.HeaderLabel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("antType")
 public @Data  class AntType implements HeaderLabel {
 
     private String ant;

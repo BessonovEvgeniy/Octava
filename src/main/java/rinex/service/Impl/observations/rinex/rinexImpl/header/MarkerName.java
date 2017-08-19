@@ -7,7 +7,6 @@ import rinex.service.HeaderLabel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("markerName")
 public @Data class MarkerName implements HeaderLabel {
 
     private String markerName;

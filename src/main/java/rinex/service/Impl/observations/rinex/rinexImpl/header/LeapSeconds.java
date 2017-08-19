@@ -8,7 +8,6 @@ import rinex.service.HeaderLabel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("leapSeconds")
 public @Data class LeapSeconds implements HeaderLabel {
 
     private Integer leapSeconds;

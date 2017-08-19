@@ -7,7 +7,6 @@ import rinex.service.HeaderLabel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("approxPos")
 public @Data class ApproxPos implements HeaderLabel {
 
     private Double x;

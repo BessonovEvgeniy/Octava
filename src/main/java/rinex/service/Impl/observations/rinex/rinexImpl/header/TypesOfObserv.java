@@ -4,9 +4,11 @@ import lombok.Data;
 import rinex.service.HeaderLabel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public @Data class TypesOfObserv implements HeaderLabel {
 
@@ -15,19 +17,19 @@ public @Data class TypesOfObserv implements HeaderLabel {
     @Override
     public boolean parse(String line) throws RinexHeaderException {
 
-        Matcher matcher = Pattern.compile("(\\d{6})(\\d{6})WAVELENGTH FACT L1/2").matcher(line);
+        Matcher matcher = Pattern.compile("(\\s{4,5})(\\d{4})(\\*)# / TYPES OF OBSERV").matcher(line);
 
         boolean isFind = matcher.find();
         if (isFind) {
-            int numTypes = Integer.parseInt(matcher.group(1));
+            int numTypes = Integer.parseInt(matcher.group(2));
 
-            for (int i = 2; i <= numTypes; i++) {
-                if (matcher.find(i)) {
-                    obsTypes.add(matcher.group(i));
-                }
-            }
+            String[] obsTypesString = matcher.group(3).trim().split(" ");
+
             if (numTypes != obsTypes.size()) {
                 throw new RinexHeaderException("Different number observation type. Expected: " + numTypes + " Found: " + obsTypes.size());
+            } else {
+                obsTypes.addAll(Arrays.stream(obsTypesString).
+                        filter(str -> (str != null && !str.isEmpty())).collect(Collectors.toList()));
             }
         } else {
             obsTypes = new ArrayList<>();
