@@ -8,25 +8,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public @Data class MarkerNumber extends AbstractHeaderLabel {
+public @Data class Interval extends AbstractHeaderLabel {
 
-    private String markerNumber;
+    private Double interval;
 
-    public MarkerNumber() {
+    public Interval() {
         init();
     }
 
     @PostConstruct
     private void init() {
-        pattern = Pattern.compile(".{1,60}MARKER NUMBER");
+        interval = 0.0;
+        pattern = Pattern.compile("(\\d{1,7}\\.\\d{1,4}).*INTERVAL");
     }
 
     @Override
-    public boolean parse(String line)  {
+    public boolean parse(String line) throws RinexHeaderException {
+
         Matcher matcher = pattern.matcher(line);
 
         boolean isFind = matcher.find();
-        markerNumber = isFind ? matcher.group().trim() : null;
+        if (isFind) {
+            interval = Double.parseDouble(matcher.group(1));
+        } else {
+            init();
+        }
         return isFind;
     }
 }

@@ -2,16 +2,17 @@ package rinex.controller.rinex;
 
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
-import rinex.model.observations.ReceiverDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import rinex.model.observations.ReceiverDataModel;
 import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 import rinex.service.RinexService;
 
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Map;
 
 @Controller
@@ -38,8 +39,9 @@ public class RinexController {
     }
 
     public static void main(String[] args) {
-        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
-//        String filename = "//home//ionex//1 IdeaProjects//Octava//X07100.17o";
+//        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
+        String filename = "//home//ionex//1 IdeaProjects//Octava//src//test//java//resources//X07100.17o";
+        File file = new File(filename);
         try {
             RinexServiceImpl rinexService = new RinexServiceImpl();
             InputStream rinexData = new FileInputStream(filename);

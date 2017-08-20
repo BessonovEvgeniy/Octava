@@ -2,6 +2,7 @@ package service.Impl.observations.rinex.header;
 
 import org.junit.Assert;
 import org.junit.Test;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.RinexHeaderException;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.RinexVersionType;
 
 import javax.validation.ConstraintViolation;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class RinexVersionTypeTest {
 
     @Test
-    public void testReadRinexVersion(){
+    public void testReadRinexVersion() throws RinexHeaderException{
         String versionMessage = "Wrong RINEX version";
         String modeMessage = "Wrong RINEX mode";
 
