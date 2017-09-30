@@ -26,24 +26,20 @@ public @Data class TypesOfObserv extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) throws RinexHeaderException {
+    public Boolean parse(String line) throws RinexHeaderException {
 
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            int numTypes = Integer.parseInt(matcher.group(1));
+        Boolean isFind = matcher.find();
+        Integer numTypes = isFind ? Integer.parseInt(matcher.group(1)) : 0;
+        String[] obsTypesString = isFind ?
+                matcher.group(2).trim().replaceAll("\\s{2,5}", " ").split(" ") : new String[0];
 
-            String[] obsTypesString = matcher.group(2).trim().replaceAll("\\s{2,5}", " ").split(" ");
-
-            if (numTypes != obsTypesString.length) {
-                throw new RinexHeaderException("Different number observation type. Expected: " + numTypes + " Found: " + obsTypes.size());
-            } else {
-                obsTypes.addAll(Arrays.stream(obsTypesString).
-                        filter(str -> (str != null && !str.isEmpty())).collect(Collectors.toList()));
-            }
-        } else {
-            init();
+        if (isFind && numTypes != obsTypesString.length) {
+            throw new RinexHeaderException("Different number observation type. Expected: " + numTypes + " Found: " + obsTypes.size());
+        } else if (isFind) {
+            obsTypes.addAll(Arrays.stream(obsTypesString).
+                    filter(str -> (str != null && !str.isEmpty())).collect(Collectors.toList()));
         }
         return isFind;
     }

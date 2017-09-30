@@ -24,16 +24,14 @@ public @Data class PgmRunByDate extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) {
+    public Boolean parse(String line) {
 
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            program = matcher.group(1).trim();
-            agency = matcher.group(2).trim();
-            created = matcher.group(3).trim();
-        }
+        Boolean isFind = matcher.find();
+        program = isFind ? matcher.group(1).trim() : "";
+        agency = isFind ? matcher.group(2).trim() : "";
+        created = isFind ? matcher.group(3).trim() : "";
         return isFind;
     }
 }

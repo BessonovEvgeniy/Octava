@@ -23,13 +23,11 @@ public @Data class ObserverAgency extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) {
+    public Boolean parse(String line) {
         Matcher matcher = pattern.matcher(line);
-        boolean isFind = matcher.find();
-        if (isFind) {
-            observerName = matcher.group(1).trim();
-            agencyName = matcher.group(2).trim();
-        }
+        Boolean isFind = matcher.find();
+        observerName = isFind ? matcher.group(1).trim() : "";
+        agencyName = isFind ? matcher.group(2).trim() : "";
         return isFind;
     }
 }

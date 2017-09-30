@@ -35,7 +35,6 @@ public class HeaderLabelFactory {
         headerLabels.put("LEAP SECONDS",        new LeapSeconds());
         headerLabels.put("TIME OF FIRST OBS",   new TimeOfFirstObs());
 //        headerLabels.put("TIME OF LAST OBS",    new TimeOfLastObs());
-
         headerLabels.put("COMMENT", line -> false);
         headerLabels.put("", line -> false);
     }

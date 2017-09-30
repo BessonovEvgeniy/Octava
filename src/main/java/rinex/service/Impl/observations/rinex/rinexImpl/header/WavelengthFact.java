@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 @Service
 public @Data class WavelengthFact extends AbstractHeaderLabel {
 
-    private Integer fullCycle = 0;
-    private Integer halfCycle = 0;
+    private Integer fullCycle;
+    private Integer halfCycle;
 
     public WavelengthFact() {
         init();
@@ -23,15 +23,12 @@ public @Data class WavelengthFact extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) {
-
+    public Boolean parse(String line) {
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            fullCycle = Integer.parseInt(matcher.group(1).trim());
-            halfCycle = Integer.parseInt(matcher.group(2).trim());
-        }
+        Boolean isFind = matcher.find();
+        fullCycle = isFind ? Integer.parseInt(matcher.group(1).trim()) : 0;
+        halfCycle = isFind ? Integer.parseInt(matcher.group(2).trim()) : 0;
         return isFind;
     }
 }

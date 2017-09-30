@@ -1,7 +1,6 @@
 package rinex.controller.rinex;
 
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +8,6 @@ import rinex.model.observations.ReceiverDataModel;
 import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 import rinex.service.RinexService;
 
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -27,16 +25,16 @@ public class RinexController {
         return "index";
     }
 
-    @RequestMapping("/readRinex")
-    public Response uploadRinexFile (
-            InputStream uploadedInputStream,
-            FormDataContentDisposition fileDetail) throws Exception {
-
-        ReceiverDataModel receiverDataModel  = rinexService.readRinex(uploadedInputStream);
-
-        Response response = receiverDataModel.equals(ReceiverDataModel.NULL) ? Response.serverError().build() : Response.status(200).build();
-        return response;
-    }
+//    @RequestMapping("/readRinex")
+//    public Response uploadRinexFile (
+//            InputStream uploadedInputStream,
+//            FormDataContentDisposition fileDetail) throws Exception {
+//
+//        ReceiverDataModel receiverDataModel  = rinexService.readRinex(uploadedInputStream);
+//
+//        Response response = receiverDataModel.equals(ReceiverDataModel.NULL) ? Response.serverError().build() : Response.status(200).build();
+//        return response;
+//    }
 
     public static void main(String[] args) {
 //        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";

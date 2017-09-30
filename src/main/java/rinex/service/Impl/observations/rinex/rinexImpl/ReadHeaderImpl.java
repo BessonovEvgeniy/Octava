@@ -8,7 +8,7 @@ import rinex.service.State;
 import java.io.BufferedReader;
 import java.lang.reflect.Field;
 
-class ReadHeaderImpl implements State {
+class ReadHeaderImpl <T extends HeaderLabel> implements State {
 
     HeaderLabelFactory headerLabelFactory = new HeaderLabelFactory();
 
@@ -18,15 +18,17 @@ class ReadHeaderImpl implements State {
             String line;
             while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
                 HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
-                setHeaderLabel(headerLabel, data);
+                if (headerLabel != null) {
+                    setHeaderLabel((T) headerLabel, data);
+                }
             }
         }
     }
 
-    private boolean setHeaderLabel(HeaderLabel headerLabel, ReceiverDataModel data) throws IllegalAccessException {
+    private Boolean setHeaderLabel(T headerLabel, ReceiverDataModel data) throws IllegalAccessException {
         Field[] fields = data.getClass().getDeclaredFields();
         for (Field field : fields) {
-            if (field.getType().getName().equals(headerLabel.getClass().getName())) {
+            if (field.getType().isInstance(headerLabel)) {
                 field.setAccessible(true);
                 field.set(data, headerLabel);
                 break;

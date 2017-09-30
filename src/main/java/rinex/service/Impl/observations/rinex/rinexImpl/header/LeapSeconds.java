@@ -19,17 +19,14 @@ public @Data class LeapSeconds extends AbstractHeaderLabel {
     @PostConstruct
     private void init() {
         pattern = Pattern.compile("(.{1,60})LEAP SECONDS");
-        leapSeconds = 0;
     }
 
     @Override
-    public boolean parse(String line)  {
+    public Boolean parse(String line)  {
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            leapSeconds = Integer.parseInt(matcher.group(1).trim());
-        }
+        Boolean isFind = matcher.find();
+        leapSeconds = isFind ? Integer.parseInt(matcher.group(1).trim()) : 0;
         return isFind;
     }
 }

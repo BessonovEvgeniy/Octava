@@ -11,7 +11,7 @@ import java.util.Set;
 
 public @Data class ReceiverDataModel implements GPS, GLONASS {
 
-    private enum GNSS {
+    public enum GNSS {
         GPS, GLONASS
     }
 
@@ -47,7 +47,7 @@ public @Data class ReceiverDataModel implements GPS, GLONASS {
 
         @Override
         public String toString() {
-            return "Null TNP";
+            return "NullReceiverDataModel";
         }
     }
 }

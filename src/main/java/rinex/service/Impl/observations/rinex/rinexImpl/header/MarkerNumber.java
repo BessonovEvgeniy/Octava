@@ -22,11 +22,11 @@ public @Data class MarkerNumber extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line)  {
+    public Boolean parse(String line)  {
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        markerNumber = isFind ? matcher.group().trim() : null;
+        Boolean isFind = matcher.find();
+        markerNumber = isFind ? matcher.group().trim() : "";
         return isFind;
     }
 }

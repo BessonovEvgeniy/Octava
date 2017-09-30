@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Service
 public @Data class MarkerName extends AbstractHeaderLabel {
 
-    private String markerName = "";
+    private String markerName;
 
     public MarkerName() {
         init();
@@ -22,10 +22,10 @@ public @Data class MarkerName extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line)  {
+    public Boolean parse(String line)  {
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
+        Boolean isFind = matcher.find();
         markerName = isFind ? matcher.group().trim() : "";
         return isFind;
     }

@@ -27,7 +27,7 @@ public @Data class RinexVersionType extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) throws RinexHeaderException {
+    public Boolean parse(String line) throws RinexHeaderException {
         Matcher matcher = pattern.matcher(line);
         boolean isFind = matcher.find();
         if (isFind) {
