@@ -7,5 +7,5 @@ import rinex.service.Impl.observations.rinex.rinexImpl.header.RinexHeaderExcepti
 @Scope("prototype")
 public interface HeaderLabel {
 
-    boolean parse(String line) throws RinexHeaderException;
+    Boolean parse(String line) throws RinexHeaderException;
 }

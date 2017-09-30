@@ -24,16 +24,14 @@ public @Data class RecTypeVers extends AbstractHeaderLabel {
     }
 
     @Override
-    public boolean parse(String line) {
+    public Boolean parse(String line) {
 
         Matcher matcher = pattern.matcher(line);
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            rec = matcher.group(1).trim();
-            type = matcher.group(2).trim();
-            vers = matcher.group(3).trim();
-        }
+        Boolean isFind = matcher.find();
+        rec = isFind ? matcher.group(1).trim() : "";
+        type = isFind ? matcher.group(2).trim() : "";
+        vers = isFind ? matcher.group(3).trim() : "";
         return isFind;
     }
 }

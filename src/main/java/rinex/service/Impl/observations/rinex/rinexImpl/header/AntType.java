@@ -1,5 +1,6 @@
 package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
+import com.google.common.base.Strings;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +20,17 @@ public @Data class AntType extends AbstractHeaderLabel {
 
     @PostConstruct
     private void init() {
-        pattern = Pattern.compile("(.{20})(.{20})(.{20})(ANT # / TYPE)");
+        stringPattern = Strings.repeat("(.{20})", 3) + "(ANT # / TYPE)";
+        pattern = Pattern.compile(stringPattern);
     }
 
     @Override
-    public boolean parse(String line) {
+    public Boolean parse(String line) {
 
         Matcher matcher = pattern.matcher(line);
-
-        boolean isFind = matcher.find();
-        if (isFind) {
-            ant = matcher.group(1).trim();
-            type = matcher.group(2).trim();
-        }
+        Boolean isFind = matcher.find();
+        ant = isFind ? matcher.group(1).trim() : "";
+        type = isFind ? matcher.group(2).trim() : "";
         return isFind;
     }
 }

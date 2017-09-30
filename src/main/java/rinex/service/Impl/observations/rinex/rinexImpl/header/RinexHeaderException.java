@@ -1,15 +1,12 @@
 package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
-public class RinexHeaderException extends Exception {
+import lombok.Data;
 
-    String msg;
+public @Data class RinexHeaderException extends Exception {
+
+    String message;
 
     RinexHeaderException(String msg) {
-        this.msg = msg;
-    }
-
-    @Override
-    public String getMessage() {
-        return msg;
+        message = msg;
     }
 }

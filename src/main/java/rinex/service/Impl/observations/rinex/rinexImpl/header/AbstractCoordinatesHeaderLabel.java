@@ -7,19 +7,17 @@ import java.util.regex.Matcher;
 @Service
 public abstract class AbstractCoordinatesHeaderLabel extends AbstractHeaderLabel {
 
-    protected Double x = 0.0;
-    protected Double y = 0.0;
-    protected Double z = 0.0;
+    protected Double x;
+    protected Double y;
+    protected Double z;
 
     @Override
-    public boolean parse(String line) {
+    public Boolean parse(String line) {
         Matcher matcher = pattern.matcher(line);
         isFind = matcher.find();
-        if (isFind) {
-            x = Double.parseDouble(matcher.group(1).trim());
-            y = Double.parseDouble(matcher.group(2).trim());
-            z = Double.parseDouble(matcher.group(3).trim());
-        }
+        x = isFind ? Double.parseDouble(matcher.group(1).trim()) : 0.0;
+        y = isFind ? Double.parseDouble(matcher.group(2).trim()) : 0.0;
+        z = isFind ? Double.parseDouble(matcher.group(3).trim()) : 0.0;
         return isFind;
     }
 }

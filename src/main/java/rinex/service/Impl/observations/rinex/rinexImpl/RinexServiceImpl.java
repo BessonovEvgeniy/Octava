@@ -14,18 +14,16 @@ import java.io.InputStreamReader;
 public class RinexServiceImpl implements RinexService {
 
     private State state;
-    private ReceiverDataModel data;
 
     public ReceiverDataModel readRinex(InputStream inputStream) throws Exception {
         if (inputStream == null) {
-
             return ReceiverDataModel.NULL;
-
         } else {
+            ReceiverDataModel data = new ReceiverDataModel();
             try (BufferedReader reader =
-                         new BufferedReader(new InputStreamReader(inputStream))) {
+                         new BufferedReader(
+                                 new InputStreamReader(inputStream))) {
 
-                data = new ReceiverDataModel();
 
                 changeState(new ReadHeaderImpl());
                 state.read(reader, data);

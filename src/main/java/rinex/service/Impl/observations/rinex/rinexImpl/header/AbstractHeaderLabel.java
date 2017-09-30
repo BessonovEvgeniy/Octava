@@ -6,12 +6,12 @@ import java.util.regex.Pattern;
 
 public class AbstractHeaderLabel implements HeaderLabel {
 
-    protected boolean isFind = false;
-
+    protected Boolean isFind;
+    protected String stringPattern;
     protected Pattern pattern;
 
     @Override
-    public boolean parse(String line) throws RinexHeaderException {
-        return isFind;
+    public Boolean parse(String line) throws RinexHeaderException {
+        return false;
     }
 }

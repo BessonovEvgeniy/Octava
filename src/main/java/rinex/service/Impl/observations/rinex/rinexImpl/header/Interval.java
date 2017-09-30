@@ -18,21 +18,15 @@ public @Data class Interval extends AbstractHeaderLabel {
 
     @PostConstruct
     private void init() {
-        interval = 0.0;
         pattern = Pattern.compile("(\\d{1,7}\\.\\d{1,4}).*INTERVAL");
     }
 
     @Override
-    public boolean parse(String line) throws RinexHeaderException {
-
+    public Boolean parse(String line) throws RinexHeaderException {
         Matcher matcher = pattern.matcher(line);
+        Boolean isFind = matcher.find();
 
-        boolean isFind = matcher.find();
-        if (isFind) {
-            interval = Double.parseDouble(matcher.group(1));
-        } else {
-            init();
-        }
+        interval = isFind ? Double.parseDouble(matcher.group(1)) : 0.0;
         return isFind;
     }
 }
