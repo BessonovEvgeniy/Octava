@@ -7,5 +7,5 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "L2")
-public @Data class L2 extends PhaseObservations{
+public @Data class L2 extends PhaseObservations {
 }

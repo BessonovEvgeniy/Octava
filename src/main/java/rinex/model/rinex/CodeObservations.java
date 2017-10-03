@@ -5,4 +5,4 @@ import lombok.Data;
 import javax.persistence.Entity;
 
 @Entity
-public @Data abstract class CodeObservations extends Observations implements GPS, GLONASS{}
+public @Data abstract class CodeObservations extends Observations implements GPS, GLONASS {}
