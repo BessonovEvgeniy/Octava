@@ -5,4 +5,4 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "C2")
-public class C2 extends CodeObservations{}
+public class C2 extends CodeObservations {}
