@@ -1,37 +1,20 @@
 package rinex.service.Impl.observations.rinex.rinexImpl;
 
-import com.google.common.base.Splitter;
 import rinex.dto.EpochDTO;
 import rinex.model.observations.ReceiverDataModel;
 import rinex.service.State;
 
 import java.io.BufferedReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
-class ReadRinexObservationsV211Impl implements State {
-
-    String line;
-    ReceiverDataModel model;
+class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
 
     public ReadRinexObservationsV211Impl(ReceiverDataModel dataModel) {
         model = dataModel;
     }
 
-    public List<String> splitSatDataHeader (String line) {
-        List<String> sv = Splitter.fixedLength(3).splitToList(line.trim());
-        return sv;
-    }
-
-    public List<String> splitDataBySpace (String line) {
-        String[] splitedLine = line.trim().replace("\\s{2,20}", "\\s").split("\\s");
-        //Copy only year,month,day,hour,min,epoch_flag
-        return  Arrays.stream( splitedLine).
-                filter(element -> !element.isEmpty()).
-                collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    private EpochDTO readEpoch(BufferedReader reader) throws Exception {
+    @Override
+    protected EpochDTO readEpoch(BufferedReader reader) throws Exception {
         EpochDTO epochDTO = new EpochDTO(model.getTypesOfObserv());
         Map<String, List<String>> obs = new LinkedHashMap<>();
         try {

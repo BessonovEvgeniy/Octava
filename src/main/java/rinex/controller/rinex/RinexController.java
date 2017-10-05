@@ -37,15 +37,13 @@ public class RinexController {
 //    }
 
     public static void main(String[] args) {
-//        String filename = "d:\\3 GPS data\\2013\\010\\RINEX\\ALCI0100.13O";
-        String filename = "//home//ionex//1 IdeaProjects//Octava//src//test//java//resources//X07100.17o";
+        String filename = "src\\test\\java\\resources\\38541890.16o";
         File file = new File(filename);
         try {
             RinexServiceImpl rinexService = new RinexServiceImpl();
             InputStream rinexData = new FileInputStream(filename);
 
             ReceiverDataModel data = rinexService.readRinex(rinexData);
-
         }
         catch (Exception e) {
             e.printStackTrace();
