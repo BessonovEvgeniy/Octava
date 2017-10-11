@@ -2,6 +2,7 @@ package rinex.service.Impl.observations.rinex.rinexImpl;
 
 import rinex.dto.EpochDTO;
 import rinex.model.observations.ReceiverDataModel;
+import rinex.model.rinex.Observations;
 import rinex.service.State;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
     @Override
     protected EpochDTO readEpoch(BufferedReader reader) throws Exception {
         EpochDTO epochDTO = new EpochDTO(model.getTypesOfObserv());
-        Map<String, List<String>> obs = new LinkedHashMap<>();
+        List<List<String>> obs = new LinkedList<>();
         try {
             String timeData = line.substring(0,32);
             String satData = line.substring(32, line.length());
@@ -26,7 +27,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
 
             Integer obsFlag = Integer.parseInt(time.get(time.size() - 1));
             //Last number is number of satellites
-            Integer numSv = Integer.parseInt(time.get(time.size()));
+            Integer numSv = Integer.parseInt(time.get(time.size() - 1));
 
             if (numSv > 9) {
                 line = reader.readLine();
@@ -43,7 +44,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
 
             for (Integer sv = 0; sv < numSv; sv++) {
                 if ((line = reader.readLine()) != null) {
-                    obs.put(sat.get(sv), splitDataBySpace(line));
+                    obs.add(splitDataBySpace(line));
                 } else {
                     throw new Exception();
                 }
@@ -51,8 +52,9 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
             epochDTO.setTime(time);
             epochDTO.setFlag(obsFlag);
             epochDTO.setNumSv(numSv);
-//            epochDTO.setObs(obs);
-            epochDTO.parseRawData();
+            epochDTO.setSvPattern(sat);
+            epochDTO.setRawObs(obs);
+            double[] obs1 = epochDTO.getObservations(Observations.GnssSystem.GPS, Observations.Type.L);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

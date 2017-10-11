@@ -11,20 +11,15 @@ public abstract class BaseModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (this == o || (o != null && getClass() == o.getClass())) {
             return true;
+        } else {
+            return id.equals(((BaseModel) o).id);
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BaseModel baseModel = (BaseModel) o;
-        return id.equals(baseModel.id);
     }
 
     @Override
     public int hashCode() {
-        int hash = 1;
-        hash = hash * 31 + (id == null ? 0 : id.hashCode());
-        return hash;
+        return 1 * 31 + (id == null ? 0 : id.hashCode());
     }
 }

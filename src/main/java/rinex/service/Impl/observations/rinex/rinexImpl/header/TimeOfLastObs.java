@@ -11,4 +11,4 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public @Data class TimeOfFirstObs extends AbstractTimeOfObs {}
+public @Data class TimeOfLastObs extends AbstractTimeOfObs {}

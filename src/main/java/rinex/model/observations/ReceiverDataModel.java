@@ -1,19 +1,14 @@
 package rinex.model.observations;
 
 import lombok.Data;
-import rinex.model.rinex.GLONASS;
-import rinex.model.rinex.GPS;
+import rinex.model.rinex.Gnss;
 import rinex.model.rinex.Observations;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
 
 import java.util.Map;
 import java.util.Set;
 
-public @Data class ReceiverDataModel implements GPS, GLONASS {
-
-    public enum GNSS {
-        GPS, GLONASS
-    }
+public @Data class ReceiverDataModel implements Gnss {
 
     private RinexVersionType rinexVersionType;
 
@@ -37,7 +32,7 @@ public @Data class ReceiverDataModel implements GPS, GLONASS {
 
     private LeapSeconds leapSeconds;
 
-    private Map<GNSS, Set<Observations>> obs;
+    private Map<Gnss, Set<Observations>> obs;
 
     private Set<Double> epoch;
 

@@ -11,7 +11,8 @@ class ReadRinexObservationsDecorator implements State {
     public void read(BufferedReader reader, @NotNull ReceiverDataModel data) throws Exception {
         String rinexVersion = data.getRinexVersionType().getVersion();
         if (rinexVersion != null) {
-            State rinexObservationReader = ReadRinexObservationsFactory.rinexObservationReaders.get(rinexVersion);
+            State rinexObservationReader = new ReadRinexObservationsFactory(data).
+                    getReadRinexObservationsReader(rinexVersion);
             if (rinexObservationReader != null) {
                 rinexObservationReader.read(reader, data);
             }
