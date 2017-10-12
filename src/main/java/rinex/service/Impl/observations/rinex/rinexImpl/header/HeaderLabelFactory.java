@@ -30,7 +30,7 @@ public class HeaderLabelFactory {
         headerLabels.put("APPROX POSITION XYZ", new ApproxPos());
         headerLabels.put("ANTENNA: DELTA H/E/N",new AntennaDelta());
         headerLabels.put("WAVELENGTH FACT L1/2",new WavelengthFact());
-        headerLabels.put("# / TYPES OF OBSERV", new TypesOfObserv());
+        headerLabels.put("# / TYPES OF OBSERV", new TypesOfObs());
         headerLabels.put("INTERVAL",            new Interval());
         headerLabels.put("LEAP SECONDS",        new LeapSeconds());
         headerLabels.put("TIME OF FIRST OBS",   new TimeOfFirstObs());

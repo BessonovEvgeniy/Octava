@@ -3,6 +3,7 @@ package rinex.service.Impl.observations.rinex.rinexImpl;
 import rinex.dto.EpochDTO;
 import rinex.model.observations.ReceiverDataModel;
 import rinex.model.rinex.Observations;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObs;
 import rinex.service.State;
 
 import java.io.BufferedReader;
@@ -16,8 +17,10 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
 
     @Override
     protected EpochDTO readEpoch(BufferedReader reader) throws Exception {
-        EpochDTO epochDTO = new EpochDTO(model.getTypesOfObserv());
-        List<List<String>> obs = new LinkedList<>();
+        TypesOfObs types = model.getTypesOfObs();
+
+        EpochDTO epochDto = new EpochDTO(types);
+        Map<String, List<String>> obs = new LinkedHashMap<>();
         try {
             String timeData = line.substring(0,32);
             String satData = line.substring(32, line.length());
@@ -44,21 +47,20 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
 
             for (Integer sv = 0; sv < numSv; sv++) {
                 if ((line = reader.readLine()) != null) {
-                    obs.add(splitDataBySpace(line));
+                    obs.put(sat.get(sv), splitDataBySpace(line));
                 } else {
                     throw new Exception();
                 }
             }
-            epochDTO.setTime(time);
-            epochDTO.setFlag(obsFlag);
-            epochDTO.setNumSv(numSv);
-            epochDTO.setSvPattern(sat);
-            epochDTO.setRawObs(obs);
-            double[] obs1 = epochDTO.getObservations(Observations.GnssSystem.GPS, Observations.Type.L);
+            epochDto.setTime(time);
+            epochDto.setFlag(obsFlag);
+            epochDto.setNumSv(numSv);
+            epochDto.setSvPattern(sat);
+            epochDto.setRawObs(obs);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        return epochDTO;
+        return epochDto;
     }
 
     @Override
@@ -67,26 +69,18 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
             if (!line.contains("COMMENT")) {
                 EpochDTO epochDto = readEpoch(reader);
 
-//                    Integer numSv = Integer.parseInt(metaData.get(7).replace());
-//                    if (numSv > 9) {
-//                        line = line + reader.readLine();
-//                    }
+                Map<TypesOfObs.Type, Observations> allObs = data.getObs();
 
-
-//                    int year = Integer.parseInt(metaData[0]);
-//                    int month = Integer.parseInt(metaData[1]);
-//                    int day = Integer.parseInt(metaData[2]);
-//                    int hour = Integer.parseInt(metaData[3]);
-//                    int min = Integer.parseInt(metaData[4]);
-//                    double sec = Double.parseDouble(metaData[5]);
-//                    int sv = Integer.parseInt(metaData[6]);
-//
-//                    double epoch = (hour*3600.0 + min*60.0 + sec);
-//
-//                    StringBuilder allSv = new StringBuilder();
-//                    for (int i = 7; i < metaData.size(); i++) {
-//                        allSv.append(metaData[i].replaceAll(" ",""));
-//                    }
+                for (TypesOfObs.Type type : data.getTypesOfObs().getObsTypes()) {
+                    Observations obs;
+                    if (allObs.get(type) == null) {
+                        obs = new Observations(type);
+                        allObs.put(type, obs);
+                    } else {
+                        obs = allObs.get(type);
+                    }
+                    obs.add(epochDto.getObservations(type));
+                }
             }
         }
     }

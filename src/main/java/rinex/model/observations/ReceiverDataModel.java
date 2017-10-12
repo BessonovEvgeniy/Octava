@@ -5,6 +5,8 @@ import rinex.model.rinex.Gnss;
 import rinex.model.rinex.Observations;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,11 +30,11 @@ public @Data class ReceiverDataModel implements Gnss {
 
     private WavelengthFact wavelengthFact;
 
-    private TypesOfObserv typesOfObserv;
+    private TypesOfObs typesOfObs;
 
     private LeapSeconds leapSeconds;
 
-    private Map<Gnss, Set<Observations>> obs;
+    private Map<TypesOfObs.Type, Observations> obs = new LinkedHashMap<>();
 
     private Set<Double> epoch;
 

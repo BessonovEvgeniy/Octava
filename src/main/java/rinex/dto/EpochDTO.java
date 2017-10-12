@@ -2,20 +2,18 @@ package rinex.dto;
 
 
 import lombok.Data;
-import rinex.model.rinex.Gnss;
-import rinex.model.rinex.Observations;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObserv;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObs;
 
 import java.util.*;
 
-import static rinex.model.rinex.Gnss.MAX_GPS_SAT;
+import static rinex.model.rinex.Gnss.MAX_SAT;
 
 public @Data class EpochDTO {
 
     List<String> time; //YY MM DD HH SS F NUM_SV
     List<String> svPattern;
-    List<List<String>> rawObs;
-    TypesOfObserv types;
+    Map<String, List<String>> rawObs; // SV vs Raw Observations
+    TypesOfObs types;
     Integer year;
     Integer month;
     Integer day;
@@ -27,34 +25,27 @@ public @Data class EpochDTO {
 
     boolean timeParsed;
 
-//  system -> dataType -> data
-
-    public EpochDTO(TypesOfObserv obsTypes) {
+    public EpochDTO(TypesOfObs obsTypes) {
         types = obsTypes;
     }
 
-    public double[] getObservations(Observations.GnssSystem system, Observations.Type type) throws Exception {
+    public double[] getObservations(TypesOfObs.Type type) throws Exception {
 
         boolean notEnoughOrIllegalData = rawObs == null || rawObs.isEmpty() ||
                 types == null || types.getObsTypes().isEmpty();
 
-        double[] obsValues = new double[MAX_GPS_SAT];
+        double[] obsValues = new double[MAX_SAT];
         if (notEnoughOrIllegalData) {
             throw new Exception();
         } else {
-            for(int svIndex = 0; svIndex < svPattern.size(); svIndex++) {
-                String currentSv = svPattern.get(svIndex);
-                if (currentSv.contains(system.getCode())) {
-                    Integer sv = Integer.parseInt(currentSv.substring(1,currentSv.length()));
-                    List<String> obsTypes = types.getObsTypes();
-                    List<String> svRawObs = rawObs.get(svIndex);
-                    for (int j = 0; j < obsTypes.size(); j++ ) {
-                        if (obsTypes.get(j).contains(type.name())) {
-                            obsValues[sv] = Double.parseDouble(svRawObs.get(j));
-                            break;
-                        }
-                    }
+            Integer ordinal = type.getOrdinal(types.getObsTypes());
 
+            for(int svIndex = 0; svIndex < svPattern.size(); svIndex++) {
+                String svName = svPattern.get(svIndex);
+                if (type.isSystemRequired(svName)) {
+                    Integer sv = Integer.parseInt(svName.substring(1,svName.length()));
+                    List<String> svRawObs = rawObs.get(svName);
+                    obsValues[sv] = Double.parseDouble(svRawObs.get(ordinal));
                 }
             }
         }

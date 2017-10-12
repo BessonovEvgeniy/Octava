@@ -2,53 +2,45 @@ package rinex.model.rinex;
 
 import lombok.Data;
 import rinex.model.BaseModel;
+import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObs;
 
-import javax.persistence.MappedSuperclass;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public @Data class Observations extends BaseModel implements Gnss {
 
-    protected GnssSystem system;
+    protected TypesOfObs.Type obsType;
 
-    protected Type obsType;
+    List<double[]> obs = new LinkedList<>();
 
-    List<double[]> obs;
-
-    public Observations(GnssSystem sys, Type type) {
-        system = sys;
+    public Observations(TypesOfObs.Type type) {
         obsType = type;
     }
 
-    public enum GnssSystem {
-        GPS("G"), GLONASS("R"), GALILEO("E");
-
-        String code;
-
-        GnssSystem(String sysCode) {
-            code = sysCode;
-        }
-
-        public String getCode() {
-            return code;
-        }
+    public List<double[]> getObs() {
+        //Prevent editing Obs directly
+        return new LinkedList<>(obs);
     }
 
     public void add(Observations observations) throws Exception {
         add(observations.getObs());
     }
 
-    public void add(List<double[]> observations) throws Exception {
-        observations.forEach(array -> {
-            if (array.length != MAX_GPS_SAT) {
-                System.out.println("Warning. You are trying to add array not proper length: " + MAX_GPS_SAT);
-            }
-        });
-
-        obs.addAll(observations);
+    public void add(double[] observations) throws Exception {
+        obs.add(observations);
     }
 
-    public enum Type {
-        C, P, L, D, S;
+    public void add(List<double[]> observations) throws Exception {
+        observations.forEach(array -> {
+            if (array.length != MAX_SAT) {
+                StringBuilder str = new StringBuilder();
+                Arrays.stream(array).forEach(value -> str.append(value + " "));
+                System.out.println("Warning. You are trying to add array not proper length: " + MAX_SAT + ".\n" +
+                        str.toString() + ". Epoch will be skipped.");
+            } else {
+                obs.add(array);
+            }
+        });
     }
 }

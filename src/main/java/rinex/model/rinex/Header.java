@@ -34,7 +34,7 @@ public @Data class Header  {
     private WavelengthFact wavelengthFact;
 
     @Autowired
-    private TypesOfObserv typesOfObserv;
+    private TypesOfObs typesOfObs;
 
     public static class HeaderNull extends Header {
         public String toString() {
