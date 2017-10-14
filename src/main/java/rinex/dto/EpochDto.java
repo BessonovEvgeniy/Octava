@@ -8,7 +8,7 @@ import java.util.*;
 
 import static rinex.model.rinex.Gnss.MAX_SAT;
 
-public @Data class EpochDTO {
+public @Data class EpochDto {
 
     List<String> time; //YY MM DD HH SS F NUM_SV
     List<String> svPattern;
@@ -25,7 +25,7 @@ public @Data class EpochDTO {
 
     boolean timeParsed;
 
-    public EpochDTO(TypesOfObs obsTypes) {
+    public EpochDto(TypesOfObs obsTypes) {
         types = obsTypes;
     }
 

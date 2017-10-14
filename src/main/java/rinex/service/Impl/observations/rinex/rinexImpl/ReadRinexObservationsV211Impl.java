@@ -1,6 +1,6 @@
 package rinex.service.Impl.observations.rinex.rinexImpl;
 
-import rinex.dto.EpochDTO;
+import rinex.dto.EpochDto;
 import rinex.model.observations.ReceiverDataModel;
 import rinex.model.rinex.Observations;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObs;
@@ -16,10 +16,10 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
     }
 
     @Override
-    protected EpochDTO readEpoch(BufferedReader reader) throws Exception {
+    protected EpochDto readEpoch(BufferedReader reader) throws Exception {
         TypesOfObs types = model.getTypesOfObs();
 
-        EpochDTO epochDto = new EpochDTO(types);
+        EpochDto epochDto = new EpochDto(types);
         Map<String, List<String>> obs = new LinkedHashMap<>();
         try {
             String timeData = line.substring(0,32);
@@ -67,7 +67,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
     public void read(BufferedReader reader, ReceiverDataModel data) throws Exception {
         while ((line = reader.readLine()) != null) {
             if (!line.contains("COMMENT")) {
-                EpochDTO epochDto = readEpoch(reader);
+                EpochDto epochDto = readEpoch(reader);
 
                 Map<TypesOfObs.Type, Observations> allObs = data.getObs();
 

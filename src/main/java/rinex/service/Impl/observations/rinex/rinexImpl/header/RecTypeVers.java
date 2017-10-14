@@ -28,10 +28,10 @@ public @Data class RecTypeVers extends AbstractHeaderLabel {
 
         Matcher matcher = pattern.matcher(line);
 
-        Boolean isFind = matcher.find();
-        rec = isFind ? matcher.group(1).trim() : "";
-        type = isFind ? matcher.group(2).trim() : "";
-        vers = isFind ? matcher.group(3).trim() : "";
-        return isFind;
+        Boolean find = matcher.find();
+        rec = find ? matcher.group(1).trim() : "";
+        type = find ? matcher.group(2).trim() : "";
+        vers = find ? matcher.group(3).trim() : "";
+        return find;
     }
 }

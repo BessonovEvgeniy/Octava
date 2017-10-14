@@ -1,7 +1,7 @@
 package rinex.service.Impl.observations.rinex.rinexImpl;
 
 import com.google.common.base.Splitter;
-import rinex.dto.EpochDTO;
+import rinex.dto.EpochDto;
 import rinex.model.observations.ReceiverDataModel;
 import rinex.service.State;
 
@@ -26,7 +26,7 @@ abstract class AbstractReadRinexObservations implements State {
                 collect(Collectors.toCollection(LinkedList::new));
     }
 
-    protected abstract EpochDTO readEpoch(BufferedReader reader) throws Exception;
+    protected abstract EpochDto readEpoch(BufferedReader reader) throws Exception;
 
     @Override
     public abstract void read(BufferedReader reader, ReceiverDataModel data) throws Exception;
