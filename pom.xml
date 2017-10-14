@@ -11,20 +11,17 @@
   <properties>
     <java.version>1.8</java.version>
     <junit.version>4.12</junit.version>
-    <spring.version>4.3.9.RELEASE</spring.version>
-    <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
+    <spring.version>5.0.0.RELEASE</spring.version>
+    <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
     <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <apachetiles.version>3.0.5</apachetiles.version>
     <lombok.version>1.16.16</lombok.version>
-    <java.bean.validation>1.0.0.GA</java.bean.validation>
-    <hibernate.validation>4.1.0.Final</hibernate.validation>
+    <java.bean.validation>2.0.0.Final</java.bean.validation>
+    <hibernate.validation>5.2.4.Final</hibernate.validation>
     <slf4j.version>1.7.5</slf4j.version>
     <mockito.version>1.9.5</mockito.version>
-    <jersey.client.version>1.19.4</jersey.client.version>
-    <jersey.common.version>2.25.1</jersey.common.version>
-    <jersey.json.provider.version>2.9.0.pr4</jersey.json.provider.version>
     <java.servlet.version>3.1.0</java.servlet.version>
     <jsp.api.version>2.1</jsp.api.version>
     <jstl.version>1.2</jstl.version>
@@ -124,11 +121,6 @@
       <artifactId>guava</artifactId>
       <version>${google.guava.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.jaxrs</groupId>
-      <artifactId>jackson-jaxrs-json-provider</artifactId>
-      <version>${jersey.json.provider.version}</version>
-    </dependency>
     <!-- Servlet Api -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -146,6 +138,11 @@
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
       <version>${jstl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.davidcarboni</groupId>
+      <artifactId>encrypted-file-upload</artifactId>
+      <version>1.0.2</version>
     </dependency>
   </dependencies>
   <build>

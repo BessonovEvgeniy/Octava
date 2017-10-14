@@ -3,7 +3,6 @@ package rinex.controller.rinex;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +12,7 @@ import rinex.model.observations.ReceiverDataModel;
 import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 import rinex.service.RinexService;
 
+import javax.servlet.annotation.MultipartConfig;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 @Controller
-@javax.servlet.annotation.MultipartConfig
+@RequestMapping("/")
+@MultipartConfig(maxFileSize = 50000L)
 public class RinexController {
 
 //    private final StorageService storageService;
@@ -33,22 +34,22 @@ public class RinexController {
     @Autowired
     private RinexService rinexService;
 
-    @RequestMapping({"/", "/home"})
+    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String homePage(Map<String, Object> model) {
         return "index";
     }
 
     @RequestMapping(value = "/readRinex", method = RequestMethod.POST)
-    public String uploadRinexFile (BindingResult bindingResult,
-                                   @RequestParam(value = "file", required = true) MultipartFile file,
+
+    public String uploadRinexFile (@RequestParam(value = "file", required = true) MultipartFile file,
                                    RedirectAttributes redirectAttributes) throws Exception {
 
         if (file.isEmpty()) {
-            return "redirect:uploadStatus";
+            return "redirect:index";
         } else {
             InputStream inputStream =  new BufferedInputStream(file.getInputStream());
             ReceiverDataModel receiverDataModel  = rinexService.readRinex(inputStream);
-            return "redirect:uploadStatus";
+            return "redirect:index";
         }
     }
 
