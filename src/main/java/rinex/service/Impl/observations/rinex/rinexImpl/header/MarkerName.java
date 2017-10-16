@@ -1,12 +1,14 @@
 package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@EqualsAndHashCode(callSuper = true)
 @Service
 public @Data class MarkerName extends AbstractHeaderLabel {
 
@@ -18,15 +20,15 @@ public @Data class MarkerName extends AbstractHeaderLabel {
 
     @PostConstruct
     protected void init() {
-        pattern = Pattern.compile(".{1,49}MARKER NAME");
+        pattern = Pattern.compile("(.{1,60})MARKER NAME");
     }
 
     @Override
     public Boolean parse(String line)  {
         Matcher matcher = pattern.matcher(line);
 
-        Boolean isFind = matcher.find();
-        markerName = isFind ? matcher.group().trim() : "";
-        return isFind;
+        Boolean find = matcher.find();
+        markerName = find ? matcher.group(1).trim() : "";
+        return find;
     }
 }

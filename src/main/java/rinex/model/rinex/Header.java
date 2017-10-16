@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
 
-public @Data class Header  {
+@Data class Header  {
 
     @Autowired
     private RinexVersionType rinexVersionType;
@@ -36,7 +36,7 @@ public @Data class Header  {
     @Autowired
     private TypesOfObs typesOfObs;
 
-    public static class HeaderNull extends Header {
+    private static class HeaderNull extends Header {
         public String toString() {
             return "Null Header";
         }

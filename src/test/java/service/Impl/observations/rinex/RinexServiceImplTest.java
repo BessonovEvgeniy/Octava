@@ -2,14 +2,19 @@ package service.Impl.observations.rinex;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
+import rinex.service.RinexService;
 
 import java.io.File;
 
 public class RinexServiceImplTest {
 
+
+    RinexService rinexService;
+
     @Autowired
-    RinexServiceImpl rinexService;
+    public RinexServiceImplTest(RinexService rinexServ) {
+        rinexService = rinexServ;
+    }
 
     @Test
     public void testReadEmptyFileName() throws Exception {
