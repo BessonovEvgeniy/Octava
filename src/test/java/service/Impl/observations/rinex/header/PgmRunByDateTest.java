@@ -3,7 +3,6 @@ package service.Impl.observations.rinex.header;
 import org.junit.Test;
 import rinex.service.Impl.observations.rinex.rinexImpl.header.PgmRunByDate;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 
 public class PgmRunByDateTest {

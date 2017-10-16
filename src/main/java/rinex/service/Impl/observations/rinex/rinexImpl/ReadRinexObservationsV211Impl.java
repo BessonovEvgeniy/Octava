@@ -29,21 +29,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
             List<String> sat = splitSatDataHeader(satData);
 
             Integer obsFlag = Integer.parseInt(time.get(time.size() - 1));
-            //Last number is number of satellites
             Integer numSv = Integer.parseInt(time.get(time.size() - 1));
-
-            if (numSv > 9) {
-                line = reader.readLine();
-                if (line == null) {
-                    throw new Exception();
-                } else {
-                    sat.addAll(splitSatDataHeader(line));
-                }
-            }
-
-            if (sat.size() != numSv) {
-                throw new Exception();
-            }
 
             for (Integer sv = 0; sv < numSv; sv++) {
                 if ((line = reader.readLine()) != null) {
@@ -79,6 +65,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
                     } else {
                         obs = allObs.get(type);
                     }
+                    System.out.println(line);
                     obs.add(epochDto.getObservations(type));
                 }
             }

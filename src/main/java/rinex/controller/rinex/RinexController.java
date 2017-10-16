@@ -2,6 +2,7 @@ package rinex.controller.rinex;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,6 @@ import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 import rinex.service.RinexService;
 import rinex.service.StorageService;
 
-import javax.servlet.annotation.MultipartConfig;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,22 +23,22 @@ import java.io.InputStream;
 
 @Controller
 @RequestMapping("/rinex")
-@MultipartConfig(maxFileSize = 1024*1024*200)
 public class RinexController {
 
-    private RinexService rinexService;
+    private final RinexService rinexService;
 
-    private StorageService storageService;
+    private final StorageService storageService;
 
     @Autowired
-    public RinexController(RinexService rinexServ, StorageService storageServ) {
+    public RinexController(RinexService rinexServ,
+                           @Qualifier("localStorage") StorageService storageServ) {
         rinexService = rinexServ;
         storageService = storageServ;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String uploadRinexFile (@RequestParam(value = "file", required = true) MultipartFile file,
+    public String uploadRinexFile (@RequestParam(value = "file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) throws Exception {
 
         //TODO add rinex header validation and change logic to storing uploaded rinex file

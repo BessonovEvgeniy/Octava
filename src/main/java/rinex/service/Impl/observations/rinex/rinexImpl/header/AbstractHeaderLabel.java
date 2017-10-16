@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 
 public class AbstractHeaderLabel implements HeaderLabel {
 
-    protected Boolean isFind;
-    protected String stringPattern;
-    protected Pattern pattern;
+    Boolean isFind;
+    String stringPattern;
+    Pattern pattern;
 
     @Override
     public Boolean parse(String line) throws RinexHeaderException {

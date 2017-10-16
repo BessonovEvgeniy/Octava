@@ -8,7 +8,7 @@ import java.util.Map;
 
 class ReadRinexObservationsFactory {
 
-    private Map<String, State> rinexObservationReaders = new HashMap<String, State>();
+    private Map<String, State> rinexObservationReaders = new HashMap<>();
 
     private ReceiverDataModel dataModel;
 

@@ -2,6 +2,7 @@ package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
 import com.google.common.base.Strings;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@EqualsAndHashCode(callSuper = true)
 @Service
 public @Data class AbstractTimeOfObs extends AbstractDateHeaderLabel {
 

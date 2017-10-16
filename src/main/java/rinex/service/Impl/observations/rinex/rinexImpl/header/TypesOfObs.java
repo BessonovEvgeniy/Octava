@@ -1,8 +1,8 @@
 package rinex.service.Impl.observations.rinex.rinexImpl.header;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Service;
-import rinex.model.rinex.Observations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
 @Service
 public @Data class TypesOfObs extends AbstractHeaderLabel {
 
@@ -20,7 +21,7 @@ public @Data class TypesOfObs extends AbstractHeaderLabel {
     public enum Type {
         L1("G"), L2("G"), L5("G"), C1("G"), P2("G"), G1("R"), G2("R");
 
-        String system;
+        private final String system;
 
         Type(String systemCode) {
             system = systemCode;
@@ -34,7 +35,7 @@ public @Data class TypesOfObs extends AbstractHeaderLabel {
             return  satName.contains(system);
         }
 
-        public static Type getTypeByName(String name) {
+        static Type getTypeByName(String name) {
             for (Type type : Type.values()) {
                 if (name.equals(type.name())) {
                     return type;
@@ -79,7 +80,7 @@ public @Data class TypesOfObs extends AbstractHeaderLabel {
         } else if (isFind) {
             obsTypes.addAll(Arrays.stream(obsTypesString)
                     .filter(str -> (str != null && !str.isEmpty()))
-                    .map(str -> Type.getTypeByName(str))
+                    .map(Type::getTypeByName)
                     .collect(Collectors.toList()));
         }
         return isFind;
