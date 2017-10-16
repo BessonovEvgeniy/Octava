@@ -20,6 +20,7 @@ public @Data class EpochDto {
     Integer hour;
     Integer min;
     Double sec;
+    Double gpsSeconds;
     Integer flag;
     Integer numSv;
 
@@ -65,9 +66,12 @@ public @Data class EpochDto {
                     year = Integer.parseInt(yearString);
                     month = Integer.parseInt(iter.next());
                     day = Integer.parseInt(iter.next());
+
                     hour = Integer.parseInt(iter.next());
                     min = Integer.parseInt(iter.next());
                     sec = Double.parseDouble(iter.next());
+
+                    gpsSeconds = hour*3600 + min*60 + sec;
 
                     flag = Integer.parseInt(iter.next());
                     numSv = Integer.parseInt(iter.next());

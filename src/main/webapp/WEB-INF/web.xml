@@ -30,6 +30,6 @@
     <!--</listener>-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>spring/aplicationContext.xml</param-value>
+        <param-value>spring/*.xml</param-value>
     </context-param>
 </web-app>
