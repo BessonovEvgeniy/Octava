@@ -5,10 +5,4 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:maxUploadSize="20971520"
-          p:maxInMemorySize="20971520"
-    />
-
 </beans>

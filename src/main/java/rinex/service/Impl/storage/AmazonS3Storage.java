@@ -22,15 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-@Service
-@PropertySource(value = "classpath:amazon.properties")
 public class AmazonS3Storage implements StorageService {
 
-    @Value("${amazonAccessKeyID}")
+
     private String amazonAccessKeyID;
-    @Value("${amazonBacketName}")
+
     private String amazonBacketName;
-    @Value("${amazonYourSecretAccessKey}")
+
     private String amazonYourSecretAccessKey;
 
     private final String SUFFIX = "/";

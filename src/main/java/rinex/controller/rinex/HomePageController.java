@@ -12,7 +12,6 @@ import java.util.Map;
 public class HomePageController {
 
     @RequestMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String getHomePage(Map<String, Object> model) {
         return "index";
     }
