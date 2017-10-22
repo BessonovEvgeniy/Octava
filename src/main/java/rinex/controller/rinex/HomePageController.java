@@ -12,7 +12,7 @@ import java.util.Map;
 public class HomePageController {
 
     @RequestMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public String getHomePage(Map<String, Object> model) {
         return "index";
     }
