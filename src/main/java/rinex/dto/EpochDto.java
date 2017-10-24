@@ -41,22 +41,19 @@ public @Data class EpochDto {
         } else {
             Integer ordinal = type.getOrdinal(types.getObsTypes());
 
-            for(int svIndex = 0; svIndex < svPattern.size(); svIndex++) {
-                String svName = svPattern.get(svIndex);
+            svPattern.forEach(svName -> {
                 if (type.isSystemRequired(svName)) {
                     Integer sv = Integer.parseInt(svName.substring(1,svName.length()));
                     List<String> svRawObs = rawObs.get(svName);
                     obsValues[sv] = Double.parseDouble(svRawObs.get(ordinal));
                 }
-            }
+            });
         }
         return obsValues;
     }
 
     public void parseTime() {
-        if (timeParsed) {
-            return;
-        } else {
+        if (!timeParsed) {
             timeParsed = true;
             try {
                 if (time != null && !time.isEmpty()) {

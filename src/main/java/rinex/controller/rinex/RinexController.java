@@ -2,7 +2,6 @@ package rinex.controller.rinex;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,31 +13,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import rinex.model.observations.ReceiverDataModel;
 import rinex.service.Impl.observations.rinex.rinexImpl.RinexServiceImpl;
 import rinex.service.RinexService;
-import rinex.service.StorageService;
 
-import javax.servlet.annotation.MultipartConfig;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/rinex")
+@RequestMapping("/rinex")
 public class RinexController {
 
-    private RinexService rinexService;
-
-    private StorageService storageService;
-
     @Autowired
-    public RinexController(RinexService rinexServ, @Qualifier("localStorage") StorageService storageServ) {
-        rinexService = rinexServ;
-        storageService = storageServ;
-    }
+    private RinexService rinexService;
+//
+//
+//    public RinexController(RinexService rinexServ) {
+//        rinexService = rinexServ;
+//    }
 
     @RequestMapping(value = "/upload", method = RequestMethod.PUT)
-    public String uploadRinexFile (@RequestParam(value = "file", required = true) MultipartFile file,
+    @ResponseStatus(HttpStatus.OK)
+    public String uploadRinexFile (@RequestParam(value = "file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) throws Exception {
 
         //TODO add rinex header validation and change logic to storing uploaded rinex file

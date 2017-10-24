@@ -8,9 +8,6 @@ import rinex.service.StorageService;
 public class LocalStorage implements StorageService {
 
     @Override
-    public void init() {}
-
-    @Override
     public String store(MultipartFile file, String fileName) throws Exception {
         return "";
     }

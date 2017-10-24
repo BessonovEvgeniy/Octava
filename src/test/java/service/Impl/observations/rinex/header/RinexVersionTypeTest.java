@@ -9,12 +9,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-
-import java.util.HashSet;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 
 public class RinexVersionTypeTest {
@@ -25,15 +21,11 @@ public class RinexVersionTypeTest {
         String modeMessage = "Wrong RINEX mode";
 
         RinexVersionType rinexVersionType = new RinexVersionType();
-        Set<ConstraintViolation<RinexVersionType>> validate = new HashSet<ConstraintViolation<RinexVersionType>>();
+        Set<ConstraintViolation<RinexVersionType>> validate;
 
         Assert.assertTrue(rinexVersionType.parse("     2.11           OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE"));
         assertEquals(versionMessage,"2.11", rinexVersionType.getVersion());
         assertEquals(modeMessage,"M", rinexVersionType.getMode());
-
-//        Assert.assertFalse(rinexVersionType.parse("     1.001          OBSERVATION DATA    E (ERROR)           RINEX VERSION / TYPE"));
-//        assertNull(versionMessage, rinexVersionType.getVersion());
-//        assertNull(modeMessage, rinexVersionType.getMode());
 
         Assert.assertTrue(rinexVersionType.parse("     1.00          OBSERVATION DATA    E (ERROR)           RINEX VERSION / TYPE"));
         assertEquals(versionMessage,"1.00", rinexVersionType.getVersion());
@@ -55,5 +47,11 @@ public class RinexVersionTypeTest {
         rinexVersionType.setMode("23");
         validate = validator.validate(rinexVersionType);
         assertEquals(modeMessage,2, validate.size());
+    }
+
+    @Test(expected = RinexHeaderException.class)
+    public void rinexHeaderExceptionTest() throws RinexHeaderException {
+        RinexVersionType rinexVersionType = new RinexVersionType();
+        rinexVersionType.parse("     1.001          OBSERVATION DATA    E (ERROR)           RINEX VERSION / TYPE");
     }
 }

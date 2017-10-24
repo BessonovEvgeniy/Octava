@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 
 class ReadHeaderImpl <T extends HeaderLabel> implements State {
 
-    HeaderLabelFactory headerLabelFactory = new HeaderLabelFactory();
+    private final HeaderLabelFactory headerLabelFactory = new HeaderLabelFactory();
 
     @Override
     public void read(BufferedReader reader, ReceiverDataModel data) throws Exception {
@@ -25,7 +25,7 @@ class ReadHeaderImpl <T extends HeaderLabel> implements State {
         }
     }
 
-    private Boolean setHeaderLabel(T headerLabel, ReceiverDataModel data) throws IllegalAccessException {
+    private void setHeaderLabel(T headerLabel, ReceiverDataModel data) throws IllegalAccessException {
         Field[] fields = data.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (field.getType().isInstance(headerLabel)) {
@@ -34,6 +34,5 @@ class ReadHeaderImpl <T extends HeaderLabel> implements State {
                 break;
             }
         }
-        return true;
     }
 }
