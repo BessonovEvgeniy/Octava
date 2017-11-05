@@ -14,7 +14,7 @@
         <amazonaws.version>1.11.213</amazonaws.version>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
-        <spring.version>4.3.12.RELEASE</spring.version>
+        <spring.version>5.0.0.RELEASE</spring.version>
         <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
         <maven.compiler.source>1.8</maven.compiler.source>

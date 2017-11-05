@@ -1,9 +1,9 @@
 package rinex.config;
 
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -34,8 +34,8 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean(name = "propertyConfigurer")
-    public PropertyPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
-        PropertyPlaceholderConfigurer placeholderConfigurer = new PropertyPlaceholderConfigurer();
+    public PropertySourcesPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
         placeholderConfigurer.setLocation(new ClassPathResource("common.properties"));
         placeholderConfigurer.setLocation(new ClassPathResource("amazonS3Storage.properties"));
         return placeholderConfigurer;

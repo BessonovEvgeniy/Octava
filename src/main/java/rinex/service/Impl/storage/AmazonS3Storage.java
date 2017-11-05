@@ -10,10 +10,12 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import rinex.service.StorageService;
 
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -22,13 +24,26 @@ import java.util.List;
 @Service
 public class AmazonS3Storage implements StorageService {
 
-    private final static String AMAZON_ACCESS_KEY_ID ="$(AMAZON_ACCESS_KEY_ID)";
-    private final static String AMAZON_BACKET_NAME = "$(AMAZON_BACKET_NAME)";
-    private final static String AMAZON_YOUR_SECRET_ACCESS_KEY = "$(AMAZON_YOUR_SECRET_ACCESS_KEY)";
-    private final static String AMAZON_BACKET = "http://" + AMAZON_BACKET_NAME + ".s3.amazonaws.com/";
-    private final static String SUFFIX = "/";
-    private final static AWSCredentials CREDENTIALS = new BasicAWSCredentials(AMAZON_ACCESS_KEY_ID, AMAZON_YOUR_SECRET_ACCESS_KEY);
-    private final static AmazonS3 S_3_CLIENT = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(CREDENTIALS)).build();
+    @Value("${amazon.AccessKeyID}")
+    private String amazonAccessKeyId;
+
+    @Value("${amazon.YourSecretAccessKey}")
+    private String amazonBacketName;
+
+    @Value("${amazon.BacketName}")
+    private String amazonYourSecretAccessKey;
+
+    private String suffix = "/";
+    private String amazonBacket;
+    private AWSCredentials credentials;
+    private AmazonS3 s3Client;
+
+    @PostConstruct
+    private void init() {
+        amazonBacket = "http://" + amazonBacketName + ".s3.amazonaws.com/";
+        credentials = new BasicAWSCredentials(amazonAccessKeyId, amazonYourSecretAccessKey);
+        s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+    }
 
     @Override
     public String store(MultipartFile multipartFile, String newFileName) throws Exception {
@@ -38,17 +53,17 @@ public class AmazonS3Storage implements StorageService {
     }
 
     private String store(File file, String newFileName) throws AmazonClientException {
-        S_3_CLIENT.putObject(
-                new PutObjectRequest(AMAZON_BACKET_NAME, newFileName, file)
+        s3Client.putObject(
+                new PutObjectRequest(amazonBacketName, newFileName, file)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
-        return AMAZON_BACKET + newFileName;
+        return amazonBacket + newFileName;
     }
 
     @Override
     public void delete(String fileName) throws AmazonClientException {
         if (fileName != null && !fileName.isEmpty()) {
-            fileName = fileName.replace(AMAZON_BACKET, "");
-            S_3_CLIENT.deleteObject(AMAZON_BACKET_NAME, fileName);
+            fileName = fileName.replace(amazonBacket, "");
+            s3Client.deleteObject(amazonBacketName, fileName);
         }
     }
 
@@ -60,17 +75,17 @@ public class AmazonS3Storage implements StorageService {
 
         InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest(AMAZON_BACKET_NAME,
-                folderName + SUFFIX, emptyContent, metadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(amazonBacketName,
+                folderName + suffix, emptyContent, metadata);
 
-        S_3_CLIENT.putObject(putObjectRequest);
+        s3Client.putObject(putObjectRequest);
     }
 
     @Override
     public void deleteFolder(String folderName) throws AmazonClientException {
 
-        List<S3ObjectSummary> fileList = S_3_CLIENT.listObjects(AMAZON_BACKET_NAME, folderName).getObjectSummaries();
-        fileList.forEach(file -> S_3_CLIENT.deleteObject(AMAZON_BACKET_NAME, file.getKey()));
-        S_3_CLIENT.deleteObject(AMAZON_BACKET_NAME, folderName);
+        List<S3ObjectSummary> fileList = s3Client.listObjects(amazonBacketName, folderName).getObjectSummaries();
+        fileList.forEach(file -> s3Client.deleteObject(amazonBacketName, file.getKey()));
+        s3Client.deleteObject(amazonBacketName, folderName);
     }
 }
