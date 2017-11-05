@@ -24,24 +24,23 @@ import java.util.List;
 @Service
 public class AmazonS3Storage implements StorageService {
 
-    @Value("${amazon.AccessKeyID}")
-    private String amazonAccessKeyId;
+    @Value("${amazon.accessKeyID}")
+    private String accessKeyID;
+    @Value("${amazon.backetName}")
+    private String backetName;
+    @Value("${amazon.yourSecretAccessKey}")
+    private String yourSecretAccessKey;
 
-    @Value("${amazon.YourSecretAccessKey}")
-    private String amazonBacketName;
-
-    @Value("${amazon.BacketName}")
-    private String amazonYourSecretAccessKey;
-
-    private String suffix = "/";
     private String amazonBacket;
+    private String suffix;
     private AWSCredentials credentials;
     private AmazonS3 s3Client;
 
     @PostConstruct
     private void init() {
-        amazonBacket = "http://" + amazonBacketName + ".s3.amazonaws.com/";
-        credentials = new BasicAWSCredentials(amazonAccessKeyId, amazonYourSecretAccessKey);
+        amazonBacket = "http://" + backetName + ".s3.amazonaws.com/";
+        suffix = "/";
+        credentials = new BasicAWSCredentials(accessKeyID, yourSecretAccessKey);
         s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
     }
 
@@ -54,7 +53,7 @@ public class AmazonS3Storage implements StorageService {
 
     private String store(File file, String newFileName) throws AmazonClientException {
         s3Client.putObject(
-                new PutObjectRequest(amazonBacketName, newFileName, file)
+                new PutObjectRequest(backetName, newFileName, file)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonBacket + newFileName;
     }
@@ -63,7 +62,7 @@ public class AmazonS3Storage implements StorageService {
     public void delete(String fileName) throws AmazonClientException {
         if (fileName != null && !fileName.isEmpty()) {
             fileName = fileName.replace(amazonBacket, "");
-            s3Client.deleteObject(amazonBacketName, fileName);
+            s3Client.deleteObject(backetName, fileName);
         }
     }
 
@@ -75,7 +74,7 @@ public class AmazonS3Storage implements StorageService {
 
         InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest(amazonBacketName,
+        PutObjectRequest putObjectRequest = new PutObjectRequest(backetName,
                 folderName + suffix, emptyContent, metadata);
 
         s3Client.putObject(putObjectRequest);
@@ -84,8 +83,8 @@ public class AmazonS3Storage implements StorageService {
     @Override
     public void deleteFolder(String folderName) throws AmazonClientException {
 
-        List<S3ObjectSummary> fileList = s3Client.listObjects(amazonBacketName, folderName).getObjectSummaries();
-        fileList.forEach(file -> s3Client.deleteObject(amazonBacketName, file.getKey()));
-        s3Client.deleteObject(amazonBacketName, folderName);
+        List<S3ObjectSummary> fileList = s3Client.listObjects(backetName, folderName).getObjectSummaries();
+        fileList.forEach(file -> s3Client.deleteObject(backetName, file.getKey()));
+        s3Client.deleteObject(backetName, folderName);
     }
 }

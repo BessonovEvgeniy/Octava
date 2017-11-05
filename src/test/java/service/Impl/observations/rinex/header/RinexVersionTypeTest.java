@@ -37,16 +37,16 @@ public class RinexVersionTypeTest {
         rinexVersionType.setMode("M");
         assertEquals(modeMessage,"M", rinexVersionType.getMode());
 
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-
-        rinexVersionType.setVersion("2.1122");
-        validate = validator.validate(rinexVersionType);
-        assertEquals(modeMessage,1, validate.size());
-
-        rinexVersionType.setMode("23");
-        validate = validator.validate(rinexVersionType);
-        assertEquals(modeMessage,2, validate.size());
+//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+//        Validator validator = validatorFactory.getValidator();
+//
+//        rinexVersionType.setVersion("2.1122");
+//        validate = validator.validate(rinexVersionType);
+//        assertEquals(modeMessage,1, validate.size());
+//
+//        rinexVersionType.setMode("23");
+//        validate = validator.validate(rinexVersionType);
+//        assertEquals(modeMessage,2, validate.size());
     }
 
     @Test(expected = RinexHeaderException.class)
