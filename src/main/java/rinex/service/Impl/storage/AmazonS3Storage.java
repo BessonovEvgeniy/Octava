@@ -40,8 +40,8 @@ public class AmazonS3Storage implements StorageService {
     private void init() {
         amazonBacket = "http://" + backetName + ".s3.amazonaws.com/";
         suffix = "/";
-        credentials = new BasicAWSCredentials(accessKeyID, yourSecretAccessKey);
-        s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+//        credentials = new BasicAWSCredentials(accessKeyID, yourSecretAccessKey);
+//        s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
     }
 
     @Override
