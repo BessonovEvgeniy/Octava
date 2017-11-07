@@ -16,10 +16,6 @@ public @Data class PgmRunByDate extends AbstractHeaderLabel {
     private String agency;
     private String created;
 
-    public PgmRunByDate() {
-        init();
-    }
-
     @PostConstruct
     protected void init() {
         pattern = Pattern.compile("(.{20})(.{20})(.{20})(PGM / RUN BY / DATE)");

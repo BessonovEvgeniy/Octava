@@ -6,7 +6,6 @@ import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +22,6 @@ public @Data class RinexVersionType extends AbstractHeaderLabel {
         init();
     }
 
-    @PostConstruct
     private void init() {
         pattern = Pattern.compile("(\\s{1,5}\\d.\\d{1,2}\\s?)(.{30})([M,G,E,R])(.{19})(RINEX VERSION / TYPE)");
     }

@@ -31,7 +31,7 @@ public class RinexController {
 //        rinexService = rinexServ;
 //    }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.PUT)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String uploadRinexFile (@RequestParam(value = "file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) throws Exception {

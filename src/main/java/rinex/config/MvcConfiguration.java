@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @ComponentScan(basePackages = "rinex")
 @EnableWebMvc
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class MvcConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
@@ -32,7 +32,7 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1000000L);
+        multipartResolver.setMaxUploadSize(500000000L);
         return multipartResolver;
     }
 
