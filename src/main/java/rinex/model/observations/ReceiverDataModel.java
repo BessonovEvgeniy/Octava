@@ -1,14 +1,18 @@
 package rinex.model.observations;
 
 import lombok.Data;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import rinex.model.rinex.Gnss;
 import rinex.model.rinex.Observations;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
+import rinex.model.observations.header.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+@Component
+@Scope("prototype")
 public @Data class ReceiverDataModel implements Gnss {
 
     private RinexVersionType rinexVersionType;
