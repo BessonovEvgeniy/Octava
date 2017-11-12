@@ -2,9 +2,11 @@ package rinex.model.rinex;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.*;
+import org.springframework.stereotype.Component;
+import rinex.model.observations.header.*;
 
-@Data class Header  {
+@Component
+@Data class Header {
 
     @Autowired
     private RinexVersionType rinexVersionType;

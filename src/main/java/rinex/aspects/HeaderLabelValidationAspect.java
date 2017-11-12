@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class HeaderLabelValidationAspect implements AspectExecutor {
 
-    @Pointcut("execution(* rinex.service.HeaderLabel.parse(String))")
+    @Override
+    @Pointcut("execution(* rinex.model.observations.header.AbstractHeaderLabel+.*(..))")
     public void pointcut(){}
 
     @Override

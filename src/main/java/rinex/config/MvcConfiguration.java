@@ -15,9 +15,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = "rinex")
 @EnableWebMvc
-@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class MvcConfiguration extends WebMvcConfigurationSupport {
 
     @Bean

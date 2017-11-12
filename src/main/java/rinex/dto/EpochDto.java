@@ -2,7 +2,7 @@ package rinex.dto;
 
 
 import lombok.Data;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.TypesOfObs;
+import rinex.model.observations.header.TypesOfObs;
 
 import java.util.*;
 

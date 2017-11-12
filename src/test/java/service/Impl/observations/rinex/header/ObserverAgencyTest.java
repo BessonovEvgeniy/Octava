@@ -1,7 +1,7 @@
 package service.Impl.observations.rinex.header;
 
 import org.junit.Test;
-import rinex.service.Impl.observations.rinex.rinexImpl.header.ObserverAgency;
+import rinex.model.observations.header.ObserverAgency;
 
 import static org.junit.Assert.assertEquals;
 
