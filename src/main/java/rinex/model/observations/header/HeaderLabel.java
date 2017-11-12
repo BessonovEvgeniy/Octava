@@ -1,10 +1,9 @@
 package rinex.model.observations.header;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @FunctionalInterface
-@Service
+@Component
 public interface HeaderLabel {
-
     Boolean parse(String line) throws RinexHeaderException;
 }

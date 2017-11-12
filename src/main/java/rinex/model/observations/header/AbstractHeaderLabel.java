@@ -1,10 +1,7 @@
 package rinex.model.observations.header;
 
-import org.springframework.stereotype.Component;
-
 import java.util.regex.Pattern;
 
-@Component
 public abstract class AbstractHeaderLabel implements HeaderLabel {
 
     protected Boolean isFind;

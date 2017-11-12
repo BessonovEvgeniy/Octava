@@ -38,4 +38,11 @@ public @Data class RinexVersionType extends AbstractHeaderLabel {
         }
         return true;
     }
+
+    public String getVersion() throws Exception {
+        if (version == null) {
+            throw new Exception();
+        }
+        return version;
+    }
 }

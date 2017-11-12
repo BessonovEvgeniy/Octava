@@ -1,10 +1,7 @@
 package rinex.model.observations.header;
 
-import org.springframework.stereotype.Component;
-
 import java.util.regex.Matcher;
 
-@Component
 public abstract class AbstractCoordinatesHeaderLabel extends AbstractHeaderLabel {
 
     protected Double x;

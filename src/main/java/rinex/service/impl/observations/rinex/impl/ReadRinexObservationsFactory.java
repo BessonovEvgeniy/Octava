@@ -14,14 +14,13 @@ class ReadRinexObservationsFactory {
     @Autowired
     private Map<String, State> rinexObservationReaders;
 
-    private ReceiverDataModel dataModel;
+    public State getReadRinexObservationsReader(String version) throws Exception {
 
-    @Autowired
-    ReadRinexObservationsFactory(ReceiverDataModel model) {
-        dataModel = model;
-    }
+        State obsReader = rinexObservationReaders.get(version);
+        if (obsReader == null) {
+            throw new Exception();
+        }
 
-    public State getReadRinexObservationsReader(String version) {
-        return rinexObservationReaders.get(version);
+        return obsReader;
     }
 }

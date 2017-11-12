@@ -7,7 +7,8 @@ public interface Gnss {
     Double GPS_FREQUENCY_2 = 1227.60;
     Double GPS_FREQUENCY_5 = 1176.45;
 
-    Integer MAX_SAT = 33;
 
+
+    Integer MAX_SAT = 33;
 
 }

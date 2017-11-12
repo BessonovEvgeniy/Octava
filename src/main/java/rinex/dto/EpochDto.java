@@ -2,33 +2,43 @@ package rinex.dto;
 
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import rinex.model.observations.header.TypesOfObs;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static rinex.model.rinex.Gnss.MAX_SAT;
 
+@Component
+@Scope("prototype")
 public @Data class EpochDto {
 
-    List<String> time; //YY MM DD HH SS F NUM_SV
+    List<String> time;                  //YY MM DD HH SS F NUM_SV
+
     List<String> svPattern;
-    Map<String, List<String>> rawObs; // SV vs Raw Observations
+
+    Map<String, List<String>> rawObs;   // SV vs Raw Observations
+
+    @Autowired
     TypesOfObs types;
-    Integer year;
-    Integer month;
-    Integer day;
-    Integer hour;
-    Integer min;
-    Double sec;
-    Double gpsSeconds;
-    Integer flag;
-    Integer numSv;
+
+    LocalDateTime localDateTime;
+
+    double sec;
+
+    double gpsSeconds;
+
+    int flag;
+
+    int numSv;
 
     boolean timeParsed;
-
-    public EpochDto(TypesOfObs obsTypes) {
-        types = obsTypes;
-    }
 
     public double[] getObservations(TypesOfObs.Type type) throws Exception {
 
@@ -58,17 +68,17 @@ public @Data class EpochDto {
             try {
                 if (time != null && !time.isEmpty()) {
                     Iterator<String> iter = time.iterator();
-                    String yearString = iter.next();
-                    yearString = yearString.length() == 2 ? "20" + yearString : yearString;
-                    year = Integer.parseInt(yearString);
-                    month = Integer.parseInt(iter.next());
-                    day = Integer.parseInt(iter.next());
-
-                    hour = Integer.parseInt(iter.next());
-                    min = Integer.parseInt(iter.next());
-                    sec = Double.parseDouble(iter.next());
+                    int year = Integer.parseInt(iter.next());
+                    int month = Integer.parseInt(iter.next());
+                    int day = Integer.parseInt(iter.next());
+                    int hour = Integer.parseInt(iter.next());
+                    int min = Integer.parseInt(iter.next());
+                    Long sec = Long.parseLong(iter.next());
+                    Long nanoSeconds = TimeUnit.SECONDS.convert(sec, TimeUnit.NANOSECONDS);
 
                     gpsSeconds = hour*3600 + min*60 + sec;
+
+                    localDateTime = LocalDateTime.of(year, month, day, hour, min, sec.intValue(), nanoSeconds.intValue());
 
                     flag = Integer.parseInt(iter.next());
                     numSv = Integer.parseInt(iter.next());
