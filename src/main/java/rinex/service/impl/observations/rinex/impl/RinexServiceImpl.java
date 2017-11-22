@@ -20,8 +20,8 @@ public class RinexServiceImpl implements RinexService {
     @Autowired
     private ReceiverDataModel data;
 
-    @Autowired
-    private ReadHeaderImpl readHeader;
+/*    @Autowired
+    private ReadHeaderImpl readHeader;*/
 
     public ReceiverDataModel readRinex(InputStream inputStream) throws Exception {
         if (inputStream == null) {
@@ -31,8 +31,8 @@ public class RinexServiceImpl implements RinexService {
                          new BufferedReader(
                                  new InputStreamReader(inputStream))) {
 
-                changeState(readHeader);
-                state.read(reader, data);
+      /*          changeState(readHeader);
+                state.read(reader, data);*/
                 changeState(new ReadRinexObservationsDecorator());
                 state.read(reader, data);
             } catch (RinexHeaderException e) {

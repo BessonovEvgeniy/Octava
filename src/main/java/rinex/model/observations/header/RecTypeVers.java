@@ -1,40 +1,31 @@
 package rinex.model.observations.header;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.regex.Matcher;
+import java.util.List;
 import java.util.regex.Pattern;
 
-@EqualsAndHashCode(callSuper = true)
 @Component("REC # / TYPE / VERS")
-public @Data class RecTypeVers extends AbstractHeaderLabel {
+public @Data class RecTypeVers implements HeaderLabel {
 
     private String rec;
     private String type;
     private String vers;
 
-    public RecTypeVers() {
-        init();
-    }
-
-    @PostConstruct
-    private void init() {
-        pattern = Pattern.compile("(.{20})(.{20})(.{20})(REC # / TYPE / VERS)");
-    }
+    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})(REC # / TYPE / VERS)");
 
     @Override
-    public Boolean parse(String line) {
+    public boolean parse(String line) {
+        HeaderLabelParser parser = new HeaderLabelParser();
 
-        Matcher matcher = pattern.matcher(line);
-
-        Boolean find = matcher.find();
-        rec = find ? matcher.group(1).trim() : "";
-        type = find ? matcher.group(2).trim() : "";
-        vers = find ? matcher.group(3).trim() : "";
+        boolean find = parser.parseThreeParams(pattern, line);
+        if (find) {
+            List<String> params = parser.getParams();
+            rec = params.get(0);
+            type = params.get(1);
+            vers = params.get(2);
+        }
         return find;
     }
 }

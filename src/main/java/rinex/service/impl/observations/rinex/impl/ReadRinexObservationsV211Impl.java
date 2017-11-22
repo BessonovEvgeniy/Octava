@@ -23,7 +23,8 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
     protected EpochDto readEpoch(BufferedReader reader) throws Exception {
         TypesOfObs types = model.getTypesOfObs();
 
-        EpochDto epochDto = new EpochDto(types);
+        EpochDto epochDto = new EpochDto();
+
         Map<String, List<String>> obs = new LinkedHashMap<>();
         try {
             String timeData = line.substring(0,32);

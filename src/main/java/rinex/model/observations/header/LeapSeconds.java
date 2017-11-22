@@ -1,35 +1,27 @@
 package rinex.model.observations.header;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.regex.Matcher;
+import java.util.List;
 import java.util.regex.Pattern;
 
-@EqualsAndHashCode(callSuper = true)
 @Component("LEAP SECONDS")
-public @Data class LeapSeconds extends AbstractHeaderLabel {
+public @Data class LeapSeconds implements HeaderLabel {
 
-    private Integer leapSeconds;
+    private int leapSeconds;
 
-    public LeapSeconds() {
-        init();
-    }
-
-    @PostConstruct
-    private void init() {
-        pattern = Pattern.compile("(.{1,60})LEAP SECONDS");
-    }
+    private Pattern pattern = Pattern.compile("(.{1,60})LEAP SECONDS");
 
     @Override
-    public Boolean parse(String line)  {
-        Matcher matcher = pattern.matcher(line);
+    public boolean parse(String line) {
+        HeaderLabelParser parser = new HeaderLabelParser();
 
-        Boolean isFind = matcher.find();
-        leapSeconds = isFind ? Integer.parseInt(matcher.group(1).trim()) : 0;
-        return isFind;
+        boolean find = parser.parseOneParam(pattern, line);
+        if (find) {
+            List<Integer> params = parser.getIntegerParams();
+            leapSeconds = params.get(0);
+        }
+        return find;
     }
 }
