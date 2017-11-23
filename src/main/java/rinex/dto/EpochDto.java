@@ -3,7 +3,6 @@ package rinex.dto;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import rinex.model.observations.header.TypesOfObs;
@@ -15,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import static rinex.model.rinex.Gnss.MAX_SAT;
 
 @Component
-@Scope("prototype")
 public @Data class EpochDto {
 
     private LocalDateTime localDateTime;
@@ -36,11 +34,6 @@ public @Data class EpochDto {
 
     @Autowired
     private TypesOfObs types;
-//
-//    @Autowired
-//    public EpochDto(TypesOfObs typesOfObs) {
-//        types = typesOfObs;
-//    }
 
     public double[] getObservations(TypesOfObs.Type type) throws Exception {
 

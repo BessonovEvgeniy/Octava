@@ -14,11 +14,6 @@ import java.util.*;
 @Service("2.11")
 class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
 
-    @Autowired
-    public ReadRinexObservationsV211Impl(ReceiverDataModel dataModel) {
-        model = dataModel;
-    }
-
     @Override
     protected EpochDto readEpoch(BufferedReader reader) throws Exception {
         TypesOfObs types = model.getTypesOfObs();

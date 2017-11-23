@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 @Component("INTERVAL")
 public @Data class Interval implements HeaderLabel {
+
     private double interval;
 
     private Pattern pattern = Pattern.compile("(\\d{1,7}\\.\\d{1,4}).*INTERVAL");

@@ -1,14 +1,14 @@
 package rinex.model.observations.header;
 
 import com.google.common.base.Strings;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Component("ANTENNA: DELTA H/E/N")
-public @Data class AntennaDelta implements HeaderLabel {
+public @Getter class AntennaDelta implements HeaderLabel {
 
     private double delH;
     private double delE;

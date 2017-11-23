@@ -2,7 +2,8 @@ package rinex.service.impl.observations.rinex.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.RinexHeaderException;
+
+import rinex.exception.UnknownHeaderLabelException;
 import rinex.model.observations.header.HeaderLabel;
 
 import java.util.Map;
@@ -18,10 +19,9 @@ public class HeaderLabelFactory {
         String label = line.substring(60,line.length()).toUpperCase().trim();
         HeaderLabel headerLabel = headerLabels.get(label);
         if (headerLabel == null) {
-            throw new RinexHeaderException("Unknown header label: " + label);
-        } else {
-            headerLabel.parse(line);
+            throw new UnknownHeaderLabelException("Unknown header label: " + label);
         }
+        headerLabel.parse(line);
         return headerLabel;
     }
 }

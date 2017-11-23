@@ -3,6 +3,7 @@ package rinex.model.observations.header;
 import com.google.common.base.Strings;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import rinex.exception.UnknownHeaderLabelException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public @Data class AbstractTimeOfObs implements HeaderLabel {
                 timeOfObs.parse(clearedDate);
             } catch (ParseException e) {
                 e.printStackTrace();
-                throw new RinexHeaderException("Can't parse line to simple format date.");
+                throw new UnknownHeaderLabelException("Can't parse line to simple format date.");
             }
         }
         return isFind;

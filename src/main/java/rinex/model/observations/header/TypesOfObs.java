@@ -1,13 +1,10 @@
 package rinex.model.observations.header;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import rinex.exception.UnknownHeaderLabelException;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +30,7 @@ public @Data class TypesOfObs implements HeaderLabel {
                 matcher.group(2).trim().replaceAll("\\s{2,5}", " ").split(" ") : new String[0];
 
         if (isFind && numTypes != obsTypesString.length) {
-            throw new RinexHeaderException("Different number observation type. Expected: " + numTypes + " Found: " + obsTypes.size());
+            throw new UnknownHeaderLabelException("Different number observation type. Expected: " + numTypes + " Found: " + obsTypes.size());
         } else if (isFind) {
             obsTypes.addAll(Arrays.stream(obsTypesString)
                     .filter(str -> (StringUtils.isNotEmpty(str)))

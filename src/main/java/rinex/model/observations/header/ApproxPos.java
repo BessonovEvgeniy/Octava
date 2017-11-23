@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.regex.Pattern;
 
