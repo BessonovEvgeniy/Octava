@@ -11,6 +11,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <commons.loggin.version>1.1</commons.loggin.version>
+
+        <javax.persistence.version>1.0.2</javax.persistence.version>
         <amazonaws.version>1.11.224</amazonaws.version>
         <java.version>1.8</java.version>
 
@@ -40,13 +43,15 @@
 
         <google.guava.version>22.0</google.guava.version>
         <commons-collections4.version>4.1</commons-collections4.version>
+
+        <apache.maven.plugins.version>3.2.0</apache.maven.plugins.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-api</artifactId>
-            <version>1.1</version>
+            <version>${commons.loggin.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -62,7 +67,7 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
+            <version>${javax.persistence.version}</version>
         </dependency>
 
         <dependency>
@@ -112,7 +117,6 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
         <!--AOP + AspectJ-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -219,7 +223,6 @@
             <version>${junit.vintage.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!--Collection Utils-->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -258,7 +261,7 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>${apache.maven.plugins.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.davidcarboni</groupId>
@@ -272,7 +275,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${apache.maven.plugins.version}</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>

@@ -2,7 +2,7 @@ package rinex.service.impl.observations.rinex.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
-import rinex.exception.UnknownHeaderLabelException;
+import rinex.exception.InvalidHeaderLabelException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -30,7 +30,7 @@ public class HeaderLabelValidation {
                         "Error! property: [%s], value: [%s], message: [%s]",
                         cv.getPropertyPath(), cv.getInvalidValue(), cv.getMessage()));
             }
-            throw new UnknownHeaderLabelException(object.getClass().getName());
+            throw new InvalidHeaderLabelException(object.getClass().getName());
         }
     }
 }
