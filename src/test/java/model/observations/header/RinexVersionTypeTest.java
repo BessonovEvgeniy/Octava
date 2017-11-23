@@ -60,7 +60,7 @@ public class RinexVersionTypeTest {
     public void testHaveToThrowInvalidHeaderLabelException() {
 
         Throwable exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                rinexVersionType.parse("     2.11           OBSERVATION DATA    Z (MIXED)           RINEX VERSION / TYPE")
+                rinexVersionType.parse("     2.11           OBSERVATION DATA    F (MIXED)           RINEX VERSION / TYPE")
         );
         Assert.assertEquals(exception.getMessage(), "rinex.model.observations.header.RinexVersionType");
 
@@ -70,12 +70,12 @@ public class RinexVersionTypeTest {
         Assert.assertEquals(exception.getMessage(), "rinex.model.observations.header.RinexVersionType");
 
         exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                rinexVersionType.parse("   12345678.11         OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
+                rinexVersionType.parse("   12345678.11      OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
         );
         Assert.assertEquals(exception.getMessage(), "rinex.model.observations.header.RinexVersionType");
 
         exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                rinexVersionType.parse("    123456789.11       OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
+                rinexVersionType.parse("    123456789.11    OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
         );
         Assert.assertEquals(exception.getMessage(), "rinex.model.observations.header.RinexVersionType");
     }

@@ -26,6 +26,8 @@ public @Getter class RinexVersionType implements HeaderLabel {
 
     @Override
     public boolean parse(String line) {
+        version = null;
+        mode = null;
         Matcher matcher = pattern.matcher(line);
 
         boolean find = matcher.find();
