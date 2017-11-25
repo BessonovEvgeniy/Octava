@@ -11,9 +11,12 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <commons.loggin.version>1.1</commons.loggin.version>
+
+        <javax.persistence.version>1.0.2</javax.persistence.version>
         <amazonaws.version>1.11.224</amazonaws.version>
         <java.version>1.8</java.version>
-        <junit.version>4.12</junit.version>
+
         <spring.version>5.0.1.RELEASE</spring.version>
         <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
@@ -21,23 +24,34 @@
         <aspectj.version>1.8.12</aspectj.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <lombok.version>1.16.16</lombok.version>
-        <java.bean.validation>2.0.0.Final</java.bean.validation>
+        <lombok.version>1.16.18</lombok.version>
+        <java.bean.validation.version>2.0.0.Final</java.bean.validation.version>
+        <java.el.validation.version>3.0.1-b04</java.el.validation.version>
         <fasterxml.jackson.version>2.9.2</fasterxml.jackson.version>
         <hibernate.validation>6.0.4.Final</hibernate.validation>
         <slf4j.version>1.7.5</slf4j.version>
+
         <mockito.version>1.9.5</mockito.version>
+        <junit.version>4.12</junit.version>
+        <junit.platform.version>1.1.0-M1</junit.platform.version>
+        <junit.jupiter.version>5.1.0-M1</junit.jupiter.version>
+        <junit.vintage.version>${junit.jupiter.version}</junit.vintage.version>
+
         <servlet.api.version>4.0.0</servlet.api.version>
         <jsp.api.version>2.2</jsp.api.version>
         <jstl.api.version>1.2</jstl.api.version>
+
         <google.guava.version>22.0</google.guava.version>
+        <commons-collections4.version>4.1</commons-collections4.version>
+
+        <apache.maven.plugins.version>3.2.0</apache.maven.plugins.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-api</artifactId>
-            <version>1.1</version>
+            <version>${commons.loggin.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -53,7 +67,7 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
+            <version>${javax.persistence.version}</version>
         </dependency>
 
         <dependency>
@@ -103,7 +117,6 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
         <!--AOP + AspectJ-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -140,7 +153,17 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>${java.bean.validation}</version>
+            <version>${java.bean.validation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>${java.el.validation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${java.el.validation.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -171,9 +194,45 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.vintage.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Collection Utils-->
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${google.guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
         </dependency>
         <!-- Servlet Api -->
         <dependency>
@@ -202,7 +261,7 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>${apache.maven.plugins.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.davidcarboni</groupId>
@@ -216,7 +275,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${apache.maven.plugins.version}</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>

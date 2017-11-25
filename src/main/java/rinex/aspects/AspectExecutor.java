@@ -6,5 +6,5 @@ public interface AspectExecutor {
 
     void pointcut();
 
-    Object executeAspect(JoinPoint joinPoint) throws Throwable;
+    void executeAspect(JoinPoint joinPoint) throws Throwable;
 }

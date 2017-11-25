@@ -3,61 +3,56 @@ package rinex.dto;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import rinex.model.observations.header.TypesOfObs;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static rinex.model.rinex.Gnss.MAX_SAT;
 
 @Component
-@Scope("prototype")
 public @Data class EpochDto {
 
-    List<String> time;                  //YY MM DD HH SS F NUM_SV
+    private LocalDateTime localDateTime;
 
-    List<String> svPattern;
+    private double gpsSeconds;
 
-    Map<String, List<String>> rawObs;   // SV vs Raw Observations
+    private int flag;
+
+    private int numSv;
+
+    private boolean timeParsed;
+
+    private List<String> time;                  //YY MM DD HH SS F NUM_SV
+
+    private List<String> svPattern;
+
+    private Map<String, List<String>> rawObs;   // SV vs Raw Observations
 
     @Autowired
-    TypesOfObs types;
-
-    LocalDateTime localDateTime;
-
-    double sec;
-
-    double gpsSeconds;
-
-    int flag;
-
-    int numSv;
-
-    boolean timeParsed;
+    private TypesOfObs types;
 
     public double[] getObservations(TypesOfObs.Type type) throws Exception {
 
-        boolean notEnoughOrIllegalData = rawObs == null || rawObs.isEmpty() ||
+        boolean notEnoughOrIllegalData = ObjectUtils.isEmpty(rawObs) ||
                 types == null || types.getObsTypes().isEmpty();
 
-        double[] obsValues = new double[MAX_SAT];
         if (notEnoughOrIllegalData) {
             throw new Exception();
-        } else {
-            Integer ordinal = type.getOrdinal(types.getObsTypes());
+        }
+        double[] obsValues = new double[MAX_SAT];
+        Integer ordinal = type.ordinal();
 
-            svPattern.forEach(svName -> {
-                if (type.isSystemRequired(svName)) {
-                    Integer sv = Integer.parseInt(svName.substring(1,svName.length()));
-                    List<String> svRawObs = rawObs.get(svName);
-                    obsValues[sv] = Double.parseDouble(svRawObs.get(ordinal));
-                }
-            });
+        for (String svName : svPattern) {
+            if (type.isSystemRequired(svName)) {
+
+                Integer sv = Integer.parseInt(svName.substring(1, svName.length()));
+                List<String> svRawObs = rawObs.get(svName);
+                obsValues[sv] = Double.parseDouble(svRawObs.get(ordinal));
+            }
         }
         return obsValues;
     }

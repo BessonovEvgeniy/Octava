@@ -1,12 +1,11 @@
 package rinex.service.impl.observations.rinex.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import rinex.model.observations.ReceiverDataModel;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.RinexHeaderException;
-import rinex.service.State;
+import rinex.exception.UnknownHeaderLabelException;
+import rinex.model.observations.ReceiverDataModel;
 import rinex.service.RinexService;
+import rinex.service.State;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ public class RinexServiceImpl implements RinexService {
 
     private State state;
 
-    @Autowired
     private ReceiverDataModel data;
 
     @Autowired
@@ -35,7 +33,7 @@ public class RinexServiceImpl implements RinexService {
                 state.read(reader, data);
                 changeState(new ReadRinexObservationsDecorator());
                 state.read(reader, data);
-            } catch (RinexHeaderException e) {
+            } catch (UnknownHeaderLabelException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
                 throw new Exception();

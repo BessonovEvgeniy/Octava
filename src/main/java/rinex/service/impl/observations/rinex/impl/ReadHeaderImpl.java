@@ -17,14 +17,13 @@ class ReadHeaderImpl <T extends HeaderLabel> implements State {
 
     @Override
     public void read(BufferedReader reader, ReceiverDataModel data) throws Exception {
-        if (reader != null) {
-            String line;
-            while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
-                HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
-                if (headerLabel != null) {
-                    setHeaderLabel((T) headerLabel, data);
-                }
-            }
+        if (reader == null) {
+            return;
+        }
+        String line;
+        while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
+            HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
+            setHeaderLabel((T) headerLabel, data);
         }
     }
 

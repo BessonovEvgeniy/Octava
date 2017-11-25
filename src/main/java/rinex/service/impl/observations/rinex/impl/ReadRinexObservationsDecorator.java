@@ -14,7 +14,7 @@ class ReadRinexObservationsDecorator implements State {
     @Autowired
     ReadRinexObservationsFactory obsFactory;
 
-    public void read(BufferedReader reader, @NotNull ReceiverDataModel data) throws Exception {
+    public void read(BufferedReader reader, ReceiverDataModel data) throws Exception {
 
         String rinexVersion = data.getRinexVersionType().getVersion();
 

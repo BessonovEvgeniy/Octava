@@ -11,24 +11,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import rinex.model.observations.ReceiverDataModel;
-import rinex.service.impl.observations.rinex.impl.RinexServiceImpl;
 import rinex.service.RinexService;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 @Controller
 @RequestMapping("/rinex")
 public class RinexController {
 
-    private RinexService rinexService;
-
     @Autowired
-    public RinexController(RinexService rinexServ) {
-        rinexService = rinexServ;
-    }
+    private RinexService rinexService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -46,7 +39,7 @@ public class RinexController {
     }
 
     public static void main(String[] args) {
-        String filename = "src/test/java/resources/38541890.16o";
+/*        String filename = "src/test/java/resources/38541890.16o";
         File file = new File(filename);
         try {
             RinexServiceImpl rinexService = new RinexServiceImpl();
@@ -56,6 +49,6 @@ public class RinexController {
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

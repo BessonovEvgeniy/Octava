@@ -1,35 +1,27 @@
 package rinex.model.observations.header;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.regex.Matcher;
+import java.util.List;
 import java.util.regex.Pattern;
 
-@EqualsAndHashCode(callSuper = true)
 @Component("MARKER NAME")
-public @Data class MarkerName extends AbstractHeaderLabel {
+public @Data class MarkerName implements HeaderLabel {
 
     private String markerName;
 
-    public MarkerName() {
-        init();
-    }
-
-    @PostConstruct
-    protected void init() {
-        pattern = Pattern.compile("(.{1,60})MARKER NAME");
-    }
+    private Pattern pattern = Pattern.compile("(.{1,60})MARKER NAME");
 
     @Override
-    public Boolean parse(String line)  {
-        Matcher matcher = pattern.matcher(line);
+    public boolean parse(String line) {
+        HeaderLabelParser parser = new HeaderLabelParser();
 
-        Boolean find = matcher.find();
-        markerName = find ? matcher.group(1).trim() : "";
+        boolean find = parser.parseOneParam(pattern, line);
+        if (find) {
+            List<String> params = parser.getParams();
+            markerName = params.get(0);
+        }
         return find;
     }
 }
