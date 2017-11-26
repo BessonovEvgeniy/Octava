@@ -1,8 +1,10 @@
 package rinex.aspects;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,8 +22,17 @@ public class HeaderLabelValidationAspect implements AspectExecutor {
     public void pointcut(){}
 
     @Override
+    @Before("pointcut()")
+    public void executeAspectBefore(JoinPoint joinPoint) throws Throwable {
+        Object[] args = joinPoint.getArgs();
+        if (ArrayUtils.isNotEmpty(args)) {
+            validator.validateLineLength(args[0]);
+        }
+    }
+
+    @Override
     @After("pointcut()")
-    public void executeAspect(JoinPoint joinPoint) throws Throwable {
+    public void executeAspectAfter(JoinPoint joinPoint) throws Throwable {
         validator.validate(joinPoint.getTarget());
     }
 

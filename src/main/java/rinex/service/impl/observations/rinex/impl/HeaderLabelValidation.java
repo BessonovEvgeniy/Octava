@@ -3,6 +3,7 @@ package rinex.service.impl.observations.rinex.impl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 import rinex.exception.InvalidHeaderLabelException;
+import rinex.model.observations.header.HeaderLabel;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -12,6 +13,16 @@ import java.util.Set;
 
 @Component
 public class HeaderLabelValidation {
+
+    public static void validateLineLength(Object object) {
+        if (object instanceof String) {
+            String line = (String) object;
+            int lineLength = line.length();
+            if (line.length() != HeaderLabel.MAX_LINE_LENGTH) {
+                throw new InvalidHeaderLabelException("Length line mismatch " + HeaderLabel.MAX_LINE_LENGTH + " vs " + lineLength + " : " + line);
+            }
+        }
+    }
 
     public static void validate(Object object) {
 
@@ -30,7 +41,7 @@ public class HeaderLabelValidation {
                         "Error! property: [%s], value: [%s], message: [%s]",
                         cv.getPropertyPath(), cv.getInvalidValue(), cv.getMessage()));
             }
-            throw new InvalidHeaderLabelException(object.getClass().getName());
+            throw new InvalidHeaderLabelException(object.getClass().getSimpleName());
         }
     }
 }

@@ -6,5 +6,7 @@ public interface AspectExecutor {
 
     void pointcut();
 
-    void executeAspect(JoinPoint joinPoint) throws Throwable;
+    void executeAspectAfter(JoinPoint joinPoint) throws Throwable;
+
+    void executeAspectBefore(JoinPoint joinPoint) throws Throwable;
 }

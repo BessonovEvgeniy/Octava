@@ -13,7 +13,7 @@ public @Data class PgmRunByDate implements HeaderLabel {
     private String agency;
     private String created;
 
-    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})(PGM / RUN BY / DATE)");
+    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})PGM / RUN BY / DATE");
 
     @Override
     public boolean parse(String line) {
