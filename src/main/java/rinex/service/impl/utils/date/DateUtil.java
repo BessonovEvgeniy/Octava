@@ -2,9 +2,9 @@ package rinex.service.impl.utils.date;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class DateUtil {
 
@@ -37,6 +37,23 @@ public final class DateUtil {
         put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy HH:mm:ss");
     }};
 
+    private static final Map<String, DateTimeFormatter> DATE_SHORT_FORMAT_REGEXPS = initDateShortFormatRegexps();
+
+    private static final Map<String, DateTimeFormatter> initDateShortFormatRegexps() {
+        List<String> shortFormats = Arrays.asList("dd-MMM-yy HH:mm");
+        Map<String, DateTimeFormatter> dateShortFormatRegexps = new HashMap<>();
+
+        for (String shortFormat : shortFormats) {
+            if (dateShortFormatRegexps.get(shortFormat) == null) {
+
+                dateShortFormatRegexps.put(shortFormat, new DateTimeFormatterBuilder()
+                        .parseCaseInsensitive().appendPattern(shortFormat)
+                        .toFormatter(Locale.ENGLISH));
+            }
+        }
+        return  dateShortFormatRegexps;
+    }
+
     private DateUtil() {}
 
     public static String determineDateFormat(String dateString) {
@@ -49,15 +66,22 @@ public final class DateUtil {
     }
 
     public static LocalDateTime parseToLocalDateTime(String date) {
-        date = date.replaceAll("UTC|utc","").trim().toLowerCase();
+        date = date.trim().toLowerCase().replaceAll("utc","");
         String format = determineDateFormat(date);
         LocalDateTime local;
 
         try {
             local = LocalDateTime.parse(date, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException e) {
-            e.printStackTrace();
-            local = LocalDateTime.now();
+            DateTimeFormatter formatter = DATE_SHORT_FORMAT_REGEXPS.get(format);
+            if (formatter == null) {
+                throw new UnknownFormatConversionException(format);
+            }
+            local = LocalDateTime.parse(date, formatter);
+
+            if (local.getYear() > 2090) {
+                throw new IllegalStateException("Try to use yyyy year format.");
+            }
         }
         return local;
     }
