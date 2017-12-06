@@ -1,24 +1,32 @@
 package model.observations.header;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import rinex.config.AppInitializer;
+import rinex.config.MvcConfiguration;
+import rinex.exception.RinexLineLengthMismatchException;
 import rinex.model.observations.header.MarkerName;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {AppInitializer.class, MvcConfiguration.class})
+@WebAppConfiguration
 public class MarkerNameTest {
 
+    @Autowired
+    private MarkerName markerName;
+
     @Test
-    public void testMarkerName(){
- /*       String pgmMessage = "Wrong marker name of program for \"MARKER NAME\" field";
-
-        MarkerName markerName = new MarkerName();
-
-        markerName.parse("X7                                                          MARKER NAME");
-        assertEquals(pgmMessage,"X7", markerName.getMarkerName());
-
-        markerName = new MarkerName();
-
-        markerName.parse("A 9080                                                      MARKER NAME");
-        assertEquals(pgmMessage,"A 9080", markerName.getMarkerName());*/
+    public void testMaxLengthViolation() {
+        Throwable exception = assertThrows(RinexLineLengthMismatchException.class, () ->
+                markerName.parse("81 chars in this line.                                       MARKER NAME         ")
+        );
+        Assert.assertEquals(exception.getClass(), RinexLineLengthMismatchException.class);
     }
 }

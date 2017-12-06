@@ -10,6 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.InvalidHeaderLabelException;
+import rinex.exception.RinexLineLengthMismatchException;
 import rinex.model.observations.header.RinexVersionType;
 
 import static org.junit.Assert.assertEquals;
@@ -83,13 +84,13 @@ public class RinexVersionTypeTest {
     @Test
     public void testLineLengthMismatch() {
 
-        InvalidHeaderLabelException exception = assertThrows(InvalidHeaderLabelException.class, () ->
+        RinexLineLengthMismatchException exception = assertThrows(RinexLineLengthMismatchException.class, () ->
                 rinexVersionType.parse("    123456789.11    OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE ")
         );
         Assert.assertTrue(exception.getMessage() != null);
 
 
-        exception = assertThrows(InvalidHeaderLabelException.class, () ->
+        exception = assertThrows(RinexLineLengthMismatchException.class, () ->
                 rinexVersionType.parse("    123456789.11    OBSERVATION DATA    M (MIXED)          RINEX VERSION / TYPE")
         );
         Assert.assertTrue(exception.getMessage() != null);

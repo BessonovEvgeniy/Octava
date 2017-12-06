@@ -11,7 +11,7 @@ public @Data class MarkerNumber implements HeaderLabel {
 
     private String markerNumber;
 
-    private Pattern pattern = Pattern.compile(".{1,60}MARKER NUMBER");
+    private Pattern pattern = Pattern.compile("(.{1,60})MARKER NUMBER");
 
     @Override
     public boolean parse(String line) {
