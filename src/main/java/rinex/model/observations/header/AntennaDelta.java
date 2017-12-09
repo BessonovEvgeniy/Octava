@@ -1,10 +1,11 @@
 package rinex.model.observations.header;
 
 import com.google.common.base.Strings;
+import com.google.common.primitives.Doubles;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component("ANTENNA: DELTA H/E/N")
@@ -14,18 +15,19 @@ public @Getter class AntennaDelta implements HeaderLabel {
     private double delE;
     private double delN;
 
-    private Pattern pattern = Pattern.compile(Strings.repeat("(\\d{1,14}\\.\\d{1,4})",3) + "(APPROX POSITION XYZ)");
+    private Pattern pattern = Pattern.compile("\\s{1,2}"
+            + Strings.repeat("([-+]?[0-9]{0,14}\\.?[0-9]{0,4})\\s{1,23}",3)
+            + "ANTENNA: DELTA H/E/N");
 
     @Override
     public boolean parse(String line) {
-        HeaderLabelParser parser = new HeaderLabelParser();
+        Matcher matcher = pattern.matcher(line);
 
-        boolean find = parser.parseThreeParams(pattern, line);
+        boolean find = matcher.find();
         if (find) {
-            List<Double> params = parser.getDoubleParams();
-            delH = params.get(0);
-            delE = params.get(1);
-            delN = params.get(2);
+            delH = Doubles.tryParse(matcher.group(1));
+            delE = Doubles.tryParse(matcher.group(2));
+            delN = Doubles.tryParse(matcher.group(3));
         }
         return find;
     }
