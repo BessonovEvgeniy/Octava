@@ -13,7 +13,7 @@ public @Data class RecTypeVers implements HeaderLabel {
     private String type;
     private String vers;
 
-    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})(REC # / TYPE / VERS)");
+    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})REC # / TYPE / VERS ");
 
     @Override
     public boolean parse(String line) {
