@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import rinex.model.observations.header.TypesOfObs;
+import rinex.model.observations.header.impl.TypesOfObs;
 
 import java.time.LocalDateTime;
 import java.util.*;

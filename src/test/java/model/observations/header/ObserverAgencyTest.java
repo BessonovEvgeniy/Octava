@@ -10,7 +10,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.ObserverAgency;
+import rinex.model.observations.header.impl.ObserverAgency;
+import rinex.service.impl.observations.header.impl.ObserverAgencyParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ObserverAgencyTest {
 
     @Autowired
-    private ObserverAgency observerAgency;
+    private ObserverAgencyParserServiceImpl parser;
 
     @Test
     public void testMaxLengthViolation() {
         Throwable exception = assertThrows(RinexLineLengthMismatchException.class, () ->
-                observerAgency.parse("81 chars in this line.                                       OBSERVER / AGENCY   ")
+                parser.parse("81 chars in this line.                                       OBSERVER / AGENCY   ")
         );
 
         Assert.assertEquals(exception.getClass(), RinexLineLengthMismatchException.class);
@@ -33,7 +34,7 @@ public class ObserverAgencyTest {
 
     @Test
     public void testValidObserverAgencyFields() {
-        observerAgency.parse("012345678901234567890123456789012345678901234567890123456789OBSERVER / AGENCY   ");
+        ObserverAgency observerAgency = parser.parse("012345678901234567890123456789012345678901234567890123456789OBSERVER / AGENCY   ");
 
         Assert.assertEquals("0123456789012345678901234567890123456789", observerAgency.getAgencyName());
         Assert.assertEquals("01234567890123456789", observerAgency.getObserverName());

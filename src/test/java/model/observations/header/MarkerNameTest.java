@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.MarkerName;
+import rinex.service.impl.observations.header.impl.MarkerNameParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MarkerNameTest {
 
     @Autowired
-    private MarkerName markerName;
+    private MarkerNameParserServiceImpl parser;
 
     @Test
     public void testMaxLengthViolation() {
         Throwable exception = assertThrows(RinexLineLengthMismatchException.class, () ->
-                markerName.parse("81 chars in this line.                                       MARKER NAME         ")
+                parser.parse("81 chars in this line.                                       MARKER NAME         ")
         );
         Assert.assertEquals(exception.getClass(), RinexLineLengthMismatchException.class);
     }

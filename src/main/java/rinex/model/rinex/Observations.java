@@ -3,7 +3,7 @@ package rinex.model.rinex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import rinex.model.BaseModel;
-import rinex.model.observations.header.TypesOfObs;
+import rinex.model.observations.header.impl.TypesOfObs;
 
 import java.util.Arrays;
 import java.util.LinkedList;
