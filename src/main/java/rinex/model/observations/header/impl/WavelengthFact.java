@@ -1,12 +1,10 @@
 package rinex.model.observations.header.impl;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 import rinex.model.observations.header.HeaderLabel;
 
 import java.util.Collection;
 
-@Component("WAVELENGTH FACT L1/2")
 public @Data class WavelengthFact implements HeaderLabel {
 
     private int fullCycle;

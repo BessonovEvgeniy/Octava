@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import rinex.exception.UnknownHeaderLabelException;
 import rinex.model.observations.header.HeaderLabel;
+import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.Map;
 
@@ -12,16 +13,15 @@ import java.util.Map;
 public class HeaderLabelFactory {
 
     @Autowired
-    private Map<String, HeaderLabel> headerLabels;
+    private Map<String, HeaderLabelParserService> parsers;
 
     public HeaderLabel getHeaderLabel(String line) throws Exception {
 
         String label = line.substring(60,line.length()).toUpperCase().trim();
-        HeaderLabel headerLabel = headerLabels.get(label);
-        if (headerLabel == null) {
+        HeaderLabelParserService parser = parsers.get(label);
+        if (parser == null) {
             throw new UnknownHeaderLabelException("Unknown header label: " + label);
         }
-        headerLabel.parse(line);
-        return headerLabel;
+        return parser.parse(line);
     }
 }

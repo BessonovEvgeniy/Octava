@@ -2,11 +2,9 @@ package rinex.service.impl.observations.header.impl;
 
 import lombok.Data;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.HeaderLabelParser;
 import rinex.model.observations.header.impl.RecTypeVers;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

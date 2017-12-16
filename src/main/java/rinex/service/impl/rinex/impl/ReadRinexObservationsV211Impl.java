@@ -3,6 +3,7 @@ package rinex.service.impl.rinex.impl;
 import org.springframework.stereotype.Service;
 import rinex.dto.EpochDto;
 import rinex.model.observations.ReceiverDataModel;
+import rinex.model.observations.header.impl.ObsType;
 import rinex.model.rinex.Observations;
 import rinex.model.observations.header.impl.TypesOfObs;
 import rinex.service.State;
@@ -54,9 +55,9 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
             if (!line.contains("COMMENT")) {
                 EpochDto epochDto = readEpoch(reader);
 
-                Map<TypesOfObs.Type, Observations> allObs = data.getObs();
+                Map<ObsType, Observations> allObs = data.getObs();
 
-                for (TypesOfObs.Type type : data.getTypesOfObs().getObsTypes()) {
+                for (ObsType type : data.getTypesOfObs().getObsTypes()) {
                     Observations obs;
                     if (allObs.get(type) == null) {
                         obs = new Observations(type);

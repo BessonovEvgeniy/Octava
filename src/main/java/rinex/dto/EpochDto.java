@@ -3,17 +3,18 @@ package rinex.dto;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import rinex.model.observations.header.impl.ObsType;
 import rinex.model.observations.header.impl.TypesOfObs;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static rinex.model.rinex.Gnss.MAX_SAT;
 
-@Component
 public @Data class EpochDto {
 
     private LocalDateTime localDateTime;
@@ -35,7 +36,7 @@ public @Data class EpochDto {
     @Autowired
     private TypesOfObs types;
 
-    public double[] getObservations(TypesOfObs.Type type) throws Exception {
+    public double[] getObservations(ObsType type) throws Exception {
 
         boolean notEnoughOrIllegalData = ObjectUtils.isEmpty(rawObs) ||
                 types == null || types.getObsTypes().isEmpty();

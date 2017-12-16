@@ -1,6 +1,5 @@
 package rinex.service.impl.observations.header.impl;
 
-import com.google.common.primitives.Booleans;
 import org.springframework.stereotype.Service;
 import rinex.model.observations.header.impl.RcvClockOffsAppl;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
@@ -18,11 +17,9 @@ public class RcvClockOffsApplParserServiceImpl implements HeaderLabelParserServi
         Matcher matcher = pattern.matcher(line);
 
         if (matcher.find()) {
-            int receiverOffset = matcher.group(1);
+            boolean receiverOffset = matcher.group(1).equals(1);
             return new RcvClockOffsAppl(receiverOffset);
         }
         return RcvClockOffsAppl.NULL;
-
-        return false;
     }
 }

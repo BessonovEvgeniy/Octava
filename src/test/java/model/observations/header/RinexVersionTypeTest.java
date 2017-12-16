@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
-import rinex.exception.InvalidHeaderLabelException;
 import rinex.exception.RinexLineLengthMismatchException;
 import rinex.model.observations.header.impl.RinexVersionType;
 import rinex.service.impl.observations.header.impl.RinexVersionTypeParserServiceImpl;
@@ -63,27 +62,20 @@ public class RinexVersionTypeTest {
     }
 
     @Test
-    public void testHaveToThrowInvalidHeaderLabelException() {
+    public void testHaveToReceiveRinexVersionTypeNullObject() {
+        RinexVersionType rinexVersionType;
 
-        Throwable exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                parser.parse("     2.11           OBSERVATION DATA    F (MIXED)           RINEX VERSION / TYPE")
-        );
-        Assert.assertEquals(exception.getMessage(), "RinexVersionType");
+        rinexVersionType = parser.parse("     2.11           OBSERVATION DATA    F (MIXED)           RINEX VERSION / TYPE");
+        Assert.assertTrue(rinexVersionType.equals(RinexVersionType.NULL));
 
-        exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                parser.parse("     2.111          OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
-        );
-        Assert.assertEquals(exception.getMessage(), "RinexVersionType");
+        rinexVersionType = parser.parse("     2.111          OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE");
+        Assert.assertTrue(rinexVersionType.equals(RinexVersionType.NULL));
 
-        exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                parser.parse("   12345678.11      OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
-        );
-        Assert.assertEquals(exception.getMessage(), "RinexVersionType");
+        rinexVersionType = parser.parse("   12345678.11      OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE");
+        Assert.assertTrue(rinexVersionType.equals(RinexVersionType.NULL));
 
-        exception = assertThrows(InvalidHeaderLabelException.class, () ->
-                parser.parse("    123456789.11    OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE")
-        );
-        Assert.assertEquals(exception.getMessage(), "RinexVersionType");
+        rinexVersionType = parser.parse("    123456789.11    OBSERVATION DATA    M (MIXED)           RINEX VERSION / TYPE");
+        Assert.assertTrue(rinexVersionType.equals(RinexVersionType.NULL));
     }
 
     @Test

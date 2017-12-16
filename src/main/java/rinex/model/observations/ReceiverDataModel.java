@@ -37,7 +37,7 @@ public @Data class ReceiverDataModel implements Gnss {
 
     private LeapSeconds leapSeconds;
 
-    private Map<TypesOfObs.Type, Observations> obs = new LinkedHashMap<>();
+    private Map<ObsType, Observations> obs = new LinkedHashMap<>();
 
     private Set<Double> epoch;
 

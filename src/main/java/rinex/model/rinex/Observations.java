@@ -3,7 +3,7 @@ package rinex.model.rinex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import rinex.model.BaseModel;
-import rinex.model.observations.header.impl.TypesOfObs;
+import rinex.model.observations.header.impl.ObsType;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,11 +12,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public @Data class Observations extends BaseModel implements Gnss {
 
-    protected TypesOfObs.Type obsType;
+    protected ObsType obsType;
 
     List<double[]> obs = new LinkedList<>();
 
-    public Observations(TypesOfObs.Type type) {
+    public Observations(ObsType type) {
         obsType = type;
     }
 

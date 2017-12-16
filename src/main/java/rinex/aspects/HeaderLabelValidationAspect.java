@@ -18,7 +18,7 @@ public class HeaderLabelValidationAspect implements AspectExecutor {
     private HeaderLabelValidation validator;
 
     @Override
-    @Pointcut("execution(* rinex.model.observations.header.HeaderLabel+.*(..))")
+    @Pointcut("execution(* rinex.service.impl.observations.header.HeaderLabelParserService+.*(..))")
     public void pointcut(){}
 
     @Override
