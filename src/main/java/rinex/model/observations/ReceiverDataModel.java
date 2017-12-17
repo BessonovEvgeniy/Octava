@@ -31,7 +31,7 @@ public @Data class ReceiverDataModel implements Gnss {
 
     private AntennaDelta antennaDelta;
 
-    private WavelengthFact wavelengthFact;
+    private WaveLengthFact wavelengthFact;
 
     private TypesOfObs typesOfObs;
 
