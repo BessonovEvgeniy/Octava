@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import rinex.service.impl.observations.rinex.impl.HeaderLabelValidation;
+import rinex.service.impl.rinex.impl.HeaderLabelValidation;
 
 @Aspect
 @Component
@@ -18,7 +18,7 @@ public class HeaderLabelValidationAspect implements AspectExecutor {
     private HeaderLabelValidation validator;
 
     @Override
-    @Pointcut("execution(* rinex.model.observations.header.HeaderLabel+.*(..))")
+    @Pointcut("execution(* rinex.service.impl.observations.header.HeaderLabelParserService+.*(..))")
     public void pointcut(){}
 
     @Override

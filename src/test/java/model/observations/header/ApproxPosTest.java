@@ -10,7 +10,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.ApproxPos;
+import rinex.model.observations.header.impl.ApproxPos;
+import rinex.service.impl.observations.header.impl.ApproxPosParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,12 +23,12 @@ public class ApproxPosTest {
     private static final double DELTA = 1e-15;
 
     @Autowired
-    private ApproxPos approxPos;
+    private ApproxPosParserServiceImpl approxPosParserService;
 
     @Test
     public void testMaxLengthViolation() {
         Throwable exception = assertThrows(RinexLineLengthMismatchException.class, () ->
-                approxPos.parse("   3850898.3333  2231889.1912  4553102.5291                  APPROX POSITION XYZ ")
+                approxPosParserService.parse("   3850898.3333  2231889.1912  4553102.5291                  APPROX POSITION XYZ ")
         );
 
         Assert.assertEquals(exception.getClass(), RinexLineLengthMismatchException.class);
@@ -37,28 +38,28 @@ public class ApproxPosTest {
     public void testValidApproxPos() {
         String line = "  3850898.3333  2231889.1912  4553102.5291                  APPROX POSITION XYZ ";
 
-        approxPos.parse(line);
+        ApproxPos approxPos = approxPosParserService.parse(line);
 
         Assert.assertEquals(3850898.3333d, approxPos.getX(), DELTA);
         Assert.assertEquals(2231889.1912d, approxPos.getY(), DELTA);
         Assert.assertEquals(4553102.5291d, approxPos.getZ(), DELTA);
 
         line = "  3850898.333   2231889.191   4553102.529                   APPROX POSITION XYZ ";
-        approxPos.parse(line);
+        approxPos = approxPosParserService.parse(line);
 
         Assert.assertEquals(3850898.333d, approxPos.getX(), DELTA);
         Assert.assertEquals(2231889.191d, approxPos.getY(), DELTA);
         Assert.assertEquals(4553102.529d, approxPos.getZ(), DELTA);
 
         line = "  3850898.      2231889.1     4553102.52                    APPROX POSITION XYZ ";
-        approxPos.parse(line);
+        approxPos = approxPosParserService.parse(line);
 
         Assert.assertEquals(3850898.0d, approxPos.getX(), DELTA);
         Assert.assertEquals(2231889.1d, approxPos.getY(), DELTA);
         Assert.assertEquals(4553102.52d, approxPos.getZ(), DELTA);
 
         line = "  3850898       2231889.      4553102.5                     APPROX POSITION XYZ ";
-        approxPos.parse(line);
+        approxPos = approxPosParserService.parse(line);
 
         Assert.assertEquals(3850898.0d, approxPos.getX(), DELTA);
         Assert.assertEquals(2231889.0d, approxPos.getY(), DELTA);
@@ -68,12 +69,12 @@ public class ApproxPosTest {
     @Test
     public void testInvalidApproxPos() {
         String line = "  3850898.33331 2231889.1912  4553102.5291                  APPROX POSITION XYZ ";
-        Assert.assertFalse(approxPos.parse(line));
+        Assert.assertTrue(approxPosParserService.parse(line).equals(ApproxPos.NULL));
 
         line = "  3850898.3333  2231889.19121 4553102.5291                  APPROX POSITION XYZ ";
-        Assert.assertFalse(approxPos.parse(line));
+        Assert.assertTrue(approxPosParserService.parse(line).equals(ApproxPos.NULL));
 
         line = "  3850898.3333  2231889.1912  4553102.52911                 APPROX POSITION XYZ ";
-        Assert.assertFalse(approxPos.parse(line));
+        Assert.assertTrue(approxPosParserService.parse(line).equals(ApproxPos.NULL));
     }
 }
