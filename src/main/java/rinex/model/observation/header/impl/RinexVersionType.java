@@ -1,8 +1,8 @@
-package rinex.model.observations.header.impl;
+package rinex.model.observation.header.impl;
 
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 import javax.validation.constraints.NotNull;
 

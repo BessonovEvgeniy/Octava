@@ -3,7 +3,7 @@ package rinex.service.impl.observations.header.impl;
 import com.google.common.primitives.Ints;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.LeapSeconds;
+import rinex.model.observation.header.impl.LeapSeconds;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;

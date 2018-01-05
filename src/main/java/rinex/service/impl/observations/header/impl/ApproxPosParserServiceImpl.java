@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.primitives.Doubles;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.ApproxPos;
+import rinex.model.observation.header.impl.ApproxPos;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;

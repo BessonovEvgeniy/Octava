@@ -1,4 +1,4 @@
-package rinex.model.observations.header.impl;
+package rinex.model.observation.header.impl;
 
 public enum ObsType {
 

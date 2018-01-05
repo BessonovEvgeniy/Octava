@@ -1,7 +1,7 @@
-package rinex.model.observations.header.impl;
+package rinex.model.observation.header.impl;
 
 import lombok.Data;
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 public @Data class LeapSeconds implements HeaderLabel {
 

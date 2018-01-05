@@ -2,7 +2,7 @@ package rinex.service.impl.rinex.impl;
 
 import com.google.common.base.Splitter;
 import rinex.dto.EpochDto;
-import rinex.model.observations.ReceiverDataModel;
+import rinex.model.observation.ReceiverDataModel;
 import rinex.service.State;
 
 import java.io.BufferedReader;

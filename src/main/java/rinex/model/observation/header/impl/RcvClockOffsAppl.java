@@ -1,6 +1,6 @@
-package rinex.model.observations.header.impl;
+package rinex.model.observation.header.impl;
 
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 public class RcvClockOffsAppl implements HeaderLabel {
 

@@ -1,7 +1,7 @@
 package rinex.service.impl.observations.header.impl;
 
 import lombok.Data;
-import rinex.model.observations.header.impl.RecTypeVers;
+import rinex.model.observation.header.impl.RecTypeVers;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;

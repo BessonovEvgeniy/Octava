@@ -1,4 +1,4 @@
-package rinex.model.observations.header;
+package rinex.model.observation.header;
 
 import lombok.Data;
 

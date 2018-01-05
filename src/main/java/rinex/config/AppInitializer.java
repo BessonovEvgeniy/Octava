@@ -1,5 +1,8 @@
 package rinex.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -30,6 +33,17 @@ public class AppInitializer implements WebApplicationInitializer {
     private AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(MvcConfiguration.class);
+        context.register(HibernateConfiguration.class);
         return context;
+    }
+
+    @Bean(name = "propertyConfigurer")
+    public PropertySourcesPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        placeholderConfigurer.setLocation(new ClassPathResource("common.properties"));
+        placeholderConfigurer.setLocation(new ClassPathResource("amazon.S3Storage.properties"));
+        placeholderConfigurer.setLocation(new ClassPathResource("rdbmsDev.properties"));
+        placeholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
+        return placeholderConfigurer;
     }
 }

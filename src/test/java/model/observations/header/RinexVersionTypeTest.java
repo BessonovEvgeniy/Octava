@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.impl.RinexVersionType;
+import rinex.model.observation.header.impl.RinexVersionType;
 import rinex.service.impl.observations.header.impl.RinexVersionTypeParserServiceImpl;
 
 import static org.junit.Assert.assertEquals;

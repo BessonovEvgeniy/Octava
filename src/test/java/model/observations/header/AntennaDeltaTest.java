@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.impl.AntennaDelta;
+import rinex.model.observation.header.impl.AntennaDelta;
 import rinex.service.impl.observations.header.impl.AntennaDeltaParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

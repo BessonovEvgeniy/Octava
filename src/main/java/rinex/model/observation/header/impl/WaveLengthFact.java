@@ -1,7 +1,7 @@
-package rinex.model.observations.header.impl;
+package rinex.model.observation.header.impl;
 
 import lombok.Data;
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -30,6 +30,10 @@ public @Data class WaveLengthFact implements HeaderLabel {
         if (freq1.equals(Ambiguities.NoFreq)) {
             throw new IllegalStateException("L1 param can't be zero, empty or blank");
         }
+    }
+
+    public void add(WaveLengthFact waveLengthFact) {
+
     }
 
     public enum Ambiguities {
