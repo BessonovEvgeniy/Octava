@@ -1,17 +1,15 @@
 package rinex.model.company;
 
 import lombok.Data;
-import rinex.model.user.User;
+import rinex.model.BaseModel;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 @Entity
 @Table(name = "COMPANY")
-public @Data class Company {
+public @Data class Company extends BaseModel{
 
-    @OneToMany(mappedBy = "company")
-    private Set<User> user;
+//    @OneToMany(mappedBy = "company")
+//    private Set<User> user;
 }

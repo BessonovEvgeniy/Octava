@@ -2,14 +2,16 @@ package rinex.model.user;
 
 import lombok.Data;
 import lombok.NonNull;
-import rinex.model.company.Company;
+import rinex.model.BaseModel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "USERS")
-public @Data class User implements Serializable {
+public @Data class User extends BaseModel implements Serializable {
 
     @NonNull
     @Column(nullable = false)
@@ -19,19 +21,18 @@ public @Data class User implements Serializable {
 
     private String email;
 
-    @OneToOne
-    private Role role;
+//    @OneToOne
+//    private Role role;
 
-    @OneToOne
-    private UserAccessLevel userAccessLevel;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "USER_COMPANY",
-            joinColumns =
-                @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns =
-                @JoinColumn(nullable = false)
-    )
-    private Company company;
+//    private UserAccessLevel userAccessLevel;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "USER_COMPANY",
+//            joinColumns =
+//                @JoinColumn(name = "USER_ID"),
+//            inverseJoinColumns =
+//                @JoinColumn(nullable = false)
+//    )
+//    private Company company;
 }
