@@ -4,7 +4,7 @@ import com.google.common.primitives.Ints;
 import lombok.Data;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.WaveLengthFact;
+import rinex.model.observation.header.impl.WaveLengthFact;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.Arrays;

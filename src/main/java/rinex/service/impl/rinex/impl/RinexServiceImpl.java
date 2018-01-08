@@ -3,7 +3,7 @@ package rinex.service.impl.rinex.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rinex.exception.UnknownHeaderLabelException;
-import rinex.model.observations.ReceiverDataModel;
+import rinex.model.observation.ReceiverDataModel;
 import rinex.service.RinexService;
 import rinex.service.State;
 

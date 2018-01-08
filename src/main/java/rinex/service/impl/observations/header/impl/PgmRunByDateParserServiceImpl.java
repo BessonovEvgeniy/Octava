@@ -1,7 +1,7 @@
 package rinex.service.impl.observations.header.impl;
 
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.PgmRunByDate;
+import rinex.model.observation.header.impl.PgmRunByDate;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 import rinex.service.impl.utils.date.DateUtil;
 

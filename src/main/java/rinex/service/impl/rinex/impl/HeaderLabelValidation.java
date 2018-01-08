@@ -4,7 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 import rinex.exception.InvalidHeaderLabelException;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

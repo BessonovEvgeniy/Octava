@@ -2,7 +2,7 @@ package rinex.service.impl.observations.header.impl;
 
 import lombok.Data;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.MarkerNumber;
+import rinex.model.observation.header.impl.MarkerNumber;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;

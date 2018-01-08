@@ -1,6 +1,6 @@
 package rinex.service.impl.observations.header;
 
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 public interface HeaderLabelParserService<T extends HeaderLabel> {
 

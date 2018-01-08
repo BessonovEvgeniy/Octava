@@ -2,10 +2,10 @@ package rinex.service.impl.rinex.impl;
 
 import org.springframework.stereotype.Service;
 import rinex.dto.EpochDto;
-import rinex.model.observations.ReceiverDataModel;
-import rinex.model.observations.header.impl.ObsType;
+import rinex.model.observation.ReceiverDataModel;
+import rinex.model.observation.header.impl.ObsType;
 import rinex.model.rinex.Observations;
-import rinex.model.observations.header.impl.TypesOfObs;
+import rinex.model.observation.header.impl.TypesOfObs;
 import rinex.service.State;
 
 import java.io.BufferedReader;

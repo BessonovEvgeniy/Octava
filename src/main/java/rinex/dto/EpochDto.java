@@ -4,8 +4,8 @@ package rinex.dto;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import rinex.model.observations.header.impl.ObsType;
-import rinex.model.observations.header.impl.TypesOfObs;
+import rinex.model.observation.header.impl.ObsType;
+import rinex.model.observation.header.impl.TypesOfObs;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;

@@ -16,5 +16,4 @@ This is the demo project in Java of real project "OCTAVA" for proccessing observ
 
 #2) Run demo
 
-1. Setup tomcat or any another application server
-2. Run tomcat server
+Run tomcat server

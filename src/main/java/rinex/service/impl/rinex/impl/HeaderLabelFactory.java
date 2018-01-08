@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rinex.exception.UnknownHeaderLabelException;
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.Map;

@@ -4,8 +4,8 @@ import com.google.common.primitives.Ints;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import rinex.exception.UnknownHeaderLabelException;
-import rinex.model.observations.header.impl.ObsType;
-import rinex.model.observations.header.impl.TypesOfObs;
+import rinex.model.observation.header.impl.ObsType;
+import rinex.model.observation.header.impl.TypesOfObs;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.Arrays;

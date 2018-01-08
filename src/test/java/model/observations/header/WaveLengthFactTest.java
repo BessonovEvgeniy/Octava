@@ -11,7 +11,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observations.header.impl.WaveLengthFact;
+import rinex.model.observation.header.impl.WaveLengthFact;
 import rinex.service.impl.observations.header.impl.WavelengthFactParserServiceImpl;
 
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package rinex.service.impl.observations.header.impl;
 
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.RcvClockOffsAppl;
+import rinex.model.observation.header.impl.RcvClockOffsAppl;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;

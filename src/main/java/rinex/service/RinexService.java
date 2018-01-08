@@ -1,6 +1,6 @@
 package rinex.service;
 
-import rinex.model.observations.ReceiverDataModel;
+import rinex.model.observation.ReceiverDataModel;
 
 import java.io.InputStream;
 

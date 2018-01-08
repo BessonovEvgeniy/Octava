@@ -1,6 +1,6 @@
 package rinex.exception;
 
-import rinex.model.observations.header.HeaderLabel;
+import rinex.model.observation.header.HeaderLabel;
 
 public class RinexLineLengthMismatchException extends RuntimeException {
 

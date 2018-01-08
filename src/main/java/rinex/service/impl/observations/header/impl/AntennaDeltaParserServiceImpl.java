@@ -3,7 +3,7 @@ package rinex.service.impl.observations.header.impl;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Doubles;
 import org.springframework.stereotype.Service;
-import rinex.model.observations.header.impl.AntennaDelta;
+import rinex.model.observation.header.impl.AntennaDelta;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
 import java.util.regex.Matcher;
