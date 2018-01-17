@@ -5,5 +5,5 @@ import rinex.model.BaseModel;
 import javax.persistence.Entity;
 
 @Entity
-public class Receiver extends BaseModel{
+public class Receiver extends BaseModel {
 }

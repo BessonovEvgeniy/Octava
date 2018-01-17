@@ -40,15 +40,17 @@ public class HibernateConfiguration {
         emf.setPackagesToScan("rinex.model");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         BasicDataSource dataSource = getDataSource();
-        DatabasePopulatorUtils.execute(createDatabasePopulator(), dataSource);
         emf.setDataSource(dataSource);
+
         return emf;
     }
 
-    private DatabasePopulator createDatabasePopulator() {
+    @Bean
+    public DatabasePopulator createDatabasePopulator(BasicDataSource dataSource) {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.setContinueOnError(true);
+        databasePopulator.setContinueOnError(false);
         databasePopulator.addScript(new ClassPathResource("create.sql"));
+        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
         return databasePopulator;
     }
 
@@ -60,7 +62,8 @@ public class HibernateConfiguration {
         return jpaVendorAdapter;
     }
 
-    private BasicDataSource getDataSource() {
+    @Bean
+    public BasicDataSource getDataSource() {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
         basicDataSource.setUsername(env.getProperty("jdbc.username"));
