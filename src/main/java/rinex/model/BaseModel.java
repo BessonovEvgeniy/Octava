@@ -1,9 +1,11 @@
 package rinex.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class BaseModel {
+public @Data abstract class BaseModel {
 
     @Id
     @GeneratedValue

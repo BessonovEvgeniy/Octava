@@ -11,6 +11,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <jasypt.password.encryption.version>1.9.2</jasypt.password.encryption.version>
+
         <commons.loggin.version>1.1</commons.loggin.version>
 
         <hibernate.core.version>5.2.12.Final</hibernate.core.version>
@@ -54,6 +56,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>${jasypt.password.encryption.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-api</artifactId>
             <version>${commons.loggin.version}</version>
@@ -90,6 +98,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validation}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>${hibernate.core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -16,6 +16,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:rdbmsDev.properties")
 public class HibernateConfiguration {
 
@@ -40,15 +42,17 @@ public class HibernateConfiguration {
         emf.setPackagesToScan("rinex.model");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         BasicDataSource dataSource = getDataSource();
-        DatabasePopulatorUtils.execute(createDatabasePopulator(), dataSource);
         emf.setDataSource(dataSource);
+
         return emf;
     }
 
-    private DatabasePopulator createDatabasePopulator() {
+    @Bean
+    public DatabasePopulator createDatabasePopulator(BasicDataSource dataSource) {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.setContinueOnError(true);
+        databasePopulator.setContinueOnError(false);
         databasePopulator.addScript(new ClassPathResource("create.sql"));
+        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
         return databasePopulator;
     }
 
@@ -60,7 +64,8 @@ public class HibernateConfiguration {
         return jpaVendorAdapter;
     }
 
-    private BasicDataSource getDataSource() {
+    @Bean
+    public BasicDataSource getDataSource() {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
         basicDataSource.setUsername(env.getProperty("jdbc.username"));

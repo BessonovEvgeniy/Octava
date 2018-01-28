@@ -1,12 +1,12 @@
 package rinex.model.payment;
 
 import lombok.Data;
+import rinex.model.BaseModel;
 
-import java.util.Currency;
+import javax.persistence.Embedded;
 
-public @Data class Payment {
+public @Data class Payment extends BaseModel {
 
-    private Currency currency;
-
-
+    @Embedded
+    private MonetaryAmount monetaryAmount;
 }
