@@ -13,6 +13,8 @@ import java.util.Set;
 @Table(name = "COMPANY")
 public @Data class Company extends BaseModel{
 
+    private String name;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.PERSIST)
     private Set<User> users = new HashSet<>();
 

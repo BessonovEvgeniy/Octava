@@ -16,6 +16,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:rdbmsDev.properties")
 public class HibernateConfiguration {
 
