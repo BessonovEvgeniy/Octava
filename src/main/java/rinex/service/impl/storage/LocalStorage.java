@@ -2,13 +2,21 @@ package rinex.service.impl.storage;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import rinex.model.project.Project;
 import rinex.service.StorageService;
 
-@Service
+import java.io.File;
+
+@Service("localStorage")
 public class LocalStorage implements StorageService {
 
     @Override
-    public String store(MultipartFile file, String fileName) throws Exception {
+    public String store(MultipartFile file, Project project) throws Exception {
+        return "";
+    }
+
+    @Override
+    public String store(File file, Project project) throws Exception {
         return "";
     }
 

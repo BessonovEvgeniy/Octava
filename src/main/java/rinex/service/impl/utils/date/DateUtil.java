@@ -66,7 +66,7 @@ public final class DateUtil {
     }
 
     public static LocalDateTime parseToLocalDateTime(String date) {
-        date = date.trim().toLowerCase().replaceAll("utc","");
+        date = date.toLowerCase().replaceAll("utc","").trim();
         String format = determineDateFormat(date);
         LocalDateTime local;
 

@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import rinex.model.observation.header.impl.WaveLengthFact;
 import rinex.service.impl.observations.header.HeaderLabelParserService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,7 +30,8 @@ public @Data class WavelengthFactParserServiceImpl implements HeaderLabelParserS
             int svNum       = NumberUtils.toInt(matcher.group(3).trim(), 0);
             String rawSvs   = matcher.group(4).trim();
 
-            Collection<String> sats = Arrays.asList(rawSvs.split("\\s\\s\\s"));
+            List<String> sats = new ArrayList<>(Arrays.asList(rawSvs.split("\\s\\s\\s")));
+            sats.remove("");
 
             if (sats.size() != svNum) {
                 throw new IllegalStateException("Decalred " + svNum + " sv, but found " + sats.size());

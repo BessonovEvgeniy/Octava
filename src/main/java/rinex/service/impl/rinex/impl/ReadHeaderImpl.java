@@ -10,7 +10,7 @@ import java.io.BufferedReader;
 import java.lang.reflect.Field;
 
 @Service
-class ReadHeaderImpl <T extends HeaderLabel> implements State {
+public class ReadHeaderImpl <T extends HeaderLabel> implements State {
 
     @Autowired
     private HeaderLabelFactory headerLabelFactory;
@@ -23,7 +23,9 @@ class ReadHeaderImpl <T extends HeaderLabel> implements State {
         String line;
         while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
             HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
-            setHeaderLabel((T) headerLabel, data);
+            if (headerLabel != null) {
+                setHeaderLabel((T) headerLabel, data);
+            }
         }
     }
 

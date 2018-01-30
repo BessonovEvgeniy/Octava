@@ -18,6 +18,11 @@ public class HeaderLabelFactory {
     public HeaderLabel getHeaderLabel(String line) throws Exception {
 
         String label = line.substring(60,line.length()).toUpperCase().trim();
+
+        if (label.contains("COMMENT")) {
+            return null;
+        }
+
         HeaderLabelParserService parser = parsers.get(label);
         if (parser == null) {
             throw new UnknownHeaderLabelException("Unknown header label: " + label);
