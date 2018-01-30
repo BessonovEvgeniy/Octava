@@ -1,6 +1,6 @@
 <html>
 <body>
-<h2>Download yours Rinex File</h2>
+<h2>Select Action</h2>
 
 <form method="get" action="/user/new">
     <button class="btn" type="submit">Create User</button>
@@ -18,13 +18,5 @@
     <button class="btn" type="submit">Create Tariff</button>
 </form>
 
-<div class="row">
-    <form method="post" action="/rinex/upload" enctype="multipart/form-data">
-        <div class="file_upload">
-            <input type="file" name="file">
-            <button type="submit">Upload Rinex</button>
-        </div>
-    </form>
-</div>
 </body>
 </html>

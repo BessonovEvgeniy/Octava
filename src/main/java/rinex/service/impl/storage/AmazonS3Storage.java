@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import rinex.model.project.Project;
 import rinex.service.StorageService;
 
 import javax.annotation.PostConstruct;
@@ -41,17 +42,18 @@ public class AmazonS3Storage implements StorageService {
     }
 
     @Override
-    public String store(MultipartFile multipartFile, String newFileName) throws Exception {
-        File file = new File(newFileName);
+    public String store(MultipartFile multipartFile, Project project) throws Exception {
+        File file = new File(project.getName());
         multipartFile.transferTo(file);
-        return store(file, newFileName);
+        return "";
     }
 
-    private String store(File file, String newFileName) throws AmazonClientException {
+    @Override
+    public String store(File file, Project project) throws AmazonClientException {
         s3Client.putObject(
-                new PutObjectRequest(backetName, newFileName, file)
+                new PutObjectRequest(backetName, project.getName(), file)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonBacket + newFileName;
+        return amazonBacket + project.getName();
     }
 
     @Override

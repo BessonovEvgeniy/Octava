@@ -30,9 +30,7 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
             return "redirect:/create";
         }
-
         service.insert(project);
-
-        return "index";
+        return "project/uploadData";
     }
 }

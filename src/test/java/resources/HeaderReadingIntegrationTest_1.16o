@@ -1,0 +1,50 @@
+     2.11           OBSERVATION DATA    GPS(GPS)            RINEX VERSION / TYPE
+cnvtToRINEX 2.29.0  convertToRINEX OPR  08-Jul-16 08:29 UTC PGM / RUN BY / DATE
+----------------------------------------------------------- COMMENT
+priyomniy                                                   MARKER NAME
+                                                            MARKER NUMBER
+GNSS Observer       Trimble                                 OBSERVER / AGENCY
+0220323854          5700                2.32                REC # / TYPE / VERS
+122                 TRM41249.00                             ANT # / TYPE
+  3501239.1175  2097758.3036  4884932.6689                  APPROX POSITION XYZ
+        1.5520        0.0000        0.0000                  ANTENNA: DELTA H/E/N
+     1     1     0                                          WAVELENGTH FACT L1/2
+     4    C1    L1    L2    P2                              # / TYPES OF OBSERV
+  2016     7     7     7    31   45.0000000     GPS         TIME OF FIRST OBS
+  2016     7     8     8    32    0.0000000     GPS         TIME OF LAST OBS
+     0                                                      RCV CLOCK OFFS APPL
+    17                                                      LEAP SECONDS
+    31                                                      # OF SATELLITES
+   G01  1264  1264  1264  1264                              PRN / # OF OBS
+   G02  1806  1806  1806  1806                              PRN / # OF OBS
+   G03  1412  1412  1412  1412                              PRN / # OF OBS
+   G05  1728  1728  1728  1728                              PRN / # OF OBS
+   G06  2009  2009  2009  2009                              PRN / # OF OBS
+   G07  1380  1380  1380  1380                              PRN / # OF OBS
+   G08  1654  1654  1654  1654                              PRN / # OF OBS
+   G09  1442  1442  1442  1442                              PRN / # OF OBS
+   G10  1306  1306  1306  1306                              PRN / # OF OBS
+   G11  1180  1180  1180  1180                              PRN / # OF OBS
+   G12  1682  1682  1682  1682                              PRN / # OF OBS
+   G13  1454  1454  1454  1454                              PRN / # OF OBS
+   G14  1656  1656  1655  1655                              PRN / # OF OBS
+   G15  1844  1844  1844  1844                              PRN / # OF OBS
+   G16  1735  1735  1735  1735                              PRN / # OF OBS
+   G17  1986  1986  1986  1986                              PRN / # OF OBS
+   G18  1364  1364  1364  1364                              PRN / # OF OBS
+   G19  1872  1872  1872  1872                              PRN / # OF OBS
+   G20  1676  1676  1676  1676                              PRN / # OF OBS
+   G21  1452  1452  1452  1452                              PRN / # OF OBS
+   G22  1452  1452  1452  1452                              PRN / # OF OBS
+   G23  1444  1444  1444  1444                              PRN / # OF OBS
+   G24  1546  1546  1546  1546                              PRN / # OF OBS
+   G25  1462  1462  1462  1462                              PRN / # OF OBS
+   G26  1682  1682  1682  1682                              PRN / # OF OBS
+   G27  1456  1456  1456  1456                              PRN / # OF OBS
+   G28  1466  1465  1463  1463                              PRN / # OF OBS
+   G29  1436  1436  1436  1436                              PRN / # OF OBS
+   G30  1412  1412  1412  1412                              PRN / # OF OBS
+   G31  1762  1762  1762  1762                              PRN / # OF OBS
+   G32  1810  1810  1810  1810                              PRN / # OF OBS
+CARRIER PHASE MEASUREMENTS: PHASE SHIFTS REMOVED            COMMENT
+                                                            END OF HEADER
