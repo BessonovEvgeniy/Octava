@@ -5,44 +5,33 @@ import lombok.EqualsAndHashCode;
 import rinex.model.BaseModel;
 import rinex.model.observation.header.impl.ObsType;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 public @Data class Observations extends BaseModel implements Gnss {
 
     protected ObsType obsType;
 
-    List<double[]> obs = new LinkedList<>();
+    private Map<LocalDateTime, double[]> obs = new LinkedHashMap<>();
 
     public Observations(ObsType type) {
         obsType = type;
     }
 
-    private List<double[]> getObs() {
-        //Prevent editing Obs directly
-        return new LinkedList<>(obs);
+    public double[] getEpoch(LocalDateTime epochTime) {
+        return obs.get(epochTime);
     }
 
-    public void add(Observations observations) throws Exception {
-        add(observations.getObs());
+    public void upsertEpoch(LocalDateTime epochTime, double[] epochData) {
+        validateEpochData(epochData);
+        obs.put(epochTime, epochData);
     }
 
-    public void add(double[] observations) {
-        obs.add(observations);
-    }
-
-    private void add(List<double[]> observations) {
-        observations.forEach(array -> {
-            if (array.length != MAX_SAT) {
-                StringBuilder str = new StringBuilder();
-                Arrays.stream(array).forEach(value -> str.append(value).append(" "));
-                System.out.println("Warning. You are trying to add array not proper length: " + MAX_SAT + ".\n" +
-                        str.toString() + ". Epoch will be skipped.");
-            } else {
-                obs.add(array);
-            }
-        });
+    private void validateEpochData(double[] epochData) {
+        if (epochData.length != Gnss.MAX_SAT) {
+            throw new IllegalStateException("Excpected " + Gnss.MAX_SAT + " satellites. But found " + epochData.length + ". Epoch data " + epochData);
+        }
     }
 }

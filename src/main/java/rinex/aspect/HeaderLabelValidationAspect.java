@@ -1,4 +1,4 @@
-package rinex.aspects;
+package rinex.aspect;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;

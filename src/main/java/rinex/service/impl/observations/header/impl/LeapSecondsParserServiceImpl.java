@@ -20,7 +20,7 @@ public @Data class LeapSecondsParserServiceImpl implements HeaderLabelParserServ
         Matcher matcher = pattern.matcher(line);
 
         if (matcher.find()) {
-            int leapSeconds = Ints.tryParse(matcher.group(1));
+            int leapSeconds = Ints.tryParse(matcher.group(1).trim());
             return new LeapSeconds(leapSeconds);
         }
         return LeapSeconds.NULL;

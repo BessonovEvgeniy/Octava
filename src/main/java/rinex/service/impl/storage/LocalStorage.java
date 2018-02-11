@@ -1,5 +1,8 @@
 package rinex.service.impl.storage;
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import rinex.model.project.Project;
@@ -8,11 +11,17 @@ import rinex.service.StorageService;
 import java.io.File;
 
 @Service("localStorage")
+@PropertySource("classpath:local.storage.properties")
 public class LocalStorage implements StorageService {
 
+    @Value("${localStorageFolder}")
+    String path;
+
     @Override
-    public String store(MultipartFile file, Project project) throws Exception {
-        return "";
+    public String store(MultipartFile multipartFile, Project project) throws Exception {
+        File targetFile = new File(path + multipartFile.getOriginalFilename());
+        FileUtils.writeByteArrayToFile(targetFile, multipartFile.getBytes());
+        return targetFile.getAbsolutePath();
     }
 
     @Override

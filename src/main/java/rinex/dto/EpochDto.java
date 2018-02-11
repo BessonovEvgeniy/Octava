@@ -1,23 +1,22 @@
 package rinex.dto;
 
 
+import com.google.common.primitives.Doubles;
+import lombok.AccessLevel;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
-import rinex.model.observation.header.impl.ObsType;
-import rinex.model.observation.header.impl.TypesOfObs;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import static rinex.model.rinex.Gnss.MAX_SAT;
+import java.util.stream.Collectors;
 
 public @Data class EpochDto {
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime epochTime;
 
     private double gpsSeconds;
 
@@ -25,63 +24,43 @@ public @Data class EpochDto {
 
     private int numSv;
 
-    private boolean timeParsed;
+    private List<String> satellites;
 
-    private List<String> time;                  //YY MM DD HH SS F NUM_SV
+    @Setter(AccessLevel.NONE)
+    private Map<String, String> rawEpochData = new LinkedHashMap<>();
 
-    private List<String> svPattern;
+    @Getter(AccessLevel.NONE)
+    private Map<String, List<Double>> epochData;
 
-    private Map<String, List<String>> rawObs;   // SV vs Raw Observations
+    public EpochDto() {}
 
-    @Autowired
-    private TypesOfObs types;
-
-    public double[] getObservations(ObsType type) throws Exception {
-
-        boolean notEnoughOrIllegalData = ObjectUtils.isEmpty(rawObs) ||
-                types == null || types.getObsTypes().isEmpty();
-
-        if (notEnoughOrIllegalData) {
-            throw new Exception();
-        }
-        double[] obsValues = new double[MAX_SAT];
-        Integer ordinal = type.ordinal();
-
-        for (String svName : svPattern) {
-            if (type.isSystemRequired(svName)) {
-
-                Integer sv = Integer.parseInt(svName.substring(1, svName.length()));
-                List<String> svRawObs = rawObs.get(svName);
-                obsValues[sv] = Double.parseDouble(svRawObs.get(ordinal));
-            }
-        }
-        return obsValues;
+    public EpochDto(LocalDateTime epochTime) {
+        this.epochTime = epochTime;
     }
 
-    public void parseTime() {
-        if (!timeParsed) {
-            timeParsed = true;
-            try {
-                if (time != null && !time.isEmpty()) {
-                    Iterator<String> iter = time.iterator();
-                    int year = Integer.parseInt(iter.next());
-                    int month = Integer.parseInt(iter.next());
-                    int day = Integer.parseInt(iter.next());
-                    int hour = Integer.parseInt(iter.next());
-                    int min = Integer.parseInt(iter.next());
-                    Long sec = Long.parseLong(iter.next());
-                    Long nanoSeconds = TimeUnit.SECONDS.convert(sec, TimeUnit.NANOSECONDS);
+    public void add(Map<String, String> rawEpochData) {
+        this.rawEpochData.putAll(rawEpochData);
+    }
 
-                    gpsSeconds = hour*3600 + min*60 + sec;
+    public void setRawEpochData(Map<String, String> rawEpochData) {
+        this.rawEpochData = rawEpochData;
+        this.epochData = null;
+    }
 
-                    localDateTime = LocalDateTime.of(year, month, day, hour, min, sec.intValue(), nanoSeconds.intValue());
-
-                    flag = Integer.parseInt(iter.next());
-                    numSv = Integer.parseInt(iter.next());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    public Map<String, List<Double>> getEpochData() {
+        if (epochData == null) {
+            epochData = new LinkedHashMap<>();
+            for (Map.Entry<String, String> item : rawEpochData.entrySet()) {
+                String rawEpochLine = item.getValue();
+                String[] obs = rawEpochLine.trim().split("    |   |  | ");
+                List<Double> epochData = Arrays.stream(obs).map(str -> Doubles.tryParse(str)).collect(Collectors.toList());
+                this.epochData.put(item.getKey(), epochData);
             }
         }
+        return epochData;
+    }
+
+    public double getEpochData(String svCode, int index) {
+        return getEpochData().get(svCode).get(index);
     }
 }

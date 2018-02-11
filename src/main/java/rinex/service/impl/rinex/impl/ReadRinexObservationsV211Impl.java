@@ -38,11 +38,11 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
                     throw new Exception();
                 }
             }
-            epochDto.setTime(time);
-            epochDto.setFlag(obsFlag);
-            epochDto.setNumSv(numSv);
-            epochDto.setSvPattern(sat);
-            epochDto.setRawObs(obs);
+//            epochDto.setTime(time);
+//            epochDto.setFlag(obsFlag);
+//            epochDto.setNumSv(numSv);
+//            epochDto.setSvPattern(sat);
+//            epochDto.setRawObs(obs);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -66,7 +66,7 @@ class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implem
                         obs = allObs.get(type);
                     }
                     System.out.println(line);
-                    obs.add(epochDto.getObservations(type));
+//                    obs.add(epochDto.getObservations(type));
                 }
             }
         }

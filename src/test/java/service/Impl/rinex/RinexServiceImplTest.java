@@ -13,6 +13,11 @@ import rinex.config.AppInitializer;
 import rinex.config.MvcConfiguration;
 import rinex.service.RinexService;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +27,13 @@ public class RinexServiceImplTest {
 
     @Autowired
     private RinexService rinexService;
+
+    private ClassLoader classLoader = this.getClass().getClassLoader();
+
+    private List<String> headerFiles = Arrays.asList(
+            "HeaderReadingIntegrationTest_1.16o",
+            "HeaderReadingIntegrationTest_2.17o"
+            );
 
     @Test
     public void validateWrongMultipartFile() throws Exception {
@@ -36,8 +48,12 @@ public class RinexServiceImplTest {
 
     @Test
     public void validateCorrectMultipartFile() throws Exception {
+        for (String file : headerFiles) {
+            String fullPath = classLoader.getResource(file).getFile().replaceFirst("/", "");
 
-        MockMultipartFile rinexMock = new MockMultipartFile("data", "filename.13o", "text/plain", "some xml".getBytes());
-        rinexService.validateRinex(rinexMock);
+            byte[] data = Files.readAllBytes(Paths.get(fullPath));
+            MockMultipartFile rinexMock = new MockMultipartFile("data", "src/main/HeaderReadingIntegrationTest_1.16o", "text/plain", data);
+            rinexService.validateRinex(rinexMock);
+        }
     }
 }

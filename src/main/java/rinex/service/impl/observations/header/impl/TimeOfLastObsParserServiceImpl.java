@@ -9,14 +9,14 @@ import rinex.service.impl.observations.header.HeaderLabelParserService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service("TIME OF FIRST OBS")
-public @Data class TimeOfFirstObsParserServiceImpl implements HeaderLabelParserService<TimeOfFirstObs> {
+@Service("TIME OF LAST OBS")
+public @Data class TimeOfLastObsParserServiceImpl implements HeaderLabelParserService<TimeOfFirstObs> {
 
     private Pattern pattern = Pattern.compile(".*" +
             "(\\d{4}.{4,5}"  +
             Strings.repeat("\\d{1,2}.{4,5}", 4) +
             "\\d{1,2}\\.\\d{7}).{3,5}"+
-            "(\\w{3}).*TIME OF FIRST OBS   ");
+            "(\\w{3}).*TIME OF LAST OBS   ");
 
     @Override
     public TimeOfFirstObs parse(String line) {

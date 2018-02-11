@@ -1,5 +1,7 @@
 package rinex.service.impl.utils.date;
 
+import com.google.common.base.Strings;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -39,8 +41,15 @@ public final class DateUtil {
 
     private static final Map<String, DateTimeFormatter> DATE_SHORT_FORMAT_REGEXPS = initDateShortFormatRegexps();
 
+    private static final Map<String, String> OBS_FORMAT_REGEXPS = new LinkedHashMap<String, String>() {{
+            put("^" + Strings.repeat("\\s*\\d{1,2}", 5) + "\\s*\\d{1,2}.\\d{7}$", "yy MM dd HH mm ss.SSSSSSS");
+    }};
+
+
     private static final Map<String, DateTimeFormatter> initDateShortFormatRegexps() {
-        List<String> shortFormats = Arrays.asList("dd-MMM-yy HH:mm");
+        List<String> shortFormats = Arrays.asList(
+                "dd-MMM-yy HH:mm"
+        );
         Map<String, DateTimeFormatter> dateShortFormatRegexps = new HashMap<>();
 
         for (String shortFormat : shortFormats) {
@@ -57,12 +66,25 @@ public final class DateUtil {
     private DateUtil() {}
 
     public static String determineDateFormat(String dateString) {
-        for (String regexp : DATE_FORMAT_REGEXPS.keySet()) {
+        return determineDateFormat(DATE_FORMAT_REGEXPS, dateString);
+    }
+
+    public static String determineDateFormat(Map<String, String> regexps, String dateString) {
+        for (String regexp : regexps.keySet()) {
             if (dateString.toLowerCase().matches(regexp)) {
-                return DATE_FORMAT_REGEXPS.get(regexp);
+                return regexps.get(regexp);
             }
         }
         return null; // Unknown format.
+    }
+
+    public static LocalDateTime parseObsToLocalDateTime(String dateString) throws Exception {
+        dateString = dateString.trim().replace("  "," 0");
+        String format = determineDateFormat(OBS_FORMAT_REGEXPS, dateString);
+        if (format == null) {
+            throw new UnknownFormatConversionException("Can't determine Date Format for: " + dateString);
+        }
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern(format));
     }
 
     public static LocalDateTime parseToLocalDateTime(String date) {

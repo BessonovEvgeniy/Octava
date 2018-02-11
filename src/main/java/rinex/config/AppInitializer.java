@@ -42,6 +42,7 @@ public class AppInitializer implements WebApplicationInitializer {
         PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
         placeholderConfigurer.setLocation(new ClassPathResource("common.properties"));
         placeholderConfigurer.setLocation(new ClassPathResource("amazon.S3Storage.properties"));
+        placeholderConfigurer.setLocation(new ClassPathResource("local.storage.properties"));
         placeholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
         return placeholderConfigurer;
     }

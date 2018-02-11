@@ -9,7 +9,6 @@ import rinex.model.observation.header.HeaderLabel;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 @Component
@@ -18,17 +17,14 @@ public class HeaderLabelValidation {
     public static void validateLineLength(Object object) {
         if (object instanceof String) {
             String line = (String) object;
-            if (line.length() != HeaderLabel.RINEX_LINE_LENGTH) {
+            if (line.length() > HeaderLabel.RINEX_LINE_LENGTH) {
                 throw new RinexLineLengthMismatchException(line);
             }
         }
     }
 
     public static void validate(Object object) {
-
-        ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
-        Validator validator = vf.getValidator();
-
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         validator.validate(object);
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object);

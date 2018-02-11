@@ -1,0 +1,15 @@
+    2.11           OBSERVATION DATA    M (MIXED)            RINEX VERSION / TYPE
+teqc  2013Mar15                         20170506 11:52:45UTCPGM / RUN BY / DATE
+Marker                                                      MARKER NAME
+0000                                                        MARKER NUMBER
+UNKNOWN             UNKNOWN                                 OBSERVER / AGENCY
+0000                UNKNOWN             UNKNOWN             REC # / TYPE / VERS
+0000                UNKNOWN                                 ANT # / TYPE
+  3850898.3333  2231889.1912  4553102.5291                  APPROX POSITION XYZ
+        0.0000        0.0000        0.0000                  ANTENNA: DELTA H/E/N
+     1     1                                                WAVELENGTH FACT L1/2
+     5    L1    C1    P1    D1    S1                        # / TYPES OF OBSERV
+     1.0000                                                 INTERVAL
+    18                                                      LEAP SECONDS
+  2017     4    10    16    13   21.0000000     GPS         TIME OF FIRST OBS
+                                                            END OF HEADER

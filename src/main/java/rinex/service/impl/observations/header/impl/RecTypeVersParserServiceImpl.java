@@ -7,6 +7,7 @@ import rinex.service.impl.observations.header.HeaderLabelParserService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public @Data class RecTypeVersParserServiceImpl implements HeaderLabelParserService<RecTypeVers> {
 
     private Pattern pattern = Pattern.compile("\\s{5}(\\d{1,9}\\.\\d{1,2})\\s{4,11}[\\w,\\s]{20}([M,G,E,R,S]).{19}RINEX VERSION / TYPE");

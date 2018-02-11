@@ -4,16 +4,24 @@ import lombok.Data;
 import rinex.model.observation.header.HeaderLabel;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public @Data class TypesOfObs implements HeaderLabel {
 
-    private Collection<ObsType> obsTypes = new ArrayList<>();
+    private List<ObsType> obsTypes = new ArrayList<>();
 
     private TypesOfObs() {}
 
-    public TypesOfObs(Collection<ObsType> obsTypes) {
+    public TypesOfObs(List<ObsType> obsTypes) {
         this.obsTypes = obsTypes;
+    }
+
+    public int size(){
+        return obsTypes.size();
+    }
+
+    public ObsType get(int index) {
+        return obsTypes.get(index);
     }
 
     public static final TypesOfObs NULL = new TypesOfObs.NullTypesOfObs();
