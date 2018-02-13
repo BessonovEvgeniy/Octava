@@ -9,9 +9,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import rinex.config.AppInitializer;
-import rinex.config.MvcConfiguration;
-import rinex.service.RinexService;
+import config.AppInitializer;
+import config.MvcConfiguration;
+import ppa.service.RinexService;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

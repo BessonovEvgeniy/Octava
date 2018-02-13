@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import rinex.config.AppInitializer;
-import rinex.config.MvcConfiguration;
-import rinex.exception.RinexLineLengthMismatchException;
-import rinex.model.observation.header.impl.RinexVersionType;
-import rinex.service.impl.observations.header.impl.RinexVersionTypeParserServiceImpl;
+import config.AppInitializer;
+import config.MvcConfiguration;
+import ppa.exception.RinexLineLengthMismatchException;
+import ppa.model.observation.header.impl.RinexVersionType;
+import ppa.service.impl.observations.header.impl.RinexVersionTypeParserServiceImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

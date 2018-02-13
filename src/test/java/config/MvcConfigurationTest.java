@@ -1,4 +1,4 @@
-//package config;
+//package rinex.config;
 //
 //import org.junit.runner.RunWith;
 //import org.mockito.runners.MockitoJUnitRunner;
