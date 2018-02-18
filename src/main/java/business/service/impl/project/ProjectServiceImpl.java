@@ -1,11 +1,13 @@
 package business.service.impl.project;
 
-import org.springframework.stereotype.Service;
 import business.dao.ProjectRepository;
 import business.model.project.Project;
 import business.service.ProjectService;
-import ppa.service.impl.BaseServiceImpl;
+import business.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
 
 
 @Service
-public class ProjectServiceImpl extends BaseServiceImpl<Project, ProjectRepository> implements ProjectService{ }
+public class ProjectServiceImpl extends BaseServiceImpl<Project, ProjectRepository> implements ProjectService {
+
+}

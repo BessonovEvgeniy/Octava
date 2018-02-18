@@ -17,6 +17,12 @@ public @Data class Project extends BaseModel {
     @NotNull
     private String name;
 
+    public Project(){}
+
+    public Project(String name){
+        this.name = name;
+    }
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "USER_ID")
 //    private User createdBy;
@@ -24,9 +30,13 @@ public @Data class Project extends BaseModel {
     @Column
     private LocalDateTime created = LocalDateTime.now();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "RINEX_FILES")
     @MapKeyColumn(name = "LINK_TO_FILE")
     @Column(name = "FILENAME")
     private Map<String, String> rinexFiles = new HashMap<>();
+
+    public void addRinexFiles(Map<String, String> rinexFiles) {
+        this.rinexFiles.putAll(rinexFiles);
+    }
 }

@@ -53,22 +53,11 @@
         <commons-collections4.version>4.1</commons-collections4.version>
 
         <jfreechart.version>1.5.0</jfreechart.version>
+        <xchart.version>3.5.0</xchart.version>
+        <jcommon.version>1.0.24</jcommon.version>
 
         <apache.maven.plugins.version>3.2.0</apache.maven.plugins.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jzy3d-snapshots</id>
-            <name>Jzy3d Snapshots</name>
-            <url>http://maven.jzy3d.org/snapshots</url>
-        </repository>
-        <repository>
-            <id>jzy3d-releases</id>
-            <name>Jzy3d Releases</name>
-            <url>http://maven.jzy3d.org/releases</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -343,9 +332,14 @@
             <version>${jfreechart.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jzy3d</groupId>
-            <artifactId>jzy3d-api</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>${jcommon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>${xchart.version}</version>
         </dependency>
     </dependencies>
     <build>

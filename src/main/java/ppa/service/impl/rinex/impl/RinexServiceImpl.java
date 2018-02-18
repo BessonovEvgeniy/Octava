@@ -29,6 +29,9 @@ public class RinexServiceImpl implements RinexService {
     @Autowired
     private ReadHeaderImpl readHeader;
 
+    @Autowired
+    private ReadRinexObservationsDecorator readObservations;
+
     public List<ReceiverDataModel> readRinex(Process process) throws Exception {
         List<ReceiverDataModel> results = new ArrayList<>();
         for (File file : process.getFiles()) {
@@ -48,7 +51,7 @@ public class RinexServiceImpl implements RinexService {
 
                 changeState(readHeader);
                 state.read(reader, data);
-                changeState(new ReadRinexObservationsDecorator());
+                changeState(readObservations);
                 state.read(reader, data);
             } catch (UnknownHeaderLabelException e) {
                 System.out.println(e.getMessage());

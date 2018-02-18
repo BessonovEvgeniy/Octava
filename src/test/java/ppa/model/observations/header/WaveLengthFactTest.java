@@ -1,4 +1,4 @@
-package model.observations.header;
+package ppa.model.observations.header;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Assert;

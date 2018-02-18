@@ -1,4 +1,4 @@
-package ppa.model.receiver;
+package business.model.receiver;
 
 import lombok.Data;
 import business.model.BaseModel;

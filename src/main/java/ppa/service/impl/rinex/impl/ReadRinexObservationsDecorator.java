@@ -8,10 +8,10 @@ import ppa.service.State;
 import java.io.BufferedReader;
 
 @Service
-class ReadRinexObservationsDecorator implements State {
+public class ReadRinexObservationsDecorator implements State {
 
     @Autowired
-    ReadRinexObservationsFactory obsFactory;
+    private ReadRinexObservationsFactory obsFactory;
 
     public void read(BufferedReader reader, ReceiverDataModel data) throws Exception {
 

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -57,8 +58,8 @@ public @Data class EpochDto {
             epochData = new LinkedHashMap<>();
             for (Map.Entry<String, String> item : rawEpochData.entrySet()) {
                 String rawEpochLine = item.getValue();
-                String[] obs = rawEpochLine.trim().split("    |   |  | ");
-                List<Double> epochData = Arrays.stream(obs).map(str -> Doubles.tryParse(str)).collect(Collectors.toList());
+                String[] obs = rawEpochLine.trim().split("    |   |  ");
+                List<Double> epochData = Arrays.stream(obs).map(str -> Doubles.tryParse(str.replaceAll(" ","0"))).collect(Collectors.toList());
                 this.epochData.put(item.getKey(), epochData);
             }
         }
@@ -66,6 +67,19 @@ public @Data class EpochDto {
     }
 
     public double getEpochData(String svCode, int index) {
-        return getEpochData().get(svCode).get(index);
+        List<Double> epochData = getEpochData().get(svCode);
+        if (CollectionUtils.isNotEmpty(epochData)) {
+            if (epochData.size() < index) {
+                System.out.println("ddd");
+            }
+            Double epochValue = epochData.get(index);
+            if (epochValue == null) {
+                return 0;
+            } else {
+                return epochValue;
+            }
+        } else {
+            return 0;
+        }
     }
 }

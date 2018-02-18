@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("2.11")
-class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
+public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
 
     public final static String EPOCH_TIME_REGEXP = "(" + Strings.repeat("\\s*\\d{1,2}",5) + "\\s*\\d{1,2}.\\d{7})\\s{2}(\\d{1})\\s{2}(\\d{1})(.*)";
     public final static Pattern EPOCH_TIME_PATTERN = Pattern.compile(EPOCH_TIME_REGEXP);

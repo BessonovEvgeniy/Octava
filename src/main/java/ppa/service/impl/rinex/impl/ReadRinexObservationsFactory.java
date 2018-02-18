@@ -8,7 +8,7 @@ import ppa.service.State;
 import java.util.Map;
 
 @Service
-class ReadRinexObservationsFactory {
+public class ReadRinexObservationsFactory {
 
     @Autowired
     private Map<String, AbstractReadRinexObservations> readers;
