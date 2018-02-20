@@ -1,5 +1,6 @@
 package config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
@@ -16,6 +17,7 @@ import javax.servlet.ServletRegistration;
 public class AppInitializer implements WebApplicationInitializer {
 
     @Override
+    @Autowired
     public void onStartup(ServletContext container) throws ServletException {
         AnnotationConfigWebApplicationContext context = getContext();
         container.addListener(new ContextLoaderListener(context));
@@ -30,7 +32,7 @@ public class AppInitializer implements WebApplicationInitializer {
         }
     }
 
-    private AnnotationConfigWebApplicationContext getContext() {
+    public AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(MvcConfiguration.class);
         context.register(HibernateConfiguration.class);

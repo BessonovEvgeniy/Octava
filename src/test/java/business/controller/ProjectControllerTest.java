@@ -56,5 +56,19 @@ public class ProjectControllerTest {
         Assert.assertEquals(project.getRinexFiles(), readedProject.getRinexFiles());
     }
 
+    @Test
+    public void createNewProjectWithFailBindingResults() {
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(true);
 
+        String redirect = "";
+        String etalonRedirectURL = "redirect:/create";
+        try {
+            redirect = controller.createProject(null, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(redirect, etalonRedirectURL);
+    }
 }

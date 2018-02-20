@@ -10,9 +10,7 @@ import ppa.model.rinex.Gnss;
 import ppa.model.rinex.Observations;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @Scope("prototype")
@@ -40,7 +38,11 @@ public @Data class ReceiverDataModel implements Gnss {
 
     private LeapSeconds leapSeconds;
 
-    private Map<ObsType, Observations> obs = new LinkedHashMap<>();
+    private Map<ObsType, Double[][]> obs = new LinkedHashMap<>();
+
+    private List<LocalDateTime> time = new LinkedList<>();
+
+    private Map<ObsType, Observations> rawObs = new LinkedHashMap<>();
 
     private Set<Double> epoch;
 
@@ -66,21 +68,21 @@ public @Data class ReceiverDataModel implements Gnss {
     }
 
     private void updateEpochData(ObsType type, LocalDateTime epochTime, double[] epochArray) {
-        Observations observations = obs.get(type);
+        Observations observations = rawObs.get(type);
         observations.upsertEpoch(epochTime, epochArray);
     }
 
     private void updateEpochFlag(ObsType type, LocalDateTime epochTime, int flag) {
-        Observations observations = obs.get(type);
+        Observations observations = rawObs.get(type);
         observations.upsertFlag(epochTime, flag);
     }
 
     public Observations getObservations(ObsType type) {
-        Observations observations = obs.get(type);
+        Observations observations = rawObs.get(type);
 
         if (observations == null) {
             observations = new Observations(type);
-            obs.put(type, observations);
+            rawObs.put(type, observations);
         }
 
         return observations;
