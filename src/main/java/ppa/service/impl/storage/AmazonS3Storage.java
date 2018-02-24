@@ -1,5 +1,6 @@
 package ppa.service.impl.storage;
 
+import business.model.project.Project;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -10,10 +11,8 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import business.model.project.Project;
 import ppa.service.StorageService;
 
-import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -34,7 +33,6 @@ public class AmazonS3Storage implements StorageService {
     private AWSCredentials credentials;
     private AmazonS3 s3Client;
 
-    @PostConstruct
     private void init() {
         amazonBacket = "http://" + backetName + ".s3.amazonaws.com/";
 //        credentials = new BasicAWSCredentials(accessKeyID, yourSecretAccessKey);

@@ -33,7 +33,7 @@
         <aspectj.version>1.8.12</aspectj.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.16.20</lombok.version>
         <java.bean.validation.version>2.0.0.Final</java.bean.validation.version>
         <java.el.validation.version>3.0.1-b04</java.el.validation.version>
         <fasterxml.jackson.version>2.9.2</fasterxml.jackson.version>
@@ -52,9 +52,9 @@
         <google.guava.version>22.0</google.guava.version>
         <commons-collections4.version>4.1</commons-collections4.version>
 
-        <jfreechart.version>1.5.0</jfreechart.version>
         <xchart.version>3.5.0</xchart.version>
-        <jcommon.version>1.0.24</jcommon.version>
+
+        <jama.version>1.0.3</jama.version>
 
         <apache.maven.plugins.version>3.2.0</apache.maven.plugins.version>
     </properties>
@@ -327,19 +327,16 @@
 
         <!--Graphics and Plots-->
         <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>${jfreechart.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jcommon</artifactId>
-            <version>${jcommon.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.knowm.xchart</groupId>
             <artifactId>xchart</artifactId>
             <version>${xchart.version}</version>
+        </dependency>
+
+        <!--Math Tools-->
+        <dependency>
+            <groupId>gov.nist.math</groupId>
+            <artifactId>jama</artifactId>
+            <version>${jama.version}</version>
         </dependency>
     </dependencies>
     <build>

@@ -1,5 +1,6 @@
 package ppa.model.observation;
 
+import Jama.Matrix;
 import com.google.common.primitives.Ints;
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
@@ -38,13 +39,39 @@ public @Data class ReceiverDataModel implements Gnss {
 
     private LeapSeconds leapSeconds;
 
-    private Map<ObsType, Double[][]> obs = new LinkedHashMap<>();
+    private Map<ObsType, Matrix> obs = new LinkedHashMap<>();
+
+    private List<Integer> seconds = new LinkedList<>();
 
     private List<LocalDateTime> time = new LinkedList<>();
 
     private Map<ObsType, Observations> rawObs = new LinkedHashMap<>();
 
     private Set<Double> epoch;
+
+    public void buildObsMatrixFromRawData(){
+
+        for (Map.Entry<ObsType, Observations> obsByType : rawObs.entrySet()) {
+
+            Observations rawEpoches = obsByType.getValue();
+            int epochNum = rawEpoches.size();
+            Matrix matrix = new Matrix(epochNum, Gnss.MAX_SAT, 0);
+
+            int epochCounter = 0;
+            for (Map.Entry<LocalDateTime, Matrix> rawEpoch : rawEpoches.getObs().entrySet()) {
+
+                matrix.setMatrix(epochCounter,epochCounter,0, Gnss.MAX_SAT-1, rawEpoch.getValue());
+                epochCounter++;
+            }
+
+            obs.put(obsByType.getKey(), matrix);
+        }
+
+    }
+
+    public Matrix getObsByIndex(ObsType type, int timeFrom, int timeTo, int satFrom, int satTo) {
+        return obs.get(type).getMatrix(timeFrom, timeTo, satFrom, satTo);
+    }
 
     public void addObservations(EpochDto epoch) {
 
@@ -54,30 +81,24 @@ public @Data class ReceiverDataModel implements Gnss {
 
             for (int index = 0; index < typesOfObs.size(); index++) {
                 ObsType type = typesOfObs.get(index);
-                double[] epochArray = getObservations(type, epoch.getEpochTime());
-                double obsValue = epoch.getEpochData(svCode, index);
+                Matrix epochArray = getObservations(type, epoch.getEpochTime());
+                double obsValue = epoch.getEpochData(index, svCode);
 
-                if (epochArray[satellite] != 0) {
-                    System.out.println("Epoch " + epoch.getEpochTime() + " value " + epochArray[satellite] + " will be replaced by " + obsValue);
+                double value = epochArray.get(0, satellite);
+                if (value != 0) {
+                    System.out.println("Epoch " + epoch.getEpochTime() + " value " + value + " will be replaced by " + obsValue);
                 }
-                epochArray[satellite] = obsValue;
-                updateEpochData(type, epoch.getEpochTime(), epochArray);
-                updateEpochFlag(type, epoch.getEpochTime(), epoch.getFlag());
+                epochArray.set(0, satellite, obsValue);
+                Observations observations = rawObs.get(type);
+
+                LocalDateTime epochTime = epoch.getEpochTime();
+                observations.upsertEpoch(epochTime, epochArray);
+                observations.upsertFlag(epochTime, epoch.getFlag());
             }
         }
     }
 
-    private void updateEpochData(ObsType type, LocalDateTime epochTime, double[] epochArray) {
-        Observations observations = rawObs.get(type);
-        observations.upsertEpoch(epochTime, epochArray);
-    }
-
-    private void updateEpochFlag(ObsType type, LocalDateTime epochTime, int flag) {
-        Observations observations = rawObs.get(type);
-        observations.upsertFlag(epochTime, flag);
-    }
-
-    public Observations getObservations(ObsType type) {
+    public Matrix getObservations(ObsType type, LocalDateTime epochTime) {
         Observations observations = rawObs.get(type);
 
         if (observations == null) {
@@ -85,15 +106,10 @@ public @Data class ReceiverDataModel implements Gnss {
             rawObs.put(type, observations);
         }
 
-        return observations;
-    }
-
-    public double[] getObservations(ObsType type, LocalDateTime epochTime) {
-        Observations observations = getObservations(type);
-        double[] epochArray = observations.getEpoch(epochTime);
+        Matrix epochArray = observations.getEpoch(epochTime);
 
         if (epochArray == null) {
-            epochArray = new double[Gnss.MAX_SAT];
+            epochArray = new Matrix(1, Gnss.MAX_SAT, 0);
             observations.upsertEpoch(epochTime, epochArray);
         }
 

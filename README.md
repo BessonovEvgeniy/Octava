@@ -9,6 +9,8 @@ This is the demo project in Java of real project "OCTAVA" for proccessing observ
 - Spring MVC, Spring AOP 5.0.1
 - Amazon S3
 - Hibernate
+- Jama
+- XChart
 - JMockito
 - JUnit 5
 - Lombok

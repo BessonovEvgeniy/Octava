@@ -66,12 +66,9 @@ public @Data class EpochDto {
         return epochData;
     }
 
-    public double getEpochData(String svCode, int index) {
+    public double getEpochData(int index, String svCode) {
         List<Double> epochData = getEpochData().get(svCode);
         if (CollectionUtils.isNotEmpty(epochData)) {
-            if (epochData.size() <= index) {
-                System.out.println("ddd");
-            }
             Double epochValue = epochData.get(index);
             if (epochValue == null) {
                 return 0;

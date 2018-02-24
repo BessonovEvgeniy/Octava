@@ -1,22 +1,22 @@
 package ppa.service.impl.rinex.impl;
 
+import Jama.Matrix;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import config.AppInitializer;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import ppa.dto.EpochDto;
 import ppa.model.observation.ReceiverDataModel;
+import ppa.model.observation.header.impl.ObsType;
 import ppa.model.observation.header.impl.TypesOfObs;
 import ppa.service.PreProcessRawObsService;
 import ppa.service.State;
 import ppa.service.impl.observations.header.impl.TypesOfObsParserServiceImpl;
 import utils.date.DateUtil;
+import utils.plot.Figure;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,12 +39,16 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
     private PreProcessRawObsService preProcessRawObsService;
 
     public void read(BufferedReader reader, ReceiverDataModel dataModel) throws Exception {
+        if (reader == null || dataModel == null) {
+            return;
+        }
+        Logger log = Logger.getLogger(ReceiverDataModel.class.getName());
         while(reader.ready()) {
             String line = reader.readLine();
             Matcher matcher = EPOCH_TIME_PATTERN.matcher(line);
 
             if (!matcher.find()) {
-                System.out.println("Can't parse: " + line + " Line will be skipped.");
+                log.log(Level.WARNING, "Can't parse: " + line + " Line will be skipped.");
                 continue;
             } else {
                 LocalDateTime epochTime = DateUtil.parseObsToLocalDateTime(matcher.group(1));
@@ -51,7 +57,7 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
                 List<String> satList = Splitter.fixedLength(3).splitToList(matcher.group(4).trim());
 
                 if (expectedSatNum != satList.size()) {
-                    System.out.println("Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
+                    log.log(Level.WARNING, "Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
                     continue;
                 }
 
@@ -87,8 +93,11 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
         ReadRinexObservationsV211Impl obsReader = context.getBean(ReadRinexObservationsV211Impl.class);
         obsReader.read(reader, dataModel);
 
-        XYChart chart = new XYChartBuilder().width(800).height(600).title("Test from main").xAxisTitle("X").yAxisTitle("Y").build();
-        chart.addSeries("C1", new double[] { -3, 5, 9, 6, 5 }, new double[] { -3, 5, 9, 6, 5 });
-        new SwingWrapper<XYChart>(chart).displayChart();
+        dataModel.buildObsMatrixFromRawData();
+
+        Matrix matrix = dataModel.getObs().get(ObsType.C1);
+
+        Figure figure = new Figure();
+        figure.plotRows(matrix);
     }
 }
