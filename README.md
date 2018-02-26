@@ -26,6 +26,7 @@ Those project is being developed in spare time.
 #1) Get Started
 
 ###1.1 Start Tomcat
+#####If Tomcat encountered an error for JDBC driver leaking. It should be ignored by Fine server settings
 
 ###1.2 Chose create Project -> Enter project Name (at least 4 symbols)
 

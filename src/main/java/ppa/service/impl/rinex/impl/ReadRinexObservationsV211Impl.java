@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 @Service("2.11")
 public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
 
-    public final static String EPOCH_TIME_REGEXP = "(" + Strings.repeat("\\s*\\d{1,2}",5) + "\\s*\\d{1,2}.\\d{7})\\s{2}(\\d{1})\\s{2}(\\d{1})(.*)";
+    public final static String EPOCH_TIME_REGEXP = "(" + Strings.repeat("\\s*\\d{1,2}",5) + "\\s*\\d{1,2}.\\d{7})\\s{1,2}(\\d{1})\\s{1,2}(\\d{1,2})(.*)";
     public final static Pattern EPOCH_TIME_PATTERN = Pattern.compile(EPOCH_TIME_REGEXP);
 
     @InjectLog
@@ -77,7 +77,7 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
                 for (String sat : satList) {
                     String rawObs = preProcessRawObsService.preProcess(reader);
                     logger.debug("Raw satellites data: Sat: " + sat + " Obs: " + rawObs);
-                    double[] obs = preProcessRawObsService.convertAndPreProcessRawObs(rawObs, dataModel.getTypesOfObs().size());
+                    double[] obs = preProcessRawObsService.convertRawObs(rawObs, dataModel.getTypesOfObs().size());
                     logger.debug("Parsed satellites data: " + sat + " Obs: " + obs);
                     rawEpochData.put(sat, rawObs);
                     parsedEpochData.put(sat, obs);

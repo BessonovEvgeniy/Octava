@@ -11,5 +11,5 @@ public interface PreProcessRawObsService {
 
     String preProcess(BufferedReader reader) throws IOException;
 
-    double[] convertAndPreProcessRawObs(String rawObs, int numTypesOfObs) throws ParserException;
+    double[] convertRawObs(String rawObs, int numTypesOfObs) throws ParserException;
 }

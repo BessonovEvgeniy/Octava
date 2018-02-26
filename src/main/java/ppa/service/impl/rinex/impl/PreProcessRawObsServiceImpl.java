@@ -47,7 +47,7 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
         return line;
     }
 
-    public double[] convertAndPreProcessRawObs(String rawObs, int numTypesOfObs) throws ParserException {
+    public double[] convertRawObs(String rawObs, int numTypesOfObs) throws ParserException {
         String[] splitedRawObs = rawObs.trim().split("    |   |  | ");
         double[] epochData = new double[numTypesOfObs];
         Arrays.fill(epochData, 0);
@@ -85,6 +85,8 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
     public static void main(String[] args) {
         String rawObsBeforeProcess = "  24012083.305 4  -1199122.297 4   -901414.88346  24012086.17646";
         String etalonProcess = "  24012083.30504  -1199122.29704   -901414.88346  24012086.17646";
+
+        double dd = Doubles.tryParse(" ");
 
         PreProcessRawObsServiceImpl preProcessor = new PreProcessRawObsServiceImpl();
         String rawObsAfterProcess = preProcessor.preProcess(rawObsBeforeProcess);
