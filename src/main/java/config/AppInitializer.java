@@ -13,7 +13,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-
 public class AppInitializer implements WebApplicationInitializer {
 
     @Override
@@ -21,7 +20,6 @@ public class AppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) throws ServletException {
         AnnotationConfigWebApplicationContext context = getContext();
         container.addListener(new ContextLoaderListener(context));
-
         ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", new DispatcherServlet(context));
 
         if (dispatcher == null) {
@@ -45,6 +43,7 @@ public class AppInitializer implements WebApplicationInitializer {
         placeholderConfigurer.setLocation(new ClassPathResource("common.properties"));
         placeholderConfigurer.setLocation(new ClassPathResource("amazon.S3Storage.properties"));
         placeholderConfigurer.setLocation(new ClassPathResource("local.storage.properties"));
+        placeholderConfigurer.setLocation(new ClassPathResource("log4j.properties"));
         placeholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
         return placeholderConfigurer;
     }

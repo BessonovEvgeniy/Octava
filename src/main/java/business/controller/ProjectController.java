@@ -28,7 +28,7 @@ public class ProjectController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createProject (@Valid Project project, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
-            return "redirect:/create";
+            return "project/new";
         }
         service.insert(project);
         return "project/uploadData";

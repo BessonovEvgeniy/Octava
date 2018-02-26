@@ -5,6 +5,11 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import config.AppInitializer;
+import config.HibernateConfiguration;
+import config.MvcConfiguration;
+import config.injector.InjectLog;
+import config.injector.LogInjector;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
@@ -24,8 +29,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +38,9 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
     public final static String EPOCH_TIME_REGEXP = "(" + Strings.repeat("\\s*\\d{1,2}",5) + "\\s*\\d{1,2}.\\d{7})\\s{2}(\\d{1})\\s{2}(\\d{1})(.*)";
     public final static Pattern EPOCH_TIME_PATTERN = Pattern.compile(EPOCH_TIME_REGEXP);
 
+    @InjectLog
+    private Logger logger;
+
     @Autowired
     private PreProcessRawObsService preProcessRawObsService;
 
@@ -42,22 +48,22 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
         if (reader == null || dataModel == null) {
             return;
         }
-        Logger log = Logger.getLogger(ReceiverDataModel.class.getName());
         while(reader.ready()) {
             String line = reader.readLine();
             Matcher matcher = EPOCH_TIME_PATTERN.matcher(line);
-
+            logger.debug("Readed line: " + line);
             if (!matcher.find()) {
-                log.log(Level.WARNING, "Can't parse: " + line + " Line will be skipped.");
+                logger.warn("Can't parse: " + line + " Line will be skipped.");
                 continue;
             } else {
                 LocalDateTime epochTime = DateUtil.parseObsToLocalDateTime(matcher.group(1));
+                logger.debug(epochTime.toString());
                 int epochFlag = Ints.tryParse(matcher.group(2).trim());
                 int expectedSatNum = Ints.tryParse(matcher.group(3).trim());
                 List<String> satList = Splitter.fixedLength(3).splitToList(matcher.group(4).trim());
-
+                logger.debug("epochFlag: " + epochFlag + " Satellites: " + satList);
                 if (expectedSatNum != satList.size()) {
-                    log.log(Level.WARNING, "Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
+                    logger.warn("Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
                     continue;
                 }
 
@@ -66,12 +72,18 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
                 epoch.setNumSv(expectedSatNum);
                 epoch.setSatellites(satList);
 
-                Map<String, String> epochData = new LinkedHashMap<>();
+                Map<String, String> rawEpochData = new LinkedHashMap<>();
+                Map<String, double[]> parsedEpochData = new LinkedHashMap<>();
                 for (String sat : satList) {
                     String rawObs = preProcessRawObsService.preProcess(reader);
-                    epochData.put(sat, rawObs);
+                    logger.debug("Raw satellites data: Sat: " + sat + " Obs: " + rawObs);
+                    double[] obs = preProcessRawObsService.convertAndPreProcessRawObs(rawObs, dataModel.getTypesOfObs().size());
+                    logger.debug("Parsed satellites data: " + sat + " Obs: " + obs);
+                    rawEpochData.put(sat, rawObs);
+                    parsedEpochData.put(sat, obs);
                 }
-                epoch.add(epochData);
+                epoch.setRawEpochData(rawEpochData);
+                epoch.setParsedEpochData(parsedEpochData);
                 dataModel.addObservations(epoch);
             }
         }
@@ -79,7 +91,10 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
 
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
-        context.scan("ppa");
+        context.register(MvcConfiguration.class);
+        context.register(HibernateConfiguration.class);
+        context.registerBean(LogInjector.class);
+        context.scan("ppa", "utils", "config");
 
         ReceiverDataModel dataModel = new ReceiverDataModel();
         TypesOfObsParserServiceImpl parser = new TypesOfObsParserServiceImpl();

@@ -1,5 +1,9 @@
 package ppa.service.impl.rinex.impl;
 
+import com.google.common.primitives.Doubles;
+import config.injector.InjectLog;
+import jdk.nashorn.internal.runtime.ParserException;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ppa.service.PreProcessRawObsService;
 
@@ -14,6 +18,9 @@ import java.util.regex.Pattern;
 public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
 
     public final static List<String> LABELS_TO_SKIP = Arrays.asList("COMMENT", "MARKER NAME", "MARKER NUMBER", "ANTENNA: DELTA H/E/N");
+
+    @InjectLog
+    private Logger logger;
 
     public String preProcess(BufferedReader reader) throws IOException {
         String line = "";
@@ -38,6 +45,27 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
         }
 
         return line;
+    }
+
+    public double[] convertAndPreProcessRawObs(String rawObs, int numTypesOfObs) throws ParserException {
+        String[] splitedRawObs = rawObs.trim().split("    |   |  | ");
+        double[] epochData = new double[numTypesOfObs];
+        Arrays.fill(epochData, 0);
+
+        try {
+            int counter = 0;
+            for (String str : splitedRawObs) {
+                if (!str.trim().isEmpty()) {
+                    epochData[counter] = Doubles.tryParse(str);
+                    counter++;
+                }
+            }
+        } catch (Exception e) {
+            String msg = "Raw data: " + Arrays.asList(splitedRawObs) + " Parsed Data: " + Arrays.asList(epochData);
+            logger.error(msg);
+            throw new ParserException(msg);
+        }
+        return epochData;
     }
 
     public String skipCommentsIfAny(BufferedReader reader) throws IOException {

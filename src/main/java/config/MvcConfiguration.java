@@ -1,5 +1,6 @@
 package config;
 
+import config.injector.LogInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {"ppa","business"})
+@ComponentScan(basePackages = {"ppa", "business", "config"})
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurationSupport {
 
@@ -31,5 +32,10 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(500000000L);
         return multipartResolver;
+    }
+
+    @Bean(name = "logInjector")
+    public LogInjector logInjector() {
+        return new LogInjector();
     }
 }

@@ -2,7 +2,9 @@ package ppa.model.observation;
 
 import Jama.Matrix;
 import com.google.common.primitives.Ints;
+import config.injector.InjectLog;
 import lombok.Data;
+import org.slf4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ppa.dto.EpochDto;
@@ -16,6 +18,9 @@ import java.util.*;
 @Component
 @Scope("prototype")
 public @Data class ReceiverDataModel implements Gnss {
+
+    @InjectLog
+    private Logger logger;
 
     private RinexVersionType rinexVersionType;
 
@@ -69,51 +74,40 @@ public @Data class ReceiverDataModel implements Gnss {
 
     }
 
-    public Matrix getObsByIndex(ObsType type, int timeFrom, int timeTo, int satFrom, int satTo) {
-        return obs.get(type).getMatrix(timeFrom, timeTo, satFrom, satTo);
-    }
-
     public void addObservations(EpochDto epoch) {
 
         for (String svCode : epoch.getSatellites()) {
 
+            LocalDateTime epochTime = epoch.getEpochTime();
             int satellite = Ints.tryParse(svCode.substring(1,3));
 
             for (int index = 0; index < typesOfObs.size(); index++) {
                 ObsType type = typesOfObs.get(index);
-                Matrix epochArray = getObservations(type, epoch.getEpochTime());
-                double obsValue = epoch.getEpochData(index, svCode);
-
-                double value = epochArray.get(0, satellite);
-                if (value != 0) {
-                    System.out.println("Epoch " + epoch.getEpochTime() + " value " + value + " will be replaced by " + obsValue);
-                }
-                epochArray.set(0, satellite, obsValue);
                 Observations observations = rawObs.get(type);
 
-                LocalDateTime epochTime = epoch.getEpochTime();
+                if (observations == null) {
+                    observations = new Observations(type);
+                    rawObs.put(type, observations);
+                }
+
+                Matrix epochArray = observations.getEpoch(epochTime);
+
+                if (epochArray == null) {
+                    epochArray = new Matrix(1, Gnss.MAX_SAT, 0);
+                    observations.upsertEpoch(epochTime, epochArray);
+                }
+
+                double obsValue = epoch.getEpochData(index, svCode);
+                double value = epochArray.get(0, satellite);
+                if (value != 0 && value != obsValue) {
+                    logger.debug("Epoch " + epoch.getEpochTime() + " value " + value + " will be replaced by " + obsValue);
+                }
+                epochArray.set(0, satellite, obsValue);
+
                 observations.upsertEpoch(epochTime, epochArray);
                 observations.upsertFlag(epochTime, epoch.getFlag());
             }
         }
-    }
-
-    public Matrix getObservations(ObsType type, LocalDateTime epochTime) {
-        Observations observations = rawObs.get(type);
-
-        if (observations == null) {
-            observations = new Observations(type);
-            rawObs.put(type, observations);
-        }
-
-        Matrix epochArray = observations.getEpoch(epochTime);
-
-        if (epochArray == null) {
-            epochArray = new Matrix(1, Gnss.MAX_SAT, 0);
-            observations.upsertEpoch(epochTime, epochArray);
-        }
-
-        return epochArray;
     }
 
     public static final ReceiverDataModel NULL = new NullReceiverDataModel();
