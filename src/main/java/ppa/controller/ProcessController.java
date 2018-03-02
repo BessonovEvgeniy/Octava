@@ -1,11 +1,11 @@
 package ppa.controller;
 
+import business.model.process.Process;
+import config.injector.InjectThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import business.model.process.Process;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Controller
 public class ProcessController {
@@ -13,7 +13,8 @@ public class ProcessController {
     @Autowired
     private PreProcessController controller;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    @InjectThreadPool
+    private ExecutorService executor;
 
     public void process(Process process){
         Runnable ppa = () -> {

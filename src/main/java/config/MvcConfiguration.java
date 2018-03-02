@@ -1,5 +1,6 @@
 package config;
 
+import config.injector.FixedThreadPoolInjector;
 import config.injector.LogInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -37,5 +38,10 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     @Bean(name = "logInjector")
     public LogInjector logInjector() {
         return new LogInjector();
+    }
+
+    @Bean(name = "threadPoolInjector")
+    public FixedThreadPoolInjector fixedThreadPoolInjector() {
+        return new FixedThreadPoolInjector();
     }
 }

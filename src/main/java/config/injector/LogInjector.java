@@ -4,12 +4,10 @@ package config.injector;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 
-@Component
 public class LogInjector implements BeanPostProcessor {
 
     @Override

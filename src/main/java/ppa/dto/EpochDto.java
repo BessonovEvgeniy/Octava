@@ -44,7 +44,7 @@ public @Data class EpochDto {
     public double getEpochData(int index, String svCode) {
         double[] parsedObs = epochData.get(svCode);
         if (ArrayUtils.isNotEmpty(parsedObs)) {
-            return index > parsedObs.length - 1 ? parsedObs[index] : 0;
+            return index > parsedObs.length - 1 ? 0 : parsedObs[index];
         } else {
             return 0;
         }
