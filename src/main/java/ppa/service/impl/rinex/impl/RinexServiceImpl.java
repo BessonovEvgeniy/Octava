@@ -1,15 +1,22 @@
 package ppa.service.impl.rinex.impl;
 
-import org.apache.commons.fileupload.FileUploadException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import ppa.exception.UnknownHeaderLabelException;
-import ppa.model.observation.ReceiverDataModel;
 import business.model.process.Process;
+import config.AppInitializer;
+import config.HibernateConfiguration;
+import config.MvcConfiguration;
+import config.injector.InjectLog;
+import config.injector.LogInjector;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+import ppa.model.observation.ReceiverDataModel;
 import ppa.service.RinexService;
-import ppa.service.State;
 
+import javax.inject.Provider;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,24 +26,32 @@ import java.util.regex.Pattern;
 @Service
 public class RinexServiceImpl implements RinexService {
 
-
     public static final String REQUIRED_CONTENT_TYPE = "";
-
-    private State state;
-
-    private ReceiverDataModel data = new ReceiverDataModel();
+    public static final Pattern RINEX_FILE_PATTERN = Pattern.compile("^*.\\d{2}o$");
 
     @Autowired
+    private Provider<ReceiverDataModel> dataModelProvider;
+    @InjectLog
+    private Logger log;
     private ReadHeaderImpl readHeader;
-
-    @Autowired
     private ReadRinexObservationsDecorator readObservations;
 
-    public List<ReceiverDataModel> readRinex(Process process) throws Exception {
+    @Autowired
+    public RinexServiceImpl(ReadHeaderImpl readHeader, ReadRinexObservationsDecorator readObservations) {
+        this.readHeader = readHeader;
+        this.readObservations = readObservations;
+    }
+
+    public List<ReceiverDataModel> readRinex(Process process) {
         List<ReceiverDataModel> results = new ArrayList<>();
         for (File file : process.getFiles()) {
-            InputStream inputStream = new FileInputStream(file);
-            results.add(readRinex(inputStream));
+            try {
+                InputStream inputStream = new FileInputStream(file);
+                results.add(readRinex(inputStream));
+            } catch (Exception e) {
+                log.warn("File " + file.getAbsolutePath() + " isn't processed due to some problems. File skipped.");
+                e.printStackTrace();
+            }
         }
         return results;
     }
@@ -45,43 +60,55 @@ public class RinexServiceImpl implements RinexService {
         if (inputStream == null) {
             return ReceiverDataModel.NULL;
         } else {
+            ReceiverDataModel data = dataModelProvider.get();
+
+            log.info("Rinex reading...");
             try (BufferedReader reader =
                          new BufferedReader(
                                  new InputStreamReader(inputStream))) {
 
-                changeState(readHeader);
-                state.read(reader, data);
-                changeState(readObservations);
-                state.read(reader, data);
-            } catch (UnknownHeaderLabelException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-                throw new Exception();
+                log.info("Header reading...");
+                readHeader.read(reader, data);
+                log.info("Done. \n\r Observation reading...");
+                readObservations.read(reader, data);
+                log.info("Done.");
             }
             return data;
         }
     }
 
-    private void changeState(State state){
-        this.state = state;
-    }
-
     @Override
     public void validateRinex(MultipartFile rinexFile) throws Exception {
-
-        Matcher matcher = Pattern.compile("^*.\\d{2}o$").matcher(rinexFile.getOriginalFilename());
+        log.info("Rinex header validation...");
+        Matcher matcher = RINEX_FILE_PATTERN.matcher(rinexFile.getOriginalFilename());
         if (!matcher.find()) {
-            throw new FileUploadException("Illegal file name " + rinexFile.getOriginalFilename());
+            String msg = "Illegal file name " + rinexFile.getOriginalFilename();
+            log.warn(msg);
+            throw new FileUploadException(msg);
         }
-
         if (rinexFile.getContentType().equals(REQUIRED_CONTENT_TYPE)) {
-            throw new FileUploadException("Incompatible content type: " + rinexFile.getContentType() + " ");
+            String msg = "Incompatible content type: " + rinexFile.getContentType() + " ";
+            log.warn(msg);
+            throw new FileUploadException(msg);
         }
 
         BufferedReader br = new BufferedReader(new InputStreamReader(rinexFile.getInputStream()));
-        ReceiverDataModel dataModel = new ReceiverDataModel();
+        ReceiverDataModel dataModel = dataModelProvider.get();
         readHeader.read(br, dataModel);
+        log.info("Rinex header valid.");
+    }
 
-        System.out.println(dataModel.getRinexVersionType().getVersion());
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
+        context.register(MvcConfiguration.class);
+        context.register(HibernateConfiguration.class);
+        context.registerBean(LogInjector.class);
+        context.scan("ppa", "utils", "config");
+
+        RinexServiceImpl serv1 = context.getBean(RinexServiceImpl.class);
+        ReceiverDataModel model1 = serv1.dataModelProvider.get();
+        ReceiverDataModel model2 = serv1.dataModelProvider.get();
+
+        Assert.isTrue(model1 != model2, "Should be diff objects");
     }
 }

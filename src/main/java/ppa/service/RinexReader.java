@@ -4,7 +4,7 @@ import ppa.model.observation.ReceiverDataModel;
 
 import java.io.BufferedReader;
 
-public interface State {
+public interface RinexReader {
 
     void read(BufferedReader reader, ReceiverDataModel data) throws Exception;
 }

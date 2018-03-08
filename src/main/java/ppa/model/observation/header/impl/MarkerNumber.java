@@ -5,6 +5,8 @@ import ppa.model.observation.header.HeaderLabel;
 
 public @Data class MarkerNumber implements HeaderLabel {
 
+    public static final MarkerNumber NULL = new MarkerNumber.NullMarkerNumber();
+
     private String markerNumber;
 
     private MarkerNumber() {}
@@ -12,8 +14,6 @@ public @Data class MarkerNumber implements HeaderLabel {
     public MarkerNumber(String markerNumber) {
         this.markerNumber = markerNumber;
     }
-
-    public static final MarkerNumber NULL = new MarkerNumber.NullMarkerNumber();
 
     private static class NullMarkerNumber extends MarkerNumber {
         @Override

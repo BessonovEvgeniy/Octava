@@ -5,8 +5,9 @@ import ppa.model.observation.header.HeaderLabel;
 
 public @Data class AntType implements HeaderLabel {
 
-    private String antennaNumber;
+    public static final AntType NULL = new AntType.NullAntType();
 
+    private String antennaNumber;
     private String antennaType;
 
     private AntType() {}
@@ -15,8 +16,6 @@ public @Data class AntType implements HeaderLabel {
         this.antennaNumber = antennaNumber;
         this.antennaType = antennaType;
     }
-
-    public static final AntType NULL = new AntType.NullAntType();
 
     private static class NullAntType extends AntType {
         @Override

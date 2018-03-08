@@ -31,12 +31,12 @@ public @Data class Observations extends BaseModel implements Gnss {
         return obs.get(epochTime);
     }
 
-    public void upsertEpoch(LocalDateTime epochTime, Matrix epochData) {
+    public void putEpoch(LocalDateTime epochTime, Matrix epochData) {
         validateEpochData(epochData);
         obs.put(epochTime, epochData);
     }
 
-    public void upsertFlag(LocalDateTime epochTime, int flag) {
+    public void putFlag(LocalDateTime epochTime, int flag) {
         flags.put(epochTime, flag);
     }
 

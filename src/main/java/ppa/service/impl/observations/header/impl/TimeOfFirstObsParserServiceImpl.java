@@ -1,7 +1,6 @@
 package ppa.service.impl.observations.header.impl;
 
 import com.google.common.base.Strings;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.header.impl.TimeOfFirstObs;
 import ppa.service.impl.observations.header.HeaderLabelParserService;
@@ -10,9 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("TIME OF FIRST OBS")
-public @Data class TimeOfFirstObsParserServiceImpl implements HeaderLabelParserService<TimeOfFirstObs> {
+public class TimeOfFirstObsParserServiceImpl implements HeaderLabelParserService<TimeOfFirstObs> {
 
-    private Pattern pattern = Pattern.compile(".*" +
+    public final static Pattern PATTERN = Pattern.compile(".*" +
             "(\\d{4}.{4,5}"  +
             Strings.repeat("\\d{1,2}.{4,5}", 4) +
             "\\d{1,2}\\.\\d{7}).{3,5}"+
@@ -21,7 +20,7 @@ public @Data class TimeOfFirstObsParserServiceImpl implements HeaderLabelParserS
     @Override
     public TimeOfFirstObs parse(String line) {
 
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
 //        if (matcher.find()) {
 //            system = isFind ? matcher.group(2) : "";

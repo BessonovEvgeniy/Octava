@@ -5,6 +5,8 @@ import ppa.model.observation.header.HeaderLabel;
 
 public @Data class OfSatellites implements HeaderLabel {
 
+    public static final OfSatellites NULL = new OfSatellites.NullOfSatellites();
+
     int numberOfSatellites = 0;
 
     protected OfSatellites(){}
@@ -12,8 +14,6 @@ public @Data class OfSatellites implements HeaderLabel {
     public OfSatellites(int ofSats){
         numberOfSatellites = ofSats;
     }
-
-    public static final OfSatellites NULL = new OfSatellites.NullOfSatellites();
 
     private static class NullOfSatellites extends OfSatellites {
         @Override

@@ -2,11 +2,16 @@ package ppa.model.observation;
 
 import Jama.Matrix;
 import com.google.common.primitives.Ints;
-import config.injector.InjectLog;
+import config.AppInitializer;
+import config.BeanFactory;
+import config.HibernateConfiguration;
+import config.MvcConfiguration;
+import config.injector.LogInjector;
 import lombok.Data;
-import org.slf4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import ppa.dto.EpochDto;
 import ppa.model.observation.header.impl.*;
 import ppa.model.rinex.Gnss;
@@ -19,8 +24,7 @@ import java.util.*;
 @Scope("prototype")
 public @Data class ReceiverDataModel implements Gnss {
 
-    @InjectLog
-    private Logger logger;
+    public static final ReceiverDataModel NULL = new NullReceiverDataModel();
 
     private RinexVersionType rinexVersionType;
 
@@ -56,11 +60,19 @@ public @Data class ReceiverDataModel implements Gnss {
 
     public void buildObsMatrixFromRawData(){
 
+        if (rawObs == null) {
+            return;
+        }
+
         for (Map.Entry<ObsType, Observations> obsByType : rawObs.entrySet()) {
 
             Observations rawEpoches = obsByType.getValue();
-            int epochNum = rawEpoches.size();
-            Matrix matrix = new Matrix(epochNum, Gnss.MAX_SAT, 0);
+
+            if (rawEpoches == null || rawEpoches.getObs() == null) {
+                continue;
+            }
+
+            Matrix matrix = new Matrix(rawEpoches.size(), Gnss.MAX_SAT, 0);
 
             int epochCounter = 0;
             for (Map.Entry<LocalDateTime, Matrix> rawEpoch : rawEpoches.getObs().entrySet()) {
@@ -75,6 +87,9 @@ public @Data class ReceiverDataModel implements Gnss {
     }
 
     public void addObservations(EpochDto epoch) {
+        if (epoch == null) {
+            return;
+        }
 
         for (String svCode : epoch.getSatellites()) {
 
@@ -94,29 +109,36 @@ public @Data class ReceiverDataModel implements Gnss {
 
                 if (epochArray == null) {
                     epochArray = new Matrix(1, Gnss.MAX_SAT, 0);
-                    observations.upsertEpoch(epochTime, epochArray);
+                    observations.putEpoch(epochTime, epochArray);
                 }
 
                 double obsValue = epoch.getEpochData(index, svCode);
-                double value = epochArray.get(0, satellite);
-                if (value != 0 && value != obsValue) {
-                    logger.debug("Epoch " + epoch.getEpochTime() + " value " + value + " will be replaced by " + obsValue);
-                }
                 epochArray.set(0, satellite, obsValue);
 
-                observations.upsertEpoch(epochTime, epochArray);
-                observations.upsertFlag(epochTime, epoch.getFlag());
+                observations.putEpoch(epochTime, epochArray);
+                observations.putFlag(epochTime, epoch.getFlag());
             }
         }
     }
 
-    public static final ReceiverDataModel NULL = new NullReceiverDataModel();
-
     private static class NullReceiverDataModel extends ReceiverDataModel {
-
         @Override
         public String toString() {
             return "NullReceiverDataModel";
         }
+    }
+
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
+        context.register(MvcConfiguration.class);
+        context.register(HibernateConfiguration.class);
+        context.register(BeanFactory.class);
+        context.registerBean(LogInjector.class);
+        context.scan("ppa", "utils", "config");
+
+        ReceiverDataModel receiverDataModel1 = context.getBean(ReceiverDataModel.class);
+        ReceiverDataModel receiverDataModel2 = context.getBean(ReceiverDataModel.class);
+
+        Assert.isTrue(receiverDataModel1 != receiverDataModel2, "GOOD");
     }
 }

@@ -25,13 +25,15 @@ public class PreProcessController implements ProcessorState {
     public void process(Process process) throws Exception {
         List<ReceiverDataModel> dataModels = rinexService.readRinex(process);
 
+
+
         for (ReceiverDataModel dataModel : dataModels) {
             dataModel.buildObsMatrixFromRawData();
 
             Matrix matrix = dataModel.getObs().get(ObsType.C1);
 
             Figure figure = new Figure();
-            figure.plotRows(matrix);
+            figure.plot(matrix);
         }
     }
 }

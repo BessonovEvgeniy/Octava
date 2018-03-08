@@ -10,11 +10,15 @@ import java.util.concurrent.ExecutorService;
 @Controller
 public class ProcessController {
 
-    @Autowired
     private PreProcessController controller;
 
     @InjectThreadPool
     private ExecutorService executor;
+
+    @Autowired
+    ProcessController(PreProcessController controller) {
+        this.controller = controller;
+    }
 
     public void process(Process process){
         Runnable ppa = () -> {

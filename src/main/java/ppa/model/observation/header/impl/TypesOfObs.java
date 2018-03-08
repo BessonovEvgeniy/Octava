@@ -8,6 +8,8 @@ import java.util.List;
 
 public @Data class TypesOfObs implements HeaderLabel {
 
+    public static final TypesOfObs NULL = new TypesOfObs.NullTypesOfObs();
+
     private List<ObsType> obsTypes = new ArrayList<>();
 
     private TypesOfObs() {}
@@ -23,8 +25,6 @@ public @Data class TypesOfObs implements HeaderLabel {
     public ObsType get(int index) {
         return obsTypes.get(index);
     }
-
-    public static final TypesOfObs NULL = new TypesOfObs.NullTypesOfObs();
 
     private static class NullTypesOfObs extends TypesOfObs {
         @Override

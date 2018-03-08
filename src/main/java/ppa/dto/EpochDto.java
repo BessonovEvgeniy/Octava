@@ -3,12 +3,14 @@ package ppa.dto;
 
 import lombok.Data;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public @Data class EpochDto {
 
     private LocalDateTime epochTime;
@@ -43,10 +45,6 @@ public @Data class EpochDto {
 
     public double getEpochData(int index, String svCode) {
         double[] parsedObs = epochData.get(svCode);
-        if (ArrayUtils.isNotEmpty(parsedObs)) {
-            return index > parsedObs.length - 1 ? 0 : parsedObs[index];
-        } else {
-            return 0;
-        }
+        return ArrayUtils.isNotEmpty(parsedObs) && index > parsedObs.length - 1 ? 0 : parsedObs[index];
     }
 }

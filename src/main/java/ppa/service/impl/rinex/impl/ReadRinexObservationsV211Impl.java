@@ -18,7 +18,7 @@ import ppa.model.observation.ReceiverDataModel;
 import ppa.model.observation.header.impl.ObsType;
 import ppa.model.observation.header.impl.TypesOfObs;
 import ppa.service.PreProcessRawObsService;
-import ppa.service.State;
+import ppa.service.RinexReader;
 import ppa.service.impl.observations.header.impl.TypesOfObsParserServiceImpl;
 import utils.date.DateUtil;
 import utils.plot.Figure;
@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("2.11")
-public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements State {
+public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations implements RinexReader {
 
     public final static String EPOCH_TIME_REGEXP = "(" + Strings.repeat("\\s*\\d{1,2}",5) + "\\s*\\d{1,2}.\\d{7})\\s{1,2}(\\d{1})\\s{1,2}(\\d{1,2})(.*)";
     public final static Pattern EPOCH_TIME_PATTERN = Pattern.compile(EPOCH_TIME_REGEXP);
@@ -41,8 +41,12 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
     @InjectLog
     private Logger logger;
 
-    @Autowired
     private PreProcessRawObsService preProcessRawObsService;
+
+    @Autowired
+    public ReadRinexObservationsV211Impl(PreProcessRawObsService service) {
+        preProcessRawObsService = service;
+    }
 
     public void read(BufferedReader reader, ReceiverDataModel dataModel) throws Exception {
         if (reader == null || dataModel == null) {
@@ -89,6 +93,8 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
         }
     }
 
+
+
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
         context.register(MvcConfiguration.class);
@@ -113,6 +119,6 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
         Matrix matrix = dataModel.getObs().get(ObsType.C1);
 
         Figure figure = new Figure();
-        figure.plotRows(matrix);
+        figure.plot(matrix);
     }
 }

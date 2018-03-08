@@ -12,13 +12,13 @@ import java.util.regex.Pattern;
 @Service("ANTENNA: DELTA H/E/N")
 public class AntennaDeltaParserServiceImpl implements HeaderLabelParserService<AntennaDelta> {
 
-    private Pattern pattern = Pattern.compile("\\s{1,2}"
+    public final static Pattern PATTERN = Pattern.compile("\\s{1,2}"
             + Strings.repeat("([-+]?[0-9]{0,14}\\.?[0-9]{0,4})\\s{1,23}",3)
             + "ANTENNA: DELTA H/E/N");
 
     @Override
     public AntennaDelta parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             double delH = Doubles.tryParse(matcher.group(1));

@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
 @Service("PGM / RUN BY / DATE")
 public class PgmRunByDateParserServiceImpl implements HeaderLabelParserService<PgmRunByDate> {
 
-    private Pattern pattern = Pattern.compile("(.{20})(.{20})(.{20})PGM / RUN BY / DATE");
+    public final static Pattern PATTERN = Pattern.compile("(.{20})(.{20})(.{20})PGM / RUN BY / DATE");
 
     @Override
     public PgmRunByDate parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             String program = matcher.group(1).trim();

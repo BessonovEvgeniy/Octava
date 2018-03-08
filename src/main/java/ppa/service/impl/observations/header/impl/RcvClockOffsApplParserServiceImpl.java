@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 @Service("RCV CLOCK OFFS APPL")
 public class RcvClockOffsApplParserServiceImpl implements HeaderLabelParserService<RcvClockOffsAppl> {
 
-    private Pattern pattern = Pattern.compile("(.{1,60})RCV CLOCK OFFS APPL ");
+    public final static Pattern PATTERN = Pattern.compile("(.{1,60})RCV CLOCK OFFS APPL ");
 
     @Override
     public RcvClockOffsAppl parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             boolean receiverOffset = Ints.tryParse(matcher.group(1).trim()).equals(1);

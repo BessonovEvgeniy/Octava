@@ -48,16 +48,14 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
     }
 
     public double[] convertRawObs(String rawObs, int numTypesOfObs) throws ParserException {
-        String[] splitedRawObs = rawObs.trim().split("    |   |  | ");
+        String[] splitedRawObs = rawObs.trim().split("\\s{7}|\\s{6}|\\s{5}|\\s{4}|\\s{3}|\\s{2}|\\s{1}");
         double[] epochData = new double[numTypesOfObs];
-        Arrays.fill(epochData, 0);
 
         try {
-            int counter = 0;
-            for (String str : splitedRawObs) {
+            for (int i = 0; i < splitedRawObs.length; i++) {
+                String str = splitedRawObs[i];
                 if (!str.trim().isEmpty()) {
-                    epochData[counter] = Doubles.tryParse(str);
-                    counter++;
+                    epochData[i] = Doubles.tryParse(str);
                 }
             }
         } catch (Exception e) {
@@ -69,6 +67,7 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
     }
 
     public String skipCommentsIfAny(BufferedReader reader) throws IOException {
+
         boolean skip = false;
         String line;
         do {

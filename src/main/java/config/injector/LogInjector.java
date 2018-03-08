@@ -17,15 +17,13 @@ public class LogInjector implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(final Object bean, String name) throws BeansException {
-        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
-            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                // make the field accessible if defined private
-                ReflectionUtils.makeAccessible(field);
-                if (field.getAnnotation(InjectLog.class) != null) {
-                    Logger logger = Logger.getLogger(bean.getClass());
-                    field.set(bean, logger);
-                    logger.info("Inject log into " + name);
-                }
+        ReflectionUtils.doWithFields(bean.getClass(), (Field field) -> {
+            // make the field accessible if defined private
+            ReflectionUtils.makeAccessible(field);
+            if (field.getAnnotation(InjectLog.class) != null) {
+                Logger logger = Logger.getLogger(bean.getClass());
+                field.set(bean, logger);
+                logger.info("Inject log into " + name);
             }
         });
         return bean;

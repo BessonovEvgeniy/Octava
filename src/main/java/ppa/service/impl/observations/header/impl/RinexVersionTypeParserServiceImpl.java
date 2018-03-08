@@ -10,12 +10,12 @@ import java.util.regex.Pattern;
 @Service("RINEX VERSION / TYPE")
 public class RinexVersionTypeParserServiceImpl implements HeaderLabelParserService<RinexVersionType> {
 
-    private Pattern pattern = Pattern.compile("\\s{5}(\\d{1,9}\\.\\d{1,2})\\s{4,11}[\\w,\\s]{20}([M,G,E,R,S]).{19}RINEX VERSION / TYPE");
+    public final static Pattern PATTERN = Pattern.compile("\\s{5}(\\d{1,9}\\.\\d{1,2})\\s{4,11}[\\w,\\s]{20}([M,G,E,R,S]).{19}RINEX VERSION / TYPE");
 
     @Override
     public RinexVersionType parse(String line) {
 
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             String version = matcher.group(1).trim();

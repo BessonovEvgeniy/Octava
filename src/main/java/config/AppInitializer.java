@@ -1,5 +1,6 @@
 package config;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -34,6 +35,7 @@ public class AppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(MvcConfiguration.class);
         context.register(HibernateConfiguration.class);
+        context.register(SeparateBeanConfiguration.class);
         return context;
     }
 

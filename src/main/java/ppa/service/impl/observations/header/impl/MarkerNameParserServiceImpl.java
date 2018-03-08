@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 @Service("MARKER NAME")
 public @Data class MarkerNameParserServiceImpl implements HeaderLabelParserService<MarkerName> {
 
-    private Pattern pattern = Pattern.compile("(.{1,60})MARKER NAME");
+    public final static Pattern PATTERN = Pattern.compile("(.{1,60})MARKER NAME");
 
     @Override
     public MarkerName parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             return new MarkerName(matcher.group(1));

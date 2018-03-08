@@ -3,12 +3,12 @@ package ppa.service.impl.rinex.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.ReceiverDataModel;
-import ppa.service.State;
+import ppa.service.RinexReader;
 
 import java.io.BufferedReader;
 
 @Service
-public class ReadRinexObservationsDecorator implements State {
+public class ReadRinexObservationsDecorator implements RinexReader {
 
     @Autowired
     private ReadRinexObservationsFactory obsFactory;
@@ -17,7 +17,7 @@ public class ReadRinexObservationsDecorator implements State {
 
         String rinexVersion = data.getRinexVersionType().getVersion();
 
-        State rinexObservationReader = obsFactory.getReadRinexObservationsReader(rinexVersion);
+        RinexReader rinexObservationReader = obsFactory.getReadRinexObservationsReader(rinexVersion);
 
         rinexObservationReader.read(reader, data);
     }

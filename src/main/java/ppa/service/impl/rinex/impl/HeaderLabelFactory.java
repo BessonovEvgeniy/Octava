@@ -2,7 +2,6 @@ package ppa.service.impl.rinex.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ppa.exception.UnknownHeaderLabelException;
 import ppa.model.observation.header.HeaderLabel;
 import ppa.service.impl.observations.header.HeaderLabelParserService;
@@ -12,8 +11,12 @@ import java.util.Map;
 @Service
 public class HeaderLabelFactory {
 
-    @Autowired
     private Map<String, HeaderLabelParserService> parsers;
+
+    @Autowired
+    public HeaderLabelFactory(Map<String, HeaderLabelParserService> parsers) {
+        this.parsers = parsers;
+    }
 
     public HeaderLabel getHeaderLabel(String line) throws Exception {
 

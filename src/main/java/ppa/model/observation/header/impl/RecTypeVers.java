@@ -5,10 +5,10 @@ import ppa.model.observation.header.HeaderLabel;
 
 public @Data class RecTypeVers implements HeaderLabel {
 
+    public static final RecTypeVers NULL = new RecTypeVers.NullRecTypeVers();
+
     private String rec;
-
     private String type;
-
     private String vers;
 
     private RecTypeVers() {}
@@ -18,8 +18,6 @@ public @Data class RecTypeVers implements HeaderLabel {
         this.type = type;
         this.vers = vers;
     }
-
-    public static final RecTypeVers NULL = new RecTypeVers.NullRecTypeVers();
 
     private static class NullRecTypeVers extends RecTypeVers {
         @Override

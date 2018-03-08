@@ -1,7 +1,6 @@
 package ppa.service.impl.observations.header.impl;
 
 import com.google.common.primitives.Ints;
-import lombok.Data;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.header.impl.WaveLengthFact;
@@ -15,13 +14,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service("WAVELENGTH FACT L1/2")
-public @Data class WavelengthFactParserServiceImpl implements HeaderLabelParserService <WaveLengthFact> {
+public class WavelengthFactParserServiceImpl implements HeaderLabelParserService <WaveLengthFact> {
 
-    private Pattern pattern = Pattern.compile("([\\d,\\s]{6})([\\d,\\s]{6})([\\d,\\s]{6})(.*)WAVELENGTH FACT L1/2");
+    public final static Pattern PATTERN = Pattern.compile("([\\d,\\s]{6})([\\d,\\s]{6})([\\d,\\s]{6})(.*)WAVELENGTH FACT L1/2");
 
     @Override
     public WaveLengthFact parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
 

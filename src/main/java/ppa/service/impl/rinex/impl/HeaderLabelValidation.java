@@ -1,6 +1,8 @@
 package ppa.service.impl.rinex.impl;
 
+import config.injector.InjectLog;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import ppa.exception.InvalidHeaderLabelException;
 import ppa.exception.RinexLineLengthMismatchException;
@@ -13,6 +15,9 @@ import java.util.Set;
 
 @Component
 public class HeaderLabelValidation {
+
+    @InjectLog
+    private static Logger log;
 
     public static void validateLineLength(Object object) {
         if (object instanceof String) {
@@ -30,10 +35,10 @@ public class HeaderLabelValidation {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object);
 
         if (CollectionUtils.isNotEmpty(constraintViolations)) {
-            System.out.println(object);
-            System.out.println(String.format("Number of Errors: %d", constraintViolations.size()));
+            log.warn(object);
+            log.warn(String.format("Number of Errors: %d", constraintViolations.size()));
             for (ConstraintViolation<Object> cv : constraintViolations) {
-                System.out.println(String.format(
+                log.warn(String.format(
                         "Error! property: [%s], value: [%s], message: [%s]",
                         cv.getPropertyPath(), cv.getInvalidValue(), cv.getMessage()));
             }

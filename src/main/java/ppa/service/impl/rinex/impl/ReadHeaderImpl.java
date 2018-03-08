@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.ReceiverDataModel;
 import ppa.model.observation.header.HeaderLabel;
-import ppa.service.State;
+import ppa.service.RinexReader;
 
 import java.io.BufferedReader;
 import java.lang.reflect.Field;
 
 @Service
-public class ReadHeaderImpl <T extends HeaderLabel> implements State {
+public class ReadHeaderImpl <T extends HeaderLabel> implements RinexReader {
 
     @Autowired
     private HeaderLabelFactory headerLabelFactory;

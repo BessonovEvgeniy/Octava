@@ -2,7 +2,6 @@ package ppa.service.impl.observations.header.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.primitives.Doubles;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.header.impl.ApproxPos;
 import ppa.service.impl.observations.header.HeaderLabelParserService;
@@ -11,13 +10,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("APPROX POSITION XYZ")
-public @Data class ApproxPosParserServiceImpl implements HeaderLabelParserService<ApproxPos> {
+public class ApproxPosParserServiceImpl implements HeaderLabelParserService<ApproxPos> {
 
-    private Pattern pattern = Pattern.compile("\\s{2}" + Strings.repeat("([-+]?[0-9]{1,14}\\.?[0-9]{0,4})\\s{1,23}",3) + "APPROX POSITION XYZ ");
+    public final static Pattern PATTERN = Pattern.compile("\\s{2}" +
+            Strings.repeat("([-+]?[0-9]{1,14}\\.?[0-9]{0,4})\\s{1,23}",3) +
+            "APPROX POSITION XYZ ");
 
     @Override
     public ApproxPos parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             double x = Doubles.tryParse(matcher.group(1));

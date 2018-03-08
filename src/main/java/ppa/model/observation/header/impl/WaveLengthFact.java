@@ -8,6 +8,8 @@ import java.util.Collection;
 
 public @Data class WaveLengthFact implements HeaderLabel {
 
+    public static final WaveLengthFact NULL = new WaveLengthFact.NullWaveLengthFact();
+
     @NotNull
     private Ambiguities freq1;
 
@@ -19,7 +21,7 @@ public @Data class WaveLengthFact implements HeaderLabel {
 
     private Collection<String> sats;
 
-    private WaveLengthFact() {}
+    private WaveLengthFact() { }
 
     public WaveLengthFact(int freqL1Param, int freqL2Param, Collection<String> sats) {
 
@@ -41,8 +43,6 @@ public @Data class WaveLengthFact implements HeaderLabel {
 
         Ambiguities() {}
     }
-
-    public static final WaveLengthFact NULL = new WaveLengthFact.NullWaveLengthFact();
 
     private static class NullWaveLengthFact extends WaveLengthFact {
         @Override

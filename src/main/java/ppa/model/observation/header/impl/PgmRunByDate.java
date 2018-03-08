@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 public @Data class PgmRunByDate implements HeaderLabel {
 
+    public static final PgmRunByDate NULL = new PgmRunByDate.NullPgmRunByDate();
+
     private String program;
-
     private String agency;
-
     private LocalDateTime created;
 
     private PgmRunByDate() {}
@@ -20,8 +20,6 @@ public @Data class PgmRunByDate implements HeaderLabel {
         this.agency = agency;
         this.created = created;
     }
-
-    public static final PgmRunByDate NULL = new PgmRunByDate.NullPgmRunByDate();
 
     private static class NullPgmRunByDate extends PgmRunByDate {
         @Override

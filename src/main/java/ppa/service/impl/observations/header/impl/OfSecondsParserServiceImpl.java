@@ -12,12 +12,12 @@ import java.util.regex.Pattern;
 @Service("# OF SATELLITES")
 public @Data class OfSecondsParserServiceImpl implements HeaderLabelParserService<OfSatellites> {
 
-    private Pattern pattern = Pattern.compile("(.{1,60})# OF SATELLITES");
+    public final static Pattern PATTERN = Pattern.compile("(.{1,60})# OF SATELLITES");
 
     @Override
     public OfSatellites parse(String line) {
 
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             int ofSats = Ints.tryParse(matcher.group(1).trim());

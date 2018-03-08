@@ -1,7 +1,6 @@
 package ppa.service.impl.observations.header.impl;
 
 import com.google.common.primitives.Ints;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import ppa.exception.UnknownHeaderLabelException;
@@ -15,14 +14,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service("# / TYPES OF OBSERV")
-public @Data class TypesOfObsParserServiceImpl implements HeaderLabelParserService<TypesOfObs> {
+public class TypesOfObsParserServiceImpl implements HeaderLabelParserService<TypesOfObs> {
 
-    private Pattern pattern = Pattern.compile("\\s{4,6}(\\d{1,2})(.*)# / TYPES OF OBSERV");
+    public final static Pattern PATTERN = Pattern.compile("\\s{4,6}(\\d{1,2})(.*)# / TYPES OF OBSERV");
 
     @Override
     public TypesOfObs parse(String line) {
 
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             int numTypes = Ints.tryParse(matcher.group(1));

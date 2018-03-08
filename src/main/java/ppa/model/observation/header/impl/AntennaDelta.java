@@ -5,6 +5,8 @@ import ppa.model.observation.header.HeaderLabel;
 
 public @Data class AntennaDelta implements HeaderLabel {
 
+    public static final AntennaDelta NULL = new AntennaDelta.NullAntennaDelta();
+
     private double delH;
 
     private double delE;
@@ -18,8 +20,6 @@ public @Data class AntennaDelta implements HeaderLabel {
         this.delE = delE;
         this.delN = delN;
     }
-
-    public static final AntennaDelta NULL = new AntennaDelta.NullAntennaDelta();
 
     private static class NullAntennaDelta extends AntennaDelta {
         @Override

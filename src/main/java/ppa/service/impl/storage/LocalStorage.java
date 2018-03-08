@@ -15,7 +15,7 @@ import java.io.File;
 public class LocalStorage implements StorageService {
 
     @Value("${localStorageFolder}")
-    String path;
+    private String path;
 
     @Override
     public String store(MultipartFile multipartFile, Project project) throws Exception {

@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 
 public @Getter class RinexVersionType implements HeaderLabel {
 
+    public static final RinexVersionType NULL = new RinexVersionType.NullRinexVersionType();
+
     @NotNull
     @Length(min = 4, max = 11, message = "Rinex version format is XXXXXXXX.XX format")
     private String version;
@@ -22,8 +24,6 @@ public @Getter class RinexVersionType implements HeaderLabel {
     }
 
     private RinexVersionType() {}
-
-    public static final RinexVersionType NULL = new RinexVersionType.NullRinexVersionType();
 
     private static class NullRinexVersionType extends RinexVersionType {
         @Override

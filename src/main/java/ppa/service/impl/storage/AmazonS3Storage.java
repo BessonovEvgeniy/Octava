@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-@Service
+@Service("amazonS3Storage")
 public class AmazonS3Storage implements StorageService {
 
     @Value("${amazon.accessKeyID}")

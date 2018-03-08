@@ -12,11 +12,12 @@ import java.util.regex.Pattern;
 @Service("ANT # / TYPE")
 public @Data class AntTypeParserServiceImpl implements HeaderLabelParserService<AntType> {
 
-    private Pattern pattern = Pattern.compile(Strings.repeat("(.{20})", 3) + "ANT # / TYPE        ");
+    public final static Pattern PATTERN = Pattern.compile(Strings.repeat("(.{20})", 3) +
+            "ANT # / TYPE        ");
 
     @Override
     public AntType parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             String antennaNumber = matcher.group(1);

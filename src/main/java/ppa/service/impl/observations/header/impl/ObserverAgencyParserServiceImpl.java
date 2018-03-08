@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 @Service("OBSERVER / AGENCY")
 public class ObserverAgencyParserServiceImpl implements HeaderLabelParserService<ObserverAgency> {
 
-    private Pattern pattern = Pattern.compile("(.{20})(.{40})OBSERVER / AGENCY   ");
+    public final static Pattern PATTERN = Pattern.compile("(.{20})(.{40})OBSERVER / AGENCY   ");
 
     @Override
     public ObserverAgency parse(String line) {
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
             String observerName = matcher.group(1).trim();

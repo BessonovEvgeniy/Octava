@@ -5,14 +5,19 @@ import lombok.Data;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public @Data class Figure {
+
+    @Autowired
+    private ExecutorService executorService;
 
     private String title = "";
     private String xLabel = "";
@@ -29,9 +34,12 @@ public @Data class Figure {
 
     private XYChart chart;
 
-    public Figure() {}
+    public Figure() {
+        init();
+    }
 
     public Figure(String xLabel, String yLabel) {
+        this();
         this.xLabel = xLabel;
         this.yLabel = yLabel;
     }
@@ -42,15 +50,13 @@ public @Data class Figure {
     }
 
     private void init() {
-
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(10);
+        }
     }
 
-    public void plotRows(Matrix matrix) {
-        plot(matrix, true);
-    }
-
-    public void plot(Matrix matrix, boolean column) {
-
+    public void plot(Matrix matrix) {
+        long startTime = System.currentTimeMillis();
         if (fullScreen) {
             GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             int width = gd.getDisplayMode().getWidth();
@@ -64,26 +70,35 @@ public @Data class Figure {
         int y = matrix.getRowDimension();
         int x = matrix.getColumnDimension();
 
-        if (column) {
-            for (int i = 0; i < x; i++) {
-                double[] vector = matrix.getMatrix(0, y - 1, i, i).getRowPackedCopy();
-                if (skipZeroData) {
-                    boolean zerosOnly = Arrays.stream(vector).anyMatch(value -> value != 0.0d);
-                    if (zerosOnly) {
-                        plot(vector);
-                    }
+        for (int i = 0; i < x; i++) {
+            double[][] array2D = matrix.getMatrix(0, y - 1, i, i).getArray();
+            double[] vector = Arrays.stream(array2D).flatMapToDouble(v -> Arrays.stream(v)).toArray();
+            int series = i;
+            executorService.submit(() -> plot(series, vector));
+        }
+
+        new SwingWrapper<>(chart).displayChart();
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println(elapsedTime);
+    }
+
+    private void plot(int series, double[] y) {
+        if (skipZeroData) {
+            boolean noZeros = Arrays.stream(y).anyMatch(value -> value != 0.0d);
+            if (noZeros) {
+                synchronized (chart) {
+                    chart.addSeries("line " + series, y);
                 }
             }
         }
-        new SwingWrapper<XYChart>(chart).displayChart();
     }
 
-    private void plot(double[] y) {
-        plot(IntStream.range(0, y.length).mapToDouble(i -> i).toArray(), y, "line " + seriesCounter);
-        seriesCounter++;
-    }
-
-    private void plot(double[] x, double[] y, String seriesLabel) {
-        chart.addSeries(seriesLabel, x, y);
+    public static void main(String[] args) {
+        Figure figure = new Figure();
+        double[] zeroArray = new double[]{0,0,0,0,0,0,0};
+        double[] nonZeroArray = new double[]{0,0,0,1.0,0,0,0};
+        figure.plot(1, zeroArray);
+        figure.plot(1, nonZeroArray);
     }
 }
