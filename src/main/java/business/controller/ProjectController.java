@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/project")
@@ -36,5 +37,12 @@ public class ProjectController {
         }
         service.insert(project);
         return "project/uploadData";
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String listProject (Model model) throws Exception {
+        List<Project> projects = service.getAll();
+        model.addAttribute("projects",projects);
+        return "project/list";
     }
 }

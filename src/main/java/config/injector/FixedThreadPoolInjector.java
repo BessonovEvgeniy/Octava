@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 public class FixedThreadPoolInjector implements BeanPostProcessor {
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(8);
+    private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

@@ -25,8 +25,6 @@ public class PreProcessController implements ProcessorState {
     public void process(Process process) throws Exception {
         List<ReceiverDataModel> dataModels = rinexService.readRinex(process);
 
-
-
         for (ReceiverDataModel dataModel : dataModels) {
             dataModel.buildObsMatrixFromRawData();
 

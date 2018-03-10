@@ -1,6 +1,6 @@
 #### SDK OCTAVA
 ##### This open source project is a demo of original SDK "OCTAVA" for GNSS observation processing (see details http://www.kharkovgnssgroup.net/en/projects/sdk-octava.html)
-##### Original project written on the MatLab (Matrix Laboratory) programming support environment snd still under development.
+##### Original project written on the MatLab (Matrix Laboratory) programming support environment and still under development.
 ##### Those project is being developed in spare time.
 
 ##### Used Technologies

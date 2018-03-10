@@ -1,8 +1,8 @@
 package business.model.project;
 
+import business.model.BaseModel;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import business.model.BaseModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +16,9 @@ public @Data class Project extends BaseModel {
     @Length(min = 4, max = 30)
     @NotNull
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.New;
 
     public Project(){}
 
@@ -38,5 +41,9 @@ public @Data class Project extends BaseModel {
 
     public void addRinexFiles(Map<String, String> rinexFiles) {
         this.rinexFiles.putAll(rinexFiles);
+    }
+
+    public enum Status {
+        New, Processing, Processed;
     }
 }

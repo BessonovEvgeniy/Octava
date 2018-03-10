@@ -6,7 +6,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +25,9 @@ public @Data class EpochDto {
 
     private List<String> satellites;
 
-    private Map<String, String> rawEpochData = new LinkedHashMap<>();
+    private Map<String, String> rawEpochData = Collections.emptyMap();
 
-    private Map<String, double[]> epochData = new LinkedHashMap<>();
+    private Map<String, double[]> epochData = Collections.emptyMap();
 
     public EpochDto() {}
 
@@ -36,11 +36,15 @@ public @Data class EpochDto {
     }
 
     public void setRawEpochData(Map<String, String> rawEpochData) {
-        this.rawEpochData = rawEpochData;
+        synchronized (this.rawEpochData) {
+            this.rawEpochData = rawEpochData;
+        }
     }
 
     public void setParsedEpochData(Map<String, double[]> parsedEpochData) {
-        epochData.putAll(parsedEpochData);
+        synchronized (epochData) {
+            this.epochData = parsedEpochData;
+        }
     }
 
     public double getEpochData(int index, String svCode) {

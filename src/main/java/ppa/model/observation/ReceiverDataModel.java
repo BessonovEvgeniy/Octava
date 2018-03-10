@@ -3,11 +3,11 @@ package ppa.model.observation;
 import Jama.Matrix;
 import com.google.common.primitives.Ints;
 import config.AppInitializer;
-import config.BeanFactory;
 import config.HibernateConfiguration;
 import config.MvcConfiguration;
 import config.injector.LogInjector;
 import lombok.Data;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -57,6 +57,8 @@ public @Data class ReceiverDataModel implements Gnss {
     private Map<ObsType, Observations> rawObs = new LinkedHashMap<>();
 
     private Set<Double> epoch;
+
+    private int numberOfObsTypes;
 
     public void buildObsMatrixFromRawData(){
 
@@ -119,6 +121,10 @@ public @Data class ReceiverDataModel implements Gnss {
                 observations.putFlag(epochTime, epoch.getFlag());
             }
         }
+    }
+
+    public int getNumberOfObsTypes() {
+        return (numberOfObsTypes == 0) ? numberOfObsTypes = typesOfObs.size() : numberOfObsTypes;
     }
 
     private static class NullReceiverDataModel extends ReceiverDataModel {

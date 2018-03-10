@@ -3,7 +3,6 @@ package ppa.service.impl.rinex.impl;
 import Jama.Matrix;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
 import config.AppInitializer;
 import config.HibernateConfiguration;
 import config.MvcConfiguration;
@@ -60,40 +59,42 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
                 logger.warn("Can't parse: " + line + " Line will be skipped.");
                 continue;
             } else {
-                LocalDateTime epochTime = DateUtil.parseObsToLocalDateTime(matcher.group(1));
-                logger.debug(epochTime.toString());
-                int epochFlag = Ints.tryParse(matcher.group(2).trim());
-                int expectedSatNum = Ints.tryParse(matcher.group(3).trim());
-                List<String> satList = Splitter.fixedLength(3).splitToList(matcher.group(4).trim());
-                logger.debug("epochFlag: " + epochFlag + " Satellites: " + satList);
-                if (expectedSatNum != satList.size()) {
-                    logger.warn("Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
-                    continue;
-                }
+                try {
+                    LocalDateTime epochTime = DateUtil.parseObsToLocalDateTime(matcher.group(1));
+                    logger.debug(epochTime.toString());
+                    int epochFlag = Integer.parseInt(matcher.group(2).trim());
+                    int expectedSatNum = Integer.parseInt(matcher.group(3).trim());
+                    List<String> satList = Splitter.fixedLength(3).splitToList(matcher.group(4).trim());
+                    logger.debug("epochFlag: " + epochFlag + " Satellites: " + satList);
+                    if (expectedSatNum != satList.size()) {
+                        logger.warn("Excpected " + expectedSatNum + " satellites. But found " + satList.size() + " - Epoch will be skipped.");
+                        continue;
+                    }
 
-                EpochDto epoch = new EpochDto(epochTime);
-                epoch.setFlag(epochFlag);
-                epoch.setNumSv(expectedSatNum);
-                epoch.setSatellites(satList);
+                    EpochDto epoch = new EpochDto(epochTime);
+                    epoch.setFlag(epochFlag);
+                    epoch.setNumSv(expectedSatNum);
+                    epoch.setSatellites(satList);
 
-                Map<String, String> rawEpochData = new LinkedHashMap<>();
-                Map<String, double[]> parsedEpochData = new LinkedHashMap<>();
-                for (String sat : satList) {
-                    String rawObs = preProcessRawObsService.preProcess(reader);
-                    logger.debug("Raw satellites data: Sat: " + sat + " Obs: " + rawObs);
-                    double[] obs = preProcessRawObsService.convertRawObs(rawObs, dataModel.getTypesOfObs().size());
-                    logger.debug("Parsed satellites data: " + sat + " Obs: " + obs);
-                    rawEpochData.put(sat, rawObs);
-                    parsedEpochData.put(sat, obs);
+                    Map<String, String> rawEpochData = new LinkedHashMap<>();
+                    Map<String, double[]> parsedEpochData = new LinkedHashMap<>();
+                    for (String sat : satList) {
+                        String rawObs = preProcessRawObsService.preProcess(reader);
+                        logger.debug("Raw satellites data: Sat: " + sat + " Obs: " + rawObs);
+                        double[] obs = preProcessRawObsService.convertRawObs(rawObs);
+                        rawEpochData.put(sat, rawObs);
+                        parsedEpochData.put(sat, obs);
+                    }
+                    epoch.setRawEpochData(rawEpochData);
+                    epoch.setParsedEpochData(parsedEpochData);
+                    dataModel.addObservations(epoch);
+                } catch (Exception e) {
+                    logger.error("Can't parse line: " + line + ". Epoch will be skipped.");
+                    e.printStackTrace();
                 }
-                epoch.setRawEpochData(rawEpochData);
-                epoch.setParsedEpochData(parsedEpochData);
-                dataModel.addObservations(epoch);
             }
         }
     }
-
-
 
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);

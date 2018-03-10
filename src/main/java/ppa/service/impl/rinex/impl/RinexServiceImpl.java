@@ -67,11 +67,8 @@ public class RinexServiceImpl implements RinexService {
                          new BufferedReader(
                                  new InputStreamReader(inputStream))) {
 
-                log.info("Header reading...");
                 readHeader.read(reader, data);
-                log.info("Done. \n\r Observation reading...");
                 readObservations.read(reader, data);
-                log.info("Done.");
             }
             return data;
         }

@@ -1,4 +1,4 @@
-package ppa.controller;
+package business.controller;
 
 
 import business.model.project.Project;
@@ -45,6 +45,6 @@ public class RinexController {
         } catch (FileUploadException e) {
             return "";
         }
-        return "redirect:project/list";
+        return "redirect:/project/list";
     }
 }

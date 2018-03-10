@@ -1,5 +1,7 @@
 package ppa.service.impl.rinex.impl;
 
+import config.injector.InjectLog;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ppa.model.observation.ReceiverDataModel;
@@ -12,6 +14,9 @@ import java.lang.reflect.Field;
 @Service
 public class ReadHeaderImpl <T extends HeaderLabel> implements RinexReader {
 
+    @InjectLog
+    private Logger log;
+
     @Autowired
     private HeaderLabelFactory headerLabelFactory;
 
@@ -21,12 +26,14 @@ public class ReadHeaderImpl <T extends HeaderLabel> implements RinexReader {
             return;
         }
         String line;
+        log.info("Header reading...");
         while ((line = reader.readLine()) != null && !line.contains("END OF HEADER")) {
             HeaderLabel headerLabel = headerLabelFactory.getHeaderLabel(line);
             if (headerLabel != null) {
                 setHeaderLabel((T) headerLabel, data);
             }
         }
+        log.info("Done.");
     }
 
     private void setHeaderLabel(T headerLabel, ReceiverDataModel data) throws IllegalAccessException {

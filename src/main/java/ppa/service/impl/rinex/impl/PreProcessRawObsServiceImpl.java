@@ -1,16 +1,15 @@
 package ppa.service.impl.rinex.impl;
 
-import com.google.common.primitives.Doubles;
-import config.injector.InjectLog;
 import jdk.nashorn.internal.runtime.ParserException;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ppa.service.PreProcessRawObsService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,66 +17,34 @@ import java.util.regex.Pattern;
 public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
 
     public final static List<String> LABELS_TO_SKIP = Arrays.asList("COMMENT", "MARKER NAME", "MARKER NUMBER", "ANTENNA: DELTA H/E/N");
+    public final static Pattern PRE_PROCESS_PATTERN = Pattern.compile("^((-?\\d{1,12}\\.\\d{3,5})\\s?\\d?).*");
 
-    @InjectLog
-    private Logger logger;
+    private Predicate<String> predicate = line ->
+            LABELS_TO_SKIP.parallelStream().filter(label -> line.contains(label)).findAny().isPresent();
 
     public String preProcess(BufferedReader reader) throws IOException {
-        String line = "";
-        if (reader != null && reader.ready()) {
-            line = skipCommentsIfAny(reader);
-            if (!line.isEmpty()) {
-                line = preProcess(line);
-            }
-        }
-        return line;
+        return skipCommentsIfAny(reader);
     }
 
-    public String preProcess(String line) {
+    public double[] convertRawObs(String rawObs) throws ParserException {
+        rawObs = rawObs.trim().replaceAll("\\s{14,28}", "          0.000 ");
 
-        Matcher matcher = Pattern.compile(".*(\\.\\d{1,3}\\s\\d{1,2}).*").matcher(line);
-
+        List<Double> obs = new LinkedList<>();
+        Matcher matcher = PRE_PROCESS_PATTERN.matcher(rawObs);
         while (matcher.find()) {
-            String fraction = matcher.group(1);
-            String fractionWoZeros = fraction.replaceAll(" ", "0");
-            line = line.replaceAll(fraction, fractionWoZeros);
-            matcher = Pattern.compile(".*(\\.\\d{1,3}\\s\\d{1,2}).*").matcher(line);
+            String obsValue = matcher.group(2);
+            obs.add(obsValue.isEmpty() ? 0.0d : Double.parseDouble(obsValue));
+            rawObs = rawObs.replaceFirst(matcher.group(1), "").trim();
+            matcher = PRE_PROCESS_PATTERN.matcher(rawObs);
         }
-
-        return line;
-    }
-
-    public double[] convertRawObs(String rawObs, int numTypesOfObs) throws ParserException {
-        String[] splitedRawObs = rawObs.trim().split("\\s{7}|\\s{6}|\\s{5}|\\s{4}|\\s{3}|\\s{2}|\\s{1}");
-        double[] epochData = new double[numTypesOfObs];
-
-        try {
-            for (int i = 0; i < splitedRawObs.length; i++) {
-                String str = splitedRawObs[i];
-                if (!str.trim().isEmpty()) {
-                    epochData[i] = Doubles.tryParse(str);
-                }
-            }
-        } catch (Exception e) {
-            String msg = "Raw data: " + Arrays.asList(splitedRawObs) + " Parsed Data: " + Arrays.asList(epochData);
-            logger.error(msg);
-            throw new ParserException(msg);
-        }
-        return epochData;
+        return obs.stream().mapToDouble(Double::doubleValue).toArray();
     }
 
     public String skipCommentsIfAny(BufferedReader reader) throws IOException {
-
-        boolean skip = false;
         String line;
         do {
             line = reader.readLine();
-            for (String label : LABELS_TO_SKIP) {
-                if (skip = line.contains(label)) {
-                    break;
-                }
-            }
-        } while (skip);
+        } while (predicate.test(line));
         return line;
     }
 
@@ -85,9 +52,10 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
         String rawObsBeforeProcess = "  24012083.305 4  -1199122.297 4   -901414.88346  24012086.17646";
         String etalonProcess = "  24012083.30504  -1199122.29704   -901414.88346  24012086.17646";
 
-        double dd = Doubles.tryParse(" ");
+        String rawObsBeforeSplit = " 22313122.227 7 -10127204.711 7  -7858357.09448  22313123.61348";
+        rawObsBeforeSplit = " 22313122.227 7 -10127204.711 7                  22313123.61348";
 
         PreProcessRawObsServiceImpl preProcessor = new PreProcessRawObsServiceImpl();
-        String rawObsAfterProcess = preProcessor.preProcess(rawObsBeforeProcess);
+        preProcessor.convertRawObs(rawObsBeforeSplit);
     }
 }
