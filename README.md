@@ -1,14 +1,14 @@
 #### SDK OCTAVA
+##### Web service for processing Raw Observation Data which are stored in RINEX format.
 ##### This open source project is a demo of original SDK "OCTAVA" for GNSS observation processing (see details http://www.kharkovgnssgroup.net/en/projects/sdk-octava.html)
 ##### Original project written on the MatLab (Matrix Laboratory) programming support environment and still under development.
-##### Those project is being developed in spare time.
+##### These project is being developed in spare time.
 
 ##### Used Technologies
 ##### - Java 8
 ##### - Spring MVC, Spring AOP
 ##### - Amazon S3
 ##### - Hibernate
-##### - Jama (Matrix tool)
 ##### - XChart
 ##### - JMockito
 ##### - JUnit 5

@@ -4,7 +4,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,14 +13,11 @@ public class FixedThreadPoolInjector implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
-            @Override
-            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                ReflectionUtils.makeAccessible(field);
+        ReflectionUtils.doWithFields(bean.getClass(), field -> {
+            ReflectionUtils.makeAccessible(field);
 
-                if (field.getAnnotation(InjectThreadPool.class) != null) {
-                    field.set(bean, executorService);
-                }
+            if (field.getAnnotation(InjectThreadPool.class) != null) {
+                field.set(bean, executorService);
             }
         });
 

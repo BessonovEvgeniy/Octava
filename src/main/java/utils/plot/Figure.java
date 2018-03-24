@@ -1,13 +1,17 @@
 package utils.plot;
 
-import Jama.Matrix;
 import lombok.Data;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import ppa.model.observation.ReceiverDataModel;
+import utils.time.Sections;
+import utils.time.TimeUtils;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +28,7 @@ public @Data class Figure {
     private String yLabel = "";
 
     private List<String> series = new LinkedList<>();
+    private List<Integer> time = new ArrayList<>();
 
     private boolean fullScreen = true;
     private boolean skipZeroData = true;
@@ -55,32 +60,57 @@ public @Data class Figure {
         }
     }
 
-    public void plot(Matrix matrix) {
-        long startTime = System.currentTimeMillis();
-        if (fullScreen) {
-            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-            int width = gd.getDisplayMode().getWidth();
-            int height = gd.getDisplayMode().getHeight();
-            widthDefaultScreenPixels = widthDefaultScreenPixels > width ? widthDefaultScreenPixels : width;
-            heightDefaultScreenPixels = heightDefaultScreenPixels > height ? heightDefaultScreenPixels : height;
+    private void beforePlot() {
+        if (chart == null) {
+            if (fullScreen) {
+                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                int width = gd.getDisplayMode().getWidth();
+                int height = gd.getDisplayMode().getHeight();
+                widthDefaultScreenPixels = widthDefaultScreenPixels > width ? widthDefaultScreenPixels : width;
+                heightDefaultScreenPixels = heightDefaultScreenPixels > height ? heightDefaultScreenPixels : height;
+            }
+
+            chart = new XYChartBuilder().width(widthDefaultScreenPixels).height(heightDefaultScreenPixels).title(title).xAxisTitle(xLabel).yAxisTitle(yLabel).build();
         }
+    }
 
-        chart = new XYChartBuilder().width(widthDefaultScreenPixels).height(heightDefaultScreenPixels).title(title).xAxisTitle(xLabel).yAxisTitle(yLabel).build();
+    public void plot(RealMatrix matrix) {
+        beforePlot();
+        plot(TimeUtils.createTimeVector(0,matrix.getRowDimension()), matrix);
+    }
 
-        int y = matrix.getRowDimension();
-        int x = matrix.getColumnDimension();
+    public void plot(List<Integer> time, RealMatrix data) {
+        this.time = time;
+        beforePlot();
+        Sections sections = new Sections(data, ReceiverDataModel.ObservationMode.STATIC_MODE);
+        Sections.SectionsData sectionData = sections.findSections();
 
-        for (int i = 0; i < x; i++) {
-            double[][] array2D = matrix.getMatrix(0, y - 1, i, i).getArray();
-            double[] vector = Arrays.stream(array2D).flatMapToDouble(v -> Arrays.stream(v)).toArray();
+        List<Integer> tn = sectionData.getTn();
+        List<Integer> tk = sectionData.getTk();
+        List<Integer> NSect = sectionData.getNSect();
+
+        for (int i = 0; i < NSect.size(); i++) {
+            Integer start = tn.get(i);
+            Integer stop = tk.get(i);
+            Integer sv = NSect.get(i);
+
+            double[] vector = data.getSubMatrix(start, stop, sv, sv).getColumn(0);
             int series = i;
             executorService.submit(() -> plot(series, vector));
         }
 
         new SwingWrapper<>(chart).displayChart();
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
-        System.out.println(elapsedTime);
+    }
+
+    private void plot(int series, double[] x, double[] y) {
+        if (skipZeroData) {
+            boolean noZeros = Arrays.stream(y).anyMatch(value -> value != 0.0d);
+            if (noZeros) {
+                synchronized (chart) {
+                    chart.addSeries("line " + series, x, y);
+                }
+            }
+        }
     }
 
     private void plot(int series, double[] y) {

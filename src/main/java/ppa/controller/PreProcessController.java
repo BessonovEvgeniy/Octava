@@ -1,8 +1,8 @@
 package ppa.controller;
 
-import Jama.Matrix;
 import business.model.process.Process;
 import config.injector.InjectThreadPool;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ppa.model.observation.ReceiverDataModel;
@@ -28,7 +28,7 @@ public class PreProcessController implements ProcessorState {
         for (ReceiverDataModel dataModel : dataModels) {
             dataModel.buildObsMatrixFromRawData();
 
-            Matrix matrix = dataModel.getObs().get(ObsType.C1);
+            RealMatrix matrix = dataModel.getObs().get(ObsType.C1);
 
             Figure figure = new Figure();
             figure.plot(matrix);

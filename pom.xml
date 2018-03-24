@@ -54,7 +54,7 @@
 
         <xchart.version>3.5.0</xchart.version>
 
-        <jama.version>1.0.3</jama.version>
+        <commons.math3.version>3.6.1</commons.math3.version>
 
         <apache.maven.plugins.version>3.2.0</apache.maven.plugins.version>
     </properties>
@@ -339,9 +339,9 @@
 
         <!--Math Tools-->
         <dependency>
-            <groupId>gov.nist.math</groupId>
-            <artifactId>jama</artifactId>
-            <version>${jama.version}</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>${commons.math3.version}</version>
         </dependency>
     </dependencies>
     <build>

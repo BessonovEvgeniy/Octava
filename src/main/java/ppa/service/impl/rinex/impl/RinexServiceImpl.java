@@ -92,7 +92,7 @@ public class RinexServiceImpl implements RinexService {
         BufferedReader br = new BufferedReader(new InputStreamReader(rinexFile.getInputStream()));
         ReceiverDataModel dataModel = dataModelProvider.get();
         readHeader.read(br, dataModel);
-        log.info("Rinex header valid.");
+        log.info("Rinex header is valid.");
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,9 @@
 package ppa.model.rinex;
 
-import Jama.Matrix;
+import business.model.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import business.model.BaseModel;
+import org.apache.commons.math3.linear.RealMatrix;
 import ppa.model.observation.header.impl.ObsType;
 
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public @Data class Observations extends BaseModel implements Gnss {
 
     protected ObsType obsType;
 
-    private Map<LocalDateTime, Matrix> obs = new LinkedHashMap<>();
+    private Map<LocalDateTime, RealMatrix> obs = new LinkedHashMap<>();
 
     private Map<LocalDateTime, Integer> flags = new LinkedHashMap<>();
 
@@ -27,11 +27,11 @@ public @Data class Observations extends BaseModel implements Gnss {
         obsType = type;
     }
 
-    public Matrix getEpoch(LocalDateTime epochTime) {
+    public RealMatrix getEpoch(LocalDateTime epochTime) {
         return obs.get(epochTime);
     }
 
-    public void putEpoch(LocalDateTime epochTime, Matrix epochData) {
+    public void putEpoch(LocalDateTime epochTime, RealMatrix epochData) {
         validateEpochData(epochData);
         obs.put(epochTime, epochData);
     }
@@ -40,7 +40,7 @@ public @Data class Observations extends BaseModel implements Gnss {
         flags.put(epochTime, flag);
     }
 
-    private void validateEpochData(Matrix epochData) {
+    private void validateEpochData(RealMatrix epochData) {
         if (epochData.getColumnDimension() != Gnss.MAX_SAT) {
             throw new IllegalStateException("Excpected " + Gnss.MAX_SAT + " satellites. But found " + epochData.getColumnDimension() + ". Epoch data " + epochData);
         }

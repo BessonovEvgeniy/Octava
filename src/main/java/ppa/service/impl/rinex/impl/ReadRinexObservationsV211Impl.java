@@ -1,6 +1,5 @@
 package ppa.service.impl.rinex.impl;
 
-import Jama.Matrix;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import config.AppInitializer;
@@ -8,6 +7,7 @@ import config.HibernateConfiguration;
 import config.MvcConfiguration;
 import config.injector.InjectLog;
 import config.injector.LogInjector;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -117,7 +117,7 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
 
         dataModel.buildObsMatrixFromRawData();
 
-        Matrix matrix = dataModel.getObs().get(ObsType.C1);
+        RealMatrix matrix = dataModel.getObs().get(ObsType.C1);
 
         Figure figure = new Figure();
         figure.plot(matrix);

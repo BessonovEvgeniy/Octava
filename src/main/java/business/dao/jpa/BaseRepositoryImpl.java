@@ -26,11 +26,13 @@ public abstract class BaseRepositoryImpl<T extends BaseModel> implements BaseRep
         this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
     }
 
+    @Transactional(readOnly = true)
     public Collection<T> findAll() {
         Query query = em.createQuery("SELECT t FROM " + entityClass.getName() + " t");
         return (List<T>) query.getResultList();
     }
 
+    @Transactional(readOnly = true)
     public T findOne(Long id) {
         return em.find(entityClass, id);
     }
@@ -51,6 +53,7 @@ public abstract class BaseRepositoryImpl<T extends BaseModel> implements BaseRep
         return findOne(id) != null;
     }
 
+    @Transactional(readOnly = true)
     public long count() {
         Query query = em.createQuery("SELECT count(t) FROM " + entityClass.getName() + " t");
         return (long) query.getSingleResult();

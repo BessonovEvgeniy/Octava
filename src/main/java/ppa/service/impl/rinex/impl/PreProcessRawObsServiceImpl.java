@@ -27,13 +27,14 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
     }
 
     public double[] convertRawObs(String rawObs) throws ParserException {
+        //Replace observations gaps by Zero values
         rawObs = rawObs.trim().replaceAll("\\s{14,28}", "          0.000 ");
 
         List<Double> obs = new LinkedList<>();
         Matcher matcher = PRE_PROCESS_PATTERN.matcher(rawObs);
         while (matcher.find()) {
             String obsValue = matcher.group(2);
-            obs.add(obsValue.isEmpty() ? 0.0d : Double.parseDouble(obsValue));
+            obs.add(Double.parseDouble(obsValue));
             rawObs = rawObs.replaceFirst(matcher.group(1), "").trim();
             matcher = PRE_PROCESS_PATTERN.matcher(rawObs);
         }
