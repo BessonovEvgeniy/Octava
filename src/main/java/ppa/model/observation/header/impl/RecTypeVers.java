@@ -7,9 +7,9 @@ public @Data class RecTypeVers implements HeaderLabel {
 
     public static final RecTypeVers NULL = new RecTypeVers.NullRecTypeVers();
 
-    private String rec;
-    private String type;
-    private String vers;
+    private String rec = EMPTY_STRING;
+    private String type = EMPTY_STRING;
+    private String vers = EMPTY_STRING;
 
     private RecTypeVers() {}
 
@@ -17,6 +17,11 @@ public @Data class RecTypeVers implements HeaderLabel {
         this.rec = rec;
         this.type = type;
         this.vers = vers;
+    }
+
+    @Override
+    public String toString() {
+        return "Rec=" + rec + " Type=" + type + "Vers=" + vers;
     }
 
     private static class NullRecTypeVers extends RecTypeVers {

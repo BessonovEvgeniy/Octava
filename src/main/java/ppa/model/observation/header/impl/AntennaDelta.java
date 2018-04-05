@@ -21,6 +21,11 @@ public @Data class AntennaDelta implements HeaderLabel {
         this.delN = delN;
     }
 
+    @Override
+    public String toString() {
+        return "AntennaDelta delH=" + delH + " delE=" + delE + " delN=" + delN;
+    }
+
     private static class NullAntennaDelta extends AntennaDelta {
         @Override
         public String toString() {

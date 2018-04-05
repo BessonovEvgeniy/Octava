@@ -5,6 +5,7 @@ import ppa.model.observation.header.HeaderLabel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public @Data class TypesOfObs implements HeaderLabel {
 
@@ -24,6 +25,14 @@ public @Data class TypesOfObs implements HeaderLabel {
 
     public ObsType get(int index) {
         return obsTypes.get(index);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add("Observation Types");
+        obsTypes.stream().forEachOrdered(obsType -> joiner.add(obsType.toString()));
+        return joiner.toString();
     }
 
     private static class NullTypesOfObs extends TypesOfObs {

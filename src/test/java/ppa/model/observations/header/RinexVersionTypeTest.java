@@ -11,7 +11,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.RinexVersionType;
-import ppa.service.impl.observations.header.impl.RinexVersionTypeParserServiceImpl;
+import ppa.service.impl.observations.header.RinexVersionTypeParserServiceImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -15,6 +15,11 @@ public @Data class Interval implements HeaderLabel {
         this.interval = interval;
     }
 
+    @Override
+    public String toString() {
+        return "Interval=" + interval;
+    }
+
     private static class NullInterval extends Interval {
         @Override
         public String toString() {

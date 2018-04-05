@@ -15,6 +15,11 @@ public @Data class LeapSeconds implements HeaderLabel {
         this.leapSeconds = leapSeconds;
     }
 
+    @Override
+    public String toString() {
+        return "Leap Seconds=" + leapSeconds;
+    }
+
     private static class NullLeapSeconds extends LeapSeconds {
         @Override
         public String toString() {

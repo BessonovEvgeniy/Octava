@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {"ppa", "business", "config"})
+@ComponentScan(basePackages = {"ppa", "business", "config", "utils"})
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurationSupport {
 

@@ -2,13 +2,12 @@ package ppa.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import ppa.model.observation.ReceiverDataModel;
-import business.model.process.Process;
 
-import java.util.List;
+import java.io.File;
 
-public interface RinexService  {
+public interface RinexService {
 
     void validateRinex(MultipartFile rinexFile) throws Exception;
 
-    List<ReceiverDataModel> readRinex(Process process) throws Exception;
+    ReceiverDataModel readRinex(File file) throws Exception;
 }

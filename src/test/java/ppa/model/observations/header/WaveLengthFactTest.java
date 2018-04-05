@@ -12,7 +12,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.WaveLengthFact;
-import ppa.service.impl.observations.header.impl.WavelengthFactParserServiceImpl;
+import ppa.service.impl.observations.header.WavelengthFactParserServiceImpl;
 
 import java.util.Arrays;
 import java.util.Collection;

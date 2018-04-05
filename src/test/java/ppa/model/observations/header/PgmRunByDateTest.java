@@ -11,7 +11,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.PgmRunByDate;
-import ppa.service.impl.observations.header.impl.PgmRunByDateParserServiceImpl;
+import ppa.service.impl.observations.header.PgmRunByDateParserServiceImpl;
 
 import java.time.LocalDateTime;
 

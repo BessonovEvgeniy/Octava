@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import config.AppInitializer;
 import config.MvcConfiguration;
-import ppa.service.impl.rinex.impl.ReadHeaderImpl;
+import ppa.service.impl.rinex.ReadHeaderImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInitializer.class, MvcConfiguration.class})

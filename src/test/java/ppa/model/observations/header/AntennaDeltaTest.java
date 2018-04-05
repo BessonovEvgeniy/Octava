@@ -11,7 +11,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.AntennaDelta;
-import ppa.service.impl.observations.header.impl.AntennaDeltaParserServiceImpl;
+import ppa.service.impl.observations.header.AntennaDeltaParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

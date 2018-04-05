@@ -18,6 +18,11 @@ public enum ObsType {
         return satName.contains(system);
     }
 
+    @Override
+    public String toString() {
+        return this.name() + " system=" + system;
+    }
+
     public static ObsType getTypeByName(String name) {
         for (ObsType type : ObsType.values()) {
             if (type.name().equals(name)) {
