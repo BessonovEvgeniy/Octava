@@ -15,6 +15,11 @@ public @Data class OfSatellites implements HeaderLabel {
         numberOfSatellites = ofSats;
     }
 
+    @Override
+    public String toString() {
+        return "OfSatellites " + numberOfSatellites;
+    }
+
     private static class NullOfSatellites extends OfSatellites {
         @Override
         public String toString() {

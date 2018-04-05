@@ -34,6 +34,9 @@
 
 ###### 1.4 After the file has been uploaded it will be parsed to the Object representation.
 
+###### Workflow for rinex file processing
+![alt text](screenshots/rinex-file-processing.png)
+
 ###### Example for observation reading from 38541890.16o file. Figure is plotted by XChart
 ![alt text](screenshots/rinex-obs-plot.png)
 

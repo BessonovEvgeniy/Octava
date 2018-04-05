@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
-import ppa.service.impl.observations.header.impl.MarkerNameParserServiceImpl;
+import ppa.service.impl.observations.header.MarkerNameParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

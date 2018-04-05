@@ -4,6 +4,7 @@ import lombok.Data;
 import ppa.model.observation.header.HeaderLabel;
 
 import java.time.LocalDateTime;
+import java.util.StringJoiner;
 
 public @Data class PgmRunByDate implements HeaderLabel {
 
@@ -27,4 +28,11 @@ public @Data class PgmRunByDate implements HeaderLabel {
             return "NullPgmRunByDate";
         }
     }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(" ");
+        return joiner.add("Program").add(program).add("agency").add(agency).add("created").add(created.toString()).toString();
+    }
+
 }

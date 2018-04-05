@@ -7,11 +7,11 @@ import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import ppa.model.observation.ReceiverDataModel;
+import ppa.model.observation.header.impl.ObsType;
 import utils.time.Sections;
 import utils.time.TimeUtils;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +28,7 @@ public @Data class Figure {
     private String yLabel = "";
 
     private List<String> series = new LinkedList<>();
-    private List<Integer> time = new ArrayList<>();
+    private double[] time;
 
     private boolean fullScreen = true;
     private boolean skipZeroData = true;
@@ -36,6 +36,7 @@ public @Data class Figure {
     private int widthDefaultScreenPixels = 800;
     private int heightDefaultScreenPixels = 600;
     private int seriesCounter = 0;
+    private int delT = 1;
 
     private XYChart chart;
 
@@ -80,10 +81,29 @@ public @Data class Figure {
     }
 
     public void plot(List<Integer> time, RealMatrix data) {
-        this.time = time;
+        double[] timeArray = time.stream().mapToDouble(i -> i).toArray();
+        plot(timeArray, data);
+    }
+
+    public void plot(double[] time, RealMatrix data) {
         beforePlot();
-        Sections sections = new Sections(data, ReceiverDataModel.ObservationMode.STATIC_MODE);
-        Sections.SectionsData sectionData = sections.findSections();
+        this.time = time;
+
+        int sv = data.getColumnDimension();
+
+        for (int i = 0; i < sv; i++) {
+            double[] vector = data.getSubMatrix(0, time.length, sv, sv).getColumn(0);
+            int series = i;
+            executorService.submit(() -> plot(series, time, vector));
+        }
+
+        new SwingWrapper<>(chart).displayChart();
+    }
+
+    public void plot(ReceiverDataModel rdm, ObsType type) {
+        beforePlot() ;
+        Sections.SectionsData sectionData = rdm.getSections();
+        RealMatrix matrix = rdm.getObsByType(type).getFullSizeMatrix();
 
         List<Integer> tn = sectionData.getTn();
         List<Integer> tk = sectionData.getTk();
@@ -94,9 +114,9 @@ public @Data class Figure {
             Integer stop = tk.get(i);
             Integer sv = NSect.get(i);
 
-            double[] vector = data.getSubMatrix(start, stop, sv, sv).getColumn(0);
+            double[] vector = matrix.getSubMatrix(start, stop, sv, sv).getColumn(0);
             int series = i;
-            executorService.submit(() -> plot(series, vector));
+            executorService.submit(() -> plot(series, TimeUtils.createDoubleTimeArray(start, stop), vector));
         }
 
         new SwingWrapper<>(chart).displayChart();

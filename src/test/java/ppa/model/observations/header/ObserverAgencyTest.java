@@ -11,7 +11,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.ObserverAgency;
-import ppa.service.impl.observations.header.impl.ObserverAgencyParserServiceImpl;
+import ppa.service.impl.observations.header.ObserverAgencyParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

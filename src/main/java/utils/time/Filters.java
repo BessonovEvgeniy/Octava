@@ -8,8 +8,19 @@ import java.util.List;
 public class Filters {
 
     public static List<Integer> find(double[] vector) {
-        return findGreaterThan(vector, 0.0);
+        return findAllExcept(vector, 0.0);
     }
+
+    public static List<Integer> findAllExcept(double[] vector, double value) {
+        List<Integer> indexes = new LinkedList<>();
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i] != value) {
+                indexes.add(i);
+            }
+        }
+        return indexes;
+    }
+
 
     public static List<Integer> findLessThan(double[] vector, double value) {
         List<Integer> indexes = new LinkedList<>();
@@ -27,6 +38,7 @@ public class Filters {
 
     public static List<Integer> findGreaterThan(double[] vector, double value) {
         List<Integer> indexes = new LinkedList<>();
+
         for (int i = 0; i < vector.length; i++) {
             if (vector[i] > value) {
                 indexes.add(i);

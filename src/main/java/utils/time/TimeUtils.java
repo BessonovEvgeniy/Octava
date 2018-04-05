@@ -10,6 +10,14 @@ import java.util.stream.IntStream;
 
 public class TimeUtils {
 
+    public static int[] createIntTimeArray(int from, int to) {
+        return IntStream.rangeClosed(from, to).toArray();
+    }
+
+    public static double[] createDoubleTimeArray(int from, int to) {
+        return IntStream.rangeClosed(from, to).mapToDouble(i -> i).toArray();
+    }
+
     public static List<Integer> createTimeVector(int from, int to) {
         return IntStream.rangeClosed(from, to).boxed().collect(Collectors.toList());
     }

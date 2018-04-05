@@ -40,11 +40,16 @@ public class Sections {
 
     private Sections() {}
 
-    public Sections(List<Integer> time, RealMatrix matrix, ReceiverDataModel.ObservationMode mode) {
+    public Sections(List<Integer> time, RealMatrix matrix, ReceiverDataModel.ObservationMode mode, int delT) {
         this.matrix = matrix;
         this.mode = mode;
         this.time = time;
+        this.delT = delT;
         init();
+    }
+
+    public Sections(List<Integer> time, RealMatrix matrix, ReceiverDataModel.ObservationMode mode) {
+        this(time, matrix, mode, 1);
     }
 
     public Sections(RealMatrix matrix, ReceiverDataModel.ObservationMode mode) {
@@ -89,6 +94,9 @@ public class Sections {
 
                     for (int i = 0; i < pfp.size(); i++) {
                         indexP = Filters.find(ArrayUtils.subarray(vector, pfp.get(i), zfp.get(i) + 1));
+                        if (indexP.isEmpty()) {
+                            continue;
+                        }
                         diffP = Filters.diff(indexP);
                         sleepP = Filters.findGreaterThan(diffP, 1);
 
@@ -163,7 +171,7 @@ public class Sections {
             delT = mode.getDelT();
         }
         if (hole == 0) {
-            hole = mode.getHole();
+            hole = mode.getGap();
         }
         if (sect == 0) {
             sect = mode.getSect();

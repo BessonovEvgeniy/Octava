@@ -7,8 +7,8 @@ public @Data class AntType implements HeaderLabel {
 
     public static final AntType NULL = new AntType.NullAntType();
 
-    private String antennaNumber;
-    private String antennaType;
+    private String antennaNumber = EMPTY_STRING;
+    private String antennaType = EMPTY_STRING;
 
     private AntType() {}
 
@@ -17,11 +17,15 @@ public @Data class AntType implements HeaderLabel {
         this.antennaType = antennaType;
     }
 
+    @Override
+    public String toString() {
+        return "Antenna Number: " + antennaNumber + " Antenna Type: " + antennaType;
+    }
+
     private static class NullAntType extends AntType {
         @Override
         public String toString() {
             return "NullAntType";
         }
     }
-
 }

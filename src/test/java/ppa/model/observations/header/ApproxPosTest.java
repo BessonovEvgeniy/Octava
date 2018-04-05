@@ -11,7 +11,7 @@ import config.AppInitializer;
 import config.MvcConfiguration;
 import ppa.exception.RinexLineLengthMismatchException;
 import ppa.model.observation.header.impl.ApproxPos;
-import ppa.service.impl.observations.header.impl.ApproxPosParserServiceImpl;
+import ppa.service.impl.observations.header.ApproxPosParserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

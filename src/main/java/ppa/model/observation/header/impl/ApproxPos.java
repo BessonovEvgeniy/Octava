@@ -19,6 +19,11 @@ public @Data class ApproxPos implements HeaderLabel {
         this.z = z;
     }
 
+    @Override
+    public String toString() {
+        return "Approx position X=" + x + " Y=" + y + " Z=" + z;
+    }
+
     private static class NullApproxPos extends ApproxPos {
         @Override
         public String toString() {

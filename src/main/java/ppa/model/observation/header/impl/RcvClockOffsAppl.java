@@ -14,6 +14,11 @@ public class RcvClockOffsAppl implements HeaderLabel {
         this.receiverOffset = receiverOffset;
     }
 
+    @Override
+    public String toString() {
+        return "Receiver Offset is " + receiverOffset;
+    }
+
     private static class NullRcvClockOffsAppl extends RcvClockOffsAppl {
         @Override
         public String toString() {
