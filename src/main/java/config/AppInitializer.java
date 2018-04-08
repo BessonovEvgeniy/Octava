@@ -1,5 +1,7 @@
 package config;
 
+import business.config.BusinessAppConfig;
+import business.config.BusinessHibernateConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -8,6 +10,8 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import ppa.config.PpaBeanConfiguration;
+import ppa.config.PpaAppConfig;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,21 +24,33 @@ public class AppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) throws ServletException {
         AnnotationConfigWebApplicationContext context = getContext();
         container.addListener(new ContextLoaderListener(context));
-        ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", new DispatcherServlet(context));
 
+        ServletRegistration.Dynamic mainDispatcher =
+                container.addServlet("dispatcher", new DispatcherServlet(context));
+        ServletRegistration.Dynamic businessDispatcher =
+                container.addServlet("businessDispatcher", BusinessAppConfig.createDispatcherServlet(context));
+        ServletRegistration.Dynamic ppaDispatcher =
+                container.addServlet("ppaDispatcher", PpaAppConfig.createDispatcherServlet(context));
+
+        initDispatcher(mainDispatcher, 1, "/");
+        initDispatcher(businessDispatcher, 2, "/business");
+        initDispatcher(businessDispatcher, 3, "/ppa");
+    }
+
+    private void initDispatcher(ServletRegistration.Dynamic dispatcher, int loadOnStartUp, String mapping) {
         if (dispatcher == null) {
-            System.out.println("Servlet is already added");
+            System.out.println("Servlet" + dispatcher.getName() + " is already added");
         } else {
-            dispatcher.setLoadOnStartup(1);
-            dispatcher.addMapping("/");
+            dispatcher.setLoadOnStartup(loadOnStartUp);
+            dispatcher.addMapping(mapping);
         }
     }
 
     public AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(MvcConfiguration.class);
-        context.register(HibernateConfiguration.class);
-        context.register(SeparateBeanConfiguration.class);
+        context.register(BusinessHibernateConfig.class);
+        context.register(PpaBeanConfiguration.class);
         return context;
     }
 

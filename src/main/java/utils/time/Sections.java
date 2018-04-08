@@ -1,6 +1,6 @@
 package utils.time;
 
-import config.injector.InjectLog;
+import ppa.config.injector.InjectLog;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;

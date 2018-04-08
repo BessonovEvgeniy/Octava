@@ -1,6 +1,6 @@
 package ppa.service.impl.rinex;
 
-import config.injector.InjectLog;
+import ppa.config.injector.InjectLog;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

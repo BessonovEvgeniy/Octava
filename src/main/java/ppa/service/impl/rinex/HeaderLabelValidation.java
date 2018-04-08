@@ -1,6 +1,6 @@
 package ppa.service.impl.rinex;
 
-import config.injector.InjectLog;
+import ppa.config.injector.InjectLog;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;

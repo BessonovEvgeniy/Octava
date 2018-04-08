@@ -2,9 +2,9 @@ package ppa.model.observation;
 
 import com.google.common.primitives.Ints;
 import config.AppInitializer;
-import config.HibernateConfiguration;
+import business.config.BusinessHibernateConfig;
 import config.MvcConfiguration;
-import config.injector.LogInjector;
+import ppa.config.injector.LogInjector;
 import lombok.Data;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -166,7 +166,7 @@ public @Data class ReceiverDataModel implements Gnss {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
         context.scan("ppa");
         context.register(MvcConfiguration.class);
-        context.register(HibernateConfiguration.class);
+        context.register(BusinessHibernateConfig.class);
         context.register(BeanFactory.class);
         context.registerBean(LogInjector.class);
 //        ReceiverDataModel rdm = context.getBean(ReceiverDataModel.class);

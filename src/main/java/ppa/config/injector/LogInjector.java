@@ -1,4 +1,4 @@
-package config.injector;
+package ppa.config.injector;
 
 
 import org.apache.log4j.Logger;

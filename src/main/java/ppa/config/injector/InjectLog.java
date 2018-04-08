@@ -1,4 +1,4 @@
-package config.injector;
+package ppa.config.injector;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package config;
+package business.config;
 
 import com.google.common.primitives.Ints;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -27,7 +27,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 //@EnableJpaRepositories(basePackages = {"business.dao", "business.model", "ppa.dao", "ppa.model"})
 @PropertySource("classpath:rdbmsDev.properties")
-public class HibernateConfiguration {
+public class BusinessHibernateConfig {
 
     @Autowired
     private Environment env;
@@ -40,7 +40,7 @@ public class HibernateConfiguration {
         createStrategy.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
         emf.setJpaProperties(createStrategy);
-        emf.setPackagesToScan("ppa", "business");
+        emf.setPackagesToScan("business");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         BasicDataSource dataSource = getDataSource();
         emf.setDataSource(dataSource);

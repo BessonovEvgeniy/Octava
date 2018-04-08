@@ -3,10 +3,10 @@ package ppa.service.impl.rinex;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import config.AppInitializer;
-import config.HibernateConfiguration;
+import business.config.BusinessHibernateConfig;
 import config.MvcConfiguration;
-import config.injector.InjectLog;
-import config.injector.LogInjector;
+import ppa.config.injector.InjectLog;
+import ppa.config.injector.LogInjector;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -96,7 +96,7 @@ public class ReadRinexObservationsV211Impl extends AbstractReadRinexObservations
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppInitializer.class);
         context.register(MvcConfiguration.class);
-        context.register(HibernateConfiguration.class);
+        context.register(BusinessHibernateConfig.class);
         context.registerBean(LogInjector.class);
         context.scan("ppa", "utils", "config");
 

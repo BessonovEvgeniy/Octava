@@ -2,7 +2,7 @@ package ppa.controller;
 
 import business.model.process.Process;
 import config.AppInitializer;
-import config.HibernateConfiguration;
+import business.config.BusinessHibernateConfig;
 import config.MvcConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppInitializer.class, MvcConfiguration.class, HibernateConfiguration.class})
+@ContextConfiguration(classes = {AppInitializer.class, MvcConfiguration.class, BusinessHibernateConfig.class})
 @WebAppConfiguration
 public class PPAControllerTest {
 

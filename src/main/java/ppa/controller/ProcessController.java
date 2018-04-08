@@ -1,7 +1,7 @@
 package ppa.controller;
 
 import business.model.process.Process;
-import config.injector.InjectThreadPool;
+import ppa.config.injector.InjectThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
