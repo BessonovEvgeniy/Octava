@@ -10,12 +10,7 @@ import javax.servlet.Servlet;
 public class BusinessAppConfig {
 
     public static Servlet createDispatcherServlet(AnnotationConfigWebApplicationContext context) {
-        registerConfig(context);
-        return new DispatcherServlet(context);
-    }
-
-    private static void registerConfig(AnnotationConfigWebApplicationContext context) {
         context.register(BusinessMvcConfig.class);
-        context.register(BusinessHibernateConfig.class);
+        return new DispatcherServlet(context);
     }
 }

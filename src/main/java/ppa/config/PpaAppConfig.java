@@ -10,11 +10,7 @@ import javax.servlet.Servlet;
 public class PpaAppConfig {
 
     public static Servlet createDispatcherServlet(AnnotationConfigWebApplicationContext context) {
-        registerConfig(context);
-        return new DispatcherServlet(context);
-    }
-
-    private static void registerConfig(AnnotationConfigWebApplicationContext context) {
         context.register(PpaMvcConfig.class);
+        return new DispatcherServlet(context);
     }
 }

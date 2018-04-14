@@ -1,7 +1,6 @@
 package config;
 
 import business.config.BusinessAppConfig;
-import business.config.BusinessHibernateConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -10,7 +9,6 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-import ppa.config.PpaBeanConfiguration;
 import ppa.config.PpaAppConfig;
 
 import javax.servlet.ServletContext;
@@ -49,8 +47,6 @@ public class AppInitializer implements WebApplicationInitializer {
     public AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(MvcConfiguration.class);
-        context.register(BusinessHibernateConfig.class);
-        context.register(PpaBeanConfiguration.class);
         return context;
     }
 
