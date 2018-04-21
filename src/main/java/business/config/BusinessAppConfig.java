@@ -11,6 +11,8 @@ public class BusinessAppConfig {
 
     public static Servlet createDispatcherServlet(AnnotationConfigWebApplicationContext context) {
         context.register(BusinessMvcConfig.class);
+        context.register(BusinessHibernateConfig.class);
+        context.register(BusinessSecurityConfig.class);
         return new DispatcherServlet(context);
     }
 }

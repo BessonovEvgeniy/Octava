@@ -5,16 +5,7 @@
 ##### These project is being developed in spare time.
 
 ##### Used Technologies
-##### - Java 8
-##### - Spring MVC, Spring AOP
-##### - Amazon S3
-##### - Hibernate
-##### - XChart
-##### - JMockito
-##### - JUnit 5
-##### - log4j
-##### - Lombok
-##### - JSP
+##### - Java 8; Spring MVC/Spring, Spring Security, Spring AOP; Amazon S3; Hibernate; XChart; JMockito; JUnit 5; log4j; Lombok; JSP
 
 ###### Whole project is splitted on several packages (modules):
 ###### - config - Spring / Spring MVC, Hibernate etc settings;

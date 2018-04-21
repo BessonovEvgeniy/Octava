@@ -27,16 +27,19 @@ public abstract class BaseRepositoryImpl<T extends BaseModel> implements BaseRep
     }
 
     @Transactional(readOnly = true)
+    @Override
     public Collection<T> findAll() {
         Query query = em.createQuery("SELECT t FROM " + entityClass.getName() + " t");
         return (List<T>) query.getResultList();
     }
 
     @Transactional(readOnly = true)
+    @Override
     public T findOne(Long id) {
         return em.find(entityClass, id);
     }
 
+    @Override
     public void save(T t) {
         if (t.getId() == null) {
             em.persist(t);
@@ -45,15 +48,18 @@ public abstract class BaseRepositoryImpl<T extends BaseModel> implements BaseRep
         }
     }
 
+    @Override
     public void delete(T t) {
         em.remove(t);
     }
 
+    @Override
     public boolean exists(Long id) {
         return findOne(id) != null;
     }
 
     @Transactional(readOnly = true)
+    @Override
     public long count() {
         Query query = em.createQuery("SELECT count(t) FROM " + entityClass.getName() + " t");
         return (long) query.getSingleResult();
