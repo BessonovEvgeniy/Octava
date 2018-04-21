@@ -1,9 +1,9 @@
 package business.service.impl;
 
+import business.dao.BaseRepository;
 import business.model.BaseModel;
+import business.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import ppa.dao.BaseRepository;
-import ppa.service.BaseService;
 
 import java.sql.SQLException;
 import java.util.List;

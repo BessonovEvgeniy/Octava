@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Table(name = "USERS")
 public @Data class User extends BaseModel implements Serializable {
 
+    User(){}
+
     @NonNull
     @Column(nullable = false)
     private String name;
@@ -24,7 +26,13 @@ public @Data class User extends BaseModel implements Serializable {
     @JoinColumn(name = "ROLE_ID")
     private Role role;
 
+    @Column(nullable = false, unique = true, name = "LOGIN")
+    private String login;
+
     private String password;
+
+    @Transient
+    private String confirmPassword;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
@@ -34,8 +42,5 @@ public @Data class User extends BaseModel implements Serializable {
             inverseJoinColumns =
                 @JoinColumn(nullable = false)
     )
-
     private Company company;
-
-
 }
