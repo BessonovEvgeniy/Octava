@@ -23,6 +23,10 @@ public class AppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext context = getContext();
         container.addListener(new ContextLoaderListener(context));
 
+        container.setInitParameter("spring.profiles.active", "dev"); //Workaround for NamingException
+        container.setInitParameter("spring.profiles.default", "dev"); //Workaround for NamingException
+        container.setInitParameter("spring.liveBeansView.mbeanDomain", "dev"); //Workaround for NamingException
+
         ServletRegistration.Dynamic mainDispatcher =
                 container.addServlet("dispatcher", new DispatcherServlet(context));
         ServletRegistration.Dynamic businessDispatcher =
@@ -32,7 +36,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
         initDispatcher(mainDispatcher, 1, "/");
         initDispatcher(businessDispatcher, 2, "/business");
-        initDispatcher(businessDispatcher, 3, "/ppa");
+        initDispatcher(ppaDispatcher, 3, "/ppa");
     }
 
     private void initDispatcher(ServletRegistration.Dynamic dispatcher, int loadOnStartUp, String mapping) {

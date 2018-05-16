@@ -1,7 +1,8 @@
 package business.model.process;
 
-import lombok.Data;
 import business.model.user.User;
+import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,5 +25,9 @@ public @Data class Process {
 
     public Process(List<String> fileNames) {
         fileNames.forEach(fileName -> files.add(new File(fileName)));
+    }
+
+    public int getNumberOfFiles() {
+        return CollectionUtils.isEmpty(files) ? 0 : files.size();
     }
 }

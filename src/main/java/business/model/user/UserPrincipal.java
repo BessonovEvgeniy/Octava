@@ -3,20 +3,16 @@ package business.model.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class UserSecurityDetails implements UserDetails {
+public class UserPrincipal implements UserDetails, Serializable {
 
-    public UserSecurityDetails () {}
+    private User user;
 
-    public UserSecurityDetails (User user) {
-        login = user.getLogin();
-        password = user.getPassword();
+    public UserPrincipal(User user) {
+        this.user = user;
     }
-
-    private String login;
-
-    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,31 +21,31 @@ public class UserSecurityDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return login;
+        return user.getName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return user.isAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return user.isCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 }
