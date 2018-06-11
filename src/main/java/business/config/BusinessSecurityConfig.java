@@ -13,14 +13,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class BusinessSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public UserDetailsService userDetailsService;
+
+    @Autowired
+    private AccessDeniedHandler customAccessDeniedExceptionHandler;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,7 +37,6 @@ public class BusinessSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Autowired
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -43,9 +46,11 @@ public class BusinessSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/business/**").authenticated().
-                and().formLogin().permitAll().
-                and().logout().permitAll();
+        http.authorizeRequests().
+                anyRequest().authenticated().
+                and().
+                exceptionHandling().
+                accessDeniedHandler(customAccessDeniedExceptionHandler);
     }
 
     @Bean(name = "passwordEncoder")

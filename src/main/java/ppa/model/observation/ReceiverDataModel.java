@@ -1,10 +1,9 @@
 package ppa.model.observation;
 
+import business.config.BusinessHibernateConfig;
 import com.google.common.primitives.Ints;
 import config.AppInitializer;
-import business.config.BusinessHibernateConfig;
 import config.MvcConfiguration;
-import ppa.config.injector.LogInjector;
 import lombok.Data;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ppa.config.injector.LogInjector;
 import ppa.dto.EpochDto;
 import ppa.model.observation.header.impl.*;
 import ppa.model.rinex.Gnss;
@@ -23,7 +23,8 @@ import java.util.*;
 
 @Component("receiverDataModel")
 @Scope("prototype")
-public @Data class ReceiverDataModel implements Gnss {
+public @Data
+class ReceiverDataModel implements Gnss {
 
     public static final ReceiverDataModel NULL = new NullReceiverDataModel();
 
@@ -72,12 +73,13 @@ public @Data class ReceiverDataModel implements Gnss {
             time.add(epochTime);
         }
         for (String svCode : epoch.getSatellites()) {
-            int satellite = Ints.tryParse(svCode.substring(1,3));
+            int satellite = Ints.tryParse(svCode.substring(1, 3));
 
             for (int index = 0; index < typesOfObs.size(); index++) {
 
                 ObsType type = typesOfObs.get(index);
                 Observations observations = obs.get(type);
+
                 if (observations == null) {
                     observations = new Observations(type);
                     obs.put(type, observations);
@@ -100,7 +102,7 @@ public @Data class ReceiverDataModel implements Gnss {
 
     @Override
     public String toString() {
-        StringJoiner joiner =  new StringJoiner(" ");
+        StringJoiner joiner = new StringJoiner(" ");
         joiner.add(antennaDelta.toString()).add(antType.toString()).add(approxPos.toString()).add(pgmRunByDate.toString()).
                 add(rinexVersionType.toString());
         return joiner.toString();
