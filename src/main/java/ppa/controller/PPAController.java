@@ -1,22 +1,29 @@
 package ppa.controller;
 
 import business.model.process.Process;
-import ppa.config.injector.InjectLog;
-import ppa.config.injector.InjectThreadPool;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import ppa.config.injector.InjectLog;
+import ppa.config.injector.InjectThreadPool;
+import ppa.model.PpaResult;
 import ppa.model.observation.ReceiverDataModel;
 import ppa.model.observation.header.impl.ObsType;
 import ppa.service.RinexService;
 import ppa.service.impl.observations.processors.FindSectionsService;
 import utils.plot.Figure;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-@Controller
+@RestController
+@RequestMapping(value = "/ppa")
 public class PPAController implements ProcessorState {
 
     private RinexService rinexService;
@@ -29,11 +36,14 @@ public class PPAController implements ProcessorState {
     @InjectLog
     private Logger log;
 
-    public void process(Process process) throws Exception {
+    @RequestMapping(value = "/process", method = RequestMethod.POST)
+    public PpaResult process(@Valid Process process, BindingResult bindingResult, HttpServletRequest request) throws Exception {
+        log.info("PPA perform data processing. Uploaded " + process.getNumberOfFiles() + "file/s");
         List<File> files = process.getFiles();
         for (File file : files) {
+            log.info("Processing " + file.getName() + " file...");
             try {
-                //Read and pre process RINEX data
+                log.info("Reading RINEX data...");
                 ReceiverDataModel rdm = rinexService.readRinex(file);
                 findSectionsService.findAbsolute(rdm);
                 Figure fig = new Figure("Observations", "Time, sec", "Pseudo distance");
@@ -55,6 +65,7 @@ public class PPAController implements ProcessorState {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     @Autowired
@@ -66,6 +77,4 @@ public class PPAController implements ProcessorState {
     public void setFindSectionsService(FindSectionsService findSectionsService) {
         this.findSectionsService = findSectionsService;
     }
-
-
 }

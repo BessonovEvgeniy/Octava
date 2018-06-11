@@ -1,21 +1,20 @@
 package business.model.user;
 
-import lombok.Data;
-import lombok.NonNull;
 import business.model.BaseModel;
 import business.model.company.Company;
+import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "USERS")
-public @Data class User extends BaseModel implements Serializable {
+public @Data class User extends BaseModel {
 
     User(){}
 
     @NonNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String phone;
@@ -33,6 +32,17 @@ public @Data class User extends BaseModel implements Serializable {
 
     @Transient
     private String confirmPassword;
+
+    private boolean enabled;
+
+    @Column(name = "account_non_expired")
+    private boolean accountNonExpired;
+
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private boolean credentialsNonExpired;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
