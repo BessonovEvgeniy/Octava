@@ -1,6 +1,5 @@
 package ppa.service.impl.rinex;
 
-import jdk.nashorn.internal.runtime.ParserException;
 import org.springframework.stereotype.Service;
 import ppa.service.PreProcessRawObsService;
 
@@ -26,7 +25,7 @@ public class PreProcessRawObsServiceImpl implements PreProcessRawObsService {
         return skipCommentsIfAny(reader);
     }
 
-    public double[] convertRawObs(String rawObs) throws ParserException {
+    public double[] convertRawObs(String rawObs) {
         //Replace observations gaps by Zero values
         rawObs = rawObs.trim().replaceAll("\\s{14,28}", "          0.000 ");
 

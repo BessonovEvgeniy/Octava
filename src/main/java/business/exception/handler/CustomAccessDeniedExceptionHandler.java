@@ -19,7 +19,7 @@ public class CustomAccessDeniedExceptionHandler implements AccessDeniedHandler, 
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        httpServletResponse.sendRedirect(ctx.getEnvironment().getProperty("accessDeniedPage"));
+        httpServletResponse.sendRedirect(ctx.getEnvironment().getProperty("login"));
     }
 
     @Override
