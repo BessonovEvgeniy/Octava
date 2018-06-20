@@ -5,18 +5,14 @@ import business.model.user.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Repository
 public class UserRepositoryImpl<T extends User> extends BaseRepositoryImpl<User> implements UserRepository<User>{
 
     public T findUserByLogin(String login) {
 
-        Query query = em.createNativeQuery("SELECT user FROM User user WHERE user.login=" + login);
-
-
-//        Query query = em.createQuery("SELECT user FROM User user WHERE user.login =:login");
-
-//        query.setParameter("login", login);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class).setParameter("login", login);
 
         return (T) query.getSingleResult();
     }
