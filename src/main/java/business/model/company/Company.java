@@ -2,7 +2,7 @@ package business.model.company;
 
 import lombok.Data;
 import business.model.BaseModel;
-import business.model.address.Address;
+import business.model.contact.Address;
 import business.model.user.User;
 
 import javax.persistence.*;

@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Project</title>
+    <a href="/project/new">New</a>
     <table border="1">
         <thead>
         <tr>
@@ -18,6 +19,7 @@
                 <td>${project.name}</td>
                 <td>${project.created}</td>
                 <td>${project.status}</td>
+                <td><a href="/project/info?"></a></td>
             </tr>
         </c:forEach>
         </tbody>

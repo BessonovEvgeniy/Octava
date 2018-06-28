@@ -1,4 +1,4 @@
-package business.model.address;
+package business.model.contact;
 
 import lombok.Data;
 
