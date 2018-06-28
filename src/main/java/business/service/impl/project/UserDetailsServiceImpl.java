@@ -2,7 +2,6 @@ package business.service.impl.project;
 
 import business.dao.UserRepository;
 import business.model.user.User;
-import business.model.user.UserPrincipal;
 import business.service.UserService;
 import business.service.impl.BaseServiceImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,6 @@ public class UserDetailsServiceImpl extends BaseServiceImpl<User, UserRepository
             throw new UsernameNotFoundException(login);
         }
 
-        return new UserPrincipal(user);
+        return user.getPrincipal();
     }
 }

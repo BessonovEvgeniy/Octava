@@ -12,7 +12,7 @@ public class UserRepositoryImpl<T extends User> extends BaseRepositoryImpl<User>
 
     public T findUserByLogin(String login) {
 
-        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class).setParameter("login", login);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.principal.login = :login", User.class).setParameter("login", login);
 
         return (T) query.getSingleResult();
     }
