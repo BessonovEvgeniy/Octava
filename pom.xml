@@ -16,7 +16,6 @@
         <commons.loggin.version>1.1</commons.loggin.version>
 
         <hibernate.core.version>5.2.12.Final</hibernate.core.version>
-        <javax.persistence.version>1.0.2</javax.persistence.version>
         <hibernate.persistence.version>1.0.0.Final</hibernate.persistence.version>
         <hibernate.validation>6.0.4.Final</hibernate.validation>
         <jakarta.dbcp.version>2.2.0</jakarta.dbcp.version>
@@ -88,11 +87,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${javax.persistence.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

@@ -14,16 +14,25 @@
 ###### - utils - common tool set for modules.
 
 ###### 1) Get Started
+###### 1.1 Create 'octavadb' database in postgres (pgAdmin)
 
-###### 1.1 Start Tomcat
+```
+jdbc.username=postgres
+jdbc.password=1
+jdbc.url=jdbc:postgresql://localhost:5432/octavadb
+```
+
+###### or change rdbmsDev.properties file by custom db settings
+
+###### 1.2 Start Tomcat
 ###### If Tomcat encountered an error for JDBC driver leaking. It should be ignored by Fine server settings
 
-###### 1.2 Chose create Project -> Enter project Name (at least 4 symbols)
+###### 1.3 Chose create Project -> Enter project Name (at least 4 symbols)
 
-###### 1.3 Pick up Rinex file from testResourse folder (example 38541890.16o) of current project -> press upload file
+###### 1.4 Pick up Rinex file from testResourse folder (example 38541890.16o) of current project -> press upload file
 ###### Rinex format can be found by link ftp://igs.org/pub/data/format/rinex211.txt
 
-###### 1.4 After the file has been uploaded it will be parsed to the Object representation.
+###### 1.5 After the file has been uploaded it will be parsed to the Object representation.
 
 ###### Workflow for rinex file processing
 ![alt text](screenshots/rinex-file-processing.png)
