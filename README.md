@@ -1,17 +1,17 @@
 #### SDK OCTAVA
 ##### Web service for processing Raw Observation Data which are stored in RINEX format.
-##### This open source project is a demo of original SDK "OCTAVA" for GNSS observation processing (see details http://www.kharkovgnssgroup.net/en/projects/sdk-octava.html)
-##### Original project written on the MatLab (Matrix Laboratory) programming support environment and still under development.
-##### These project is being developed in spare time.
+##### This open source projectModel is a demo of original SDK "OCTAVA" for GNSS observation processing (see details http://www.kharkovgnssgroup.net/en/projectModels/sdk-octava.html)
+##### Original projectModel written on the MatLab (Matrix Laboratory) programming support environment and still under development.
+
+##### Project has a modular structure.
+#####- Octava is a root module for whole submodules. This module contains external dependencies and projectModel meta information. 
+#####- Application module starts the application with Spring Boot on Tomcat Server.
+#####- Business module is a web application for interaction with a user. This module provides RAW observation processing service for registered users.
+#####- PPA module is a Pre Processing Algorithms module. Here RAW satellite observation data go through validation and verification processing.
+#####- Core module contains whole common data, utils etc. like Data model, file processing utils.
 
 ##### Used Technologies
 ##### - Java 8; Spring MVC/Spring, Spring Security, Spring AOP; Amazon S3; Hibernate; XChart; JMockito; JUnit 5; log4j; Lombok; JSP
-
-###### Whole project is splitted on several packages (modules):
-###### - config - Spring / Spring MVC, Hibernate etc settings;
-###### - business - module for user interaction purposes;
-###### - ppa - module for Pre Proccesing Algorithms implementation;
-###### - utils - common tool set for modules.
 
 ###### 1) Get Started
 ###### 1.1 Create 'octavadb' database in postgres (pgAdmin)
@@ -27,9 +27,9 @@ jdbc.url=jdbc:postgresql://localhost:5432/octavadb
 ###### 1.2 Start Tomcat
 ###### If Tomcat encountered an error for JDBC driver leaking. It should be ignored by Fine server settings
 
-###### 1.3 Chose create Project -> Enter project Name (at least 4 symbols)
+###### 1.3 Chose create Project -> Enter projectModel Name (at least 4 symbols)
 
-###### 1.4 Pick up Rinex file from testResourse folder (example 38541890.16o) of current project -> press upload file
+###### 1.4 Pick up Rinex file from testResourse folder (example 38541890.16o) of current projectModel -> press upload file
 ###### Rinex format can be found by link ftp://igs.org/pub/data/format/rinex211.txt
 
 ###### 1.5 After the file has been uploaded it will be parsed to the Object representation.

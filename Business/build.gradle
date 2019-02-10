@@ -1,0 +1,14 @@
+description = 'Business'
+
+
+dependencies {
+    compile project(':Core')
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources", "src/main/webapp"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+apply plugin: 'application'
+apply plugin: 'eclipse-wtp'
+
+description = 'Application'
+
+mainClassName = "config.SpringBootAppInitializer"
+
+dependencies {
+    compile project(':PPA')
+    compile project(':Business')
+    compile project(':Core')
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources"
+        }
+    }
+}

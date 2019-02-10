@@ -1,0 +1,10 @@
+rootProject.name = 'Octava'
+include ':Application'
+include ':Business'
+include ':PPA'
+include ':Core'
+
+project(':Application').projectDir = "$rootDir/Application" as File
+project(':Business').projectDir = "$rootDir/Business" as File
+project(':PPA').projectDir = "$rootDir/PPA" as File
+project(':Core').projectDir = "$rootDir/Core" as File

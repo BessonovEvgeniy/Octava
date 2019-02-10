@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Upload Rinex file</title>
+    <div class="row">
+        <form method="post" action="#" th:action="@{/project/upload}" enctype="multipart/form-data">
+            <div class="file_upload">
+                <input hidden="hidden" name="projectName" value="${project.projectName}"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <input type="hidden" name="${_csrf_header}" value="${_csrf.headerName}" />
+                <input type="file" name="file" />
+                <button type="submit">Upload Rinex</button>
+            </div>
+        </form>
+    </div>
+</head>
+<body>
+
+</body>
+</html>

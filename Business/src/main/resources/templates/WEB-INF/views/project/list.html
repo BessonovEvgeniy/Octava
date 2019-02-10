@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Project</title>
+</head>
+<body>
+<form method="post" action="#" th:action="@{/project/create}">
+    <div class="file_upload">
+        <input type="text" name="projectName">
+        <button type="submit">Create</button>
+    </div>
+</form>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Created By</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody th:if="${!projects.empty}">
+    <tr th:each="project: ${projects}">
+        <td>${project.name}</td>
+        <td>${project.created}</td>
+        <td>${project.status}</td>
+        <td><a href="/project/info"></a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
