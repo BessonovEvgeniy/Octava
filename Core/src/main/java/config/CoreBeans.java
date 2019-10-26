@@ -1,5 +1,6 @@
 package config;
 
+import com.google.common.collect.Lists;
 import converter.AbstractPopulatingConverter;
 import converter.Populator;
 import converter.populator.MappingPopulator;
@@ -35,9 +36,7 @@ public class CoreBeans {
     }
 
     private List<Populator<HandlerMethod, MappingDto>> mappingPopulators() {
-        List<Populator<HandlerMethod, MappingDto>> populators = new ArrayList<>();
-        populators.add(mappingPopulator());
-        return populators;
+        return Lists.newArrayList(mappingPopulator());
     }
 
     @Bean
@@ -62,10 +61,7 @@ public class CoreBeans {
     }
 
     private List<Populator<RinexFileModel, RinexFileDto>> rinexFilePopulators() {
-        List<Populator<RinexFileModel, RinexFileDto>> populators = new ArrayList<>();
-        populators.add(rinexFilePopulator());
-        populators.add(storedFileConverter());
-        return populators;
+        return Lists.newArrayList(rinexFilePopulator(), storedFileConverter());
     }
 
 

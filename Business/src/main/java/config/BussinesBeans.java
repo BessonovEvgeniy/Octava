@@ -1,5 +1,6 @@
 package config;
 
+import com.google.common.collect.Lists;
 import converter.AbstractPopulatingConverter;
 import converter.Populator;
 import converter.populator.ProjectPopulator;
@@ -31,8 +32,6 @@ public class BussinesBeans {
     }
 
     private List<Populator<ProjectModel, ProjectDto>> projectPopulators() {
-        List<Populator<ProjectModel, ProjectDto>> populators = new ArrayList<>();
-        populators.add(projectPopulator());
-        return populators;
+        return Lists.newArrayList(projectPopulator());
     }
 }

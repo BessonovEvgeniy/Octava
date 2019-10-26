@@ -11,6 +11,6 @@ import java.util.Objects;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {"config"})
+@ComponentScan(basePackages = {"config", "service", "filter", "handler", "manager"})
 public class MvcConfiguration extends WebMvcConfigurationSupport {
 }
