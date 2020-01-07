@@ -1,14 +1,14 @@
 #### SDK OCTAVA
-##### Web service for processing Raw Observation Data which are stored in RINEX format.
+##### Web octava.service for processing Raw Observation Data which are stored in RINEX format.
 ##### This open source projectModel is a demo of original SDK "OCTAVA" for GNSS observation processing (see details http://www.kharkovgnssgroup.net/en/projectModels/sdk-octava.html)
 ##### Original projectModel written on the MatLab (Matrix Laboratory) programming support environment and still under development.
 
 ##### Project has a modular structure.
 #####- Octava is a root module for whole submodules. This module contains external dependencies and projectModel meta information. 
 #####- Application module starts the application with Spring Boot on Tomcat Server.
-#####- Business module is a web application for interaction with a user. This module provides RAW observation processing service for registered users.
+#####- Business module is a web application for interaction with a user. This module provides RAW observation processing octava.service for registered users.
 #####- PPA module is a Pre Processing Algorithms module. Here RAW satellite observation data go through validation and verification processing.
-#####- Core module contains whole common data, utils etc. like Data model, file processing utils.
+#####- Core module contains whole common data, utils etc. like Data octava.model, file processing utils.
 
 ##### Used Technologies
 ##### - Java 8; Spring MVC/Spring, Spring Security, Spring AOP; Amazon S3; Hibernate; XChart; JMockito; JUnit 5; log4j; Lombok; JSP

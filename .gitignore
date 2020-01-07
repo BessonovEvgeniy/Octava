@@ -2,3 +2,6 @@
 *.iml
 lib
 target
+*\build
+*\.gradle
+*\gradle

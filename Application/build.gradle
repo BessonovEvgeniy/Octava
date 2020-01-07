@@ -3,7 +3,7 @@ apply plugin: 'eclipse-wtp'
 
 description = 'Application'
 
-mainClassName = "config.SpringBootAppInitializer"
+mainClassName = "octava.config.SpringBootAppInitializer"
 
 dependencies {
     compile project(':PPA')
