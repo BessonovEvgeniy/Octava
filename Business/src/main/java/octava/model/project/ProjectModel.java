@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -30,10 +29,7 @@ public @Data class ProjectModel extends BaseModel {
     private List<RinexFileModel> rinexFileModels;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.New;
-
-    @Column
-    private LocalDateTime created = LocalDateTime.now();
+    private Status status = Status.NEW;
 
     public ProjectModel(){}
 
@@ -51,6 +47,6 @@ public @Data class ProjectModel extends BaseModel {
     }
 
     public enum Status {
-        New, Ready, Processing, Processed
+        NEW, READY, PROCESSING, PROCESSED
     }
 }

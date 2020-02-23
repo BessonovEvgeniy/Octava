@@ -1,13 +1,15 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Project</title>
 </head>
 <body>
-<form method="post" action="#" th:action="@{/project/create}">
-    <div class="file_upload">
-        <input type="text" name="projectName">
-        <button type="submit">Create</button>
+<form method="post" action="#" th:action="@{/project/create}" th:object="${project}">
+    <div class="form-group">
+        <label for="projectName">Project name</label>
+        <input type="text" th:field="*{name}" id="projectName" placeholder="Enter project name"/>
+        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label>
     </div>
+    <button type="submit" class="btn btn-primary">Create</button>
 </form>
 <table border="1">
     <thead>
@@ -17,12 +19,12 @@
         <th>Status</th>
     </tr>
     </thead>
-    <tbody th:if="${!projects.empty}">
+    <tbody th:unless="${#lists.isEmpty(projects)}">
     <tr th:each="project: ${projects}">
-        <td>${project.name}</td>
-        <td>${project.created}</td>
-        <td>${project.status}</td>
-        <td><a href="/project/info"></a></td>
+        <td th:text="${project.name}"></td>
+        <td th:text="${project.created}"></td>
+        <td th:text="${project.status}"></td>
+        <td><a href="/project/info">View</a></td>
     </tr>
     </tbody>
 </table>

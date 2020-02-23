@@ -5,8 +5,10 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 public abstract class AbstractConverter<SOURCE, TARGET> implements Converter<SOURCE, TARGET>, Populator<SOURCE, TARGET> {
 
@@ -16,8 +18,8 @@ public abstract class AbstractConverter<SOURCE, TARGET> implements Converter<SOU
     @Override
     public abstract TARGET convert(SOURCE source);
 
-    public Collection<TARGET> convertAll(Collection<SOURCE> sources) {
-        Collection<TARGET> targets = Collections.emptyList();
+    public List<TARGET> convertAll(Collection<SOURCE> sources) {
+        List<TARGET> targets = emptyList();
 
         if (CollectionUtils.isNotEmpty(sources)) {
             targets = sources.stream().map(source -> convert(source)).collect(Collectors.toList());

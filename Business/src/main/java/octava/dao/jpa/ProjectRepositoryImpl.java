@@ -12,9 +12,9 @@ import java.util.List;
 public class ProjectRepositoryImpl extends BaseRepositoryImpl<ProjectModel> implements ProjectRepository<ProjectModel> {
 
     @Override
-    public List<ProjectModel> findAllByUser(String login) throws SQLException {
+    public List<ProjectModel> findAllByUser(final String login) {
 
-        Query query = em.createNativeQuery("SELECT p FROM Projects p JOIN Users u ON p.user_id = u.id WHERE u.login = :login", ProjectModel.class);
+        final Query query = em.createQuery("SELECT p FROM ProjectModel p INNER JOIN p.createdBy u WHERE u.principal.login = :login", ProjectModel.class);
 
         query.setParameter("login", login);
 
@@ -22,11 +22,11 @@ public class ProjectRepositoryImpl extends BaseRepositoryImpl<ProjectModel> impl
     }
 
     @Override
-    public ProjectModel findProject(String projectName, String login) throws SQLException {
+    public ProjectModel findProject(final String name, final String login) {
 
-        Query query = em.createNativeQuery("SELECT * FROM Projects p JOIN Users u ON p.user_id = u.id WHERE p.name = :projectName AND u.login = :login", ProjectModel.class);
+        final Query query = em.createQuery("SELECT p FROM ProjectModel p INNER JOIN p.createdBy u WHERE p.name = :name AND u.principal.login = :login", ProjectModel.class);
 
-        query.setParameter("projectName", projectName);
+        query.setParameter("name", name);
         query.setParameter("login", login);
 
         return (ProjectModel) query.getSingleResult();

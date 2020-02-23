@@ -7,9 +7,10 @@ import octava.model.project.ProjectModel;
 public class ProjectPopulator implements Populator<ProjectModel, ProjectDto> {
 
     @Override
-    public void populate(ProjectModel source, ProjectDto target) {
+    public void populate(final ProjectModel source, final ProjectDto target) {
 
-        target.setProjectName(source.getName());
+        target.setName(source.getName());
         target.setStatus(source.getStatus().name());
+        target.setCreated(source.getCreated());
     }
 }

@@ -3,15 +3,24 @@ package octava.dto;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public @Data class ProjectDto {
+@Data
+public class ProjectDto {
 
-    private String projectName;
+    @NotNull
+    @Size(min=4, max=18)
+    private String name;
 
     private String status;
+
+    private LocalDateTime created;
 
     private List<File> files = new ArrayList<>();
 

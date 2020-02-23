@@ -12,5 +12,5 @@ public interface ProjectService<T extends ProjectModel> extends BaseService<T> {
 
     List<T> getAllByUser(String login);
 
-    Optional<T> getProject(String project, String login);
+    T getProject(String project, String login);
 }

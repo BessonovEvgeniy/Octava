@@ -29,12 +29,12 @@ public class LocalStorage implements StorageService {
     private String path;
 
     @Override
-    public List<StoredFileModel> store(List<MultipartFile> multipartFiles) {
+    public List<StoredFileModel> store(final List<MultipartFile> multipartFiles) {
         return multipartFiles.stream().map(this::store).collect(Collectors.toList());
     }
 
     @Override
-    public StoredFileModel store(MultipartFile file) {
+    public StoredFileModel store(final MultipartFile file) {
         return storage.apply(file);
     }
 
@@ -61,7 +61,7 @@ public class LocalStorage implements StorageService {
     private Function<MultipartFile, StoredFileModel> storage = multipartFile -> {
 
         final String userPath = "admin";
-        final File folder = new File(path + "/" + userPath);
+        final File folder = new File(path + "/" + userPath + "/");
 
         if (negate(folder.exists())) {
             folder.mkdir();

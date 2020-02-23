@@ -3,13 +3,31 @@ package octava.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
+@Data
 @MappedSuperclass
-public @Data abstract class BaseModel {
+public abstract class BaseModel {
 
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column
+    protected LocalDateTime created;
+
+    @Column
+    protected LocalDateTime updated;
+
+    @PrePersist
+    protected void onCreate() {
+        created = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updated = LocalDateTime.now();
+    }
 
     @Override
     public boolean equals(Object o) {

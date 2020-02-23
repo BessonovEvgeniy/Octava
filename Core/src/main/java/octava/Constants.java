@@ -11,6 +11,9 @@ public class Constants {
     public static final class Controller {
 
         public static final class Project {
+            public static final String PROJECT = "project";
+            public static final String PROJECTS = "projects";
+
             private static final String PREFIX = "/project";
 
             public static final String CREATE = PREFIX + "/create";

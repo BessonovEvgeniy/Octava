@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
+import static org.apache.commons.collections4.ListUtils.emptyIfNull;
+
 
 @Service("projectService")
 public class ProjectServiceImpl<T extends ProjectModel, P extends ProjectRepository<T>> extends BaseServiceImpl<T, P> implements ProjectService<T> {
@@ -23,37 +25,16 @@ public class ProjectServiceImpl<T extends ProjectModel, P extends ProjectReposit
 
     @Override
     public List<T> getAllByUser(Principal principal) {
-        return principal == null ? Collections.EMPTY_LIST : getAllByUser(principal.getName());
+        return emptyIfNull(getAllByUser(principal.getName()));
     }
 
     @Override
     public List<T> getAllByUser(String login) {
-
-        List<T> projects = Collections.EMPTY_LIST;
-
-        try {
-            projects = dao.findAllByUser(login);
-        } catch (SQLException e) {
-            LOG.error("Can't find any project for user " + login);
-        }
-
-        return projects;
+        return dao.findAllByUser(login);
     }
 
     @Override
-    public Optional<T> getProject(String projectName, String login) {
-
-        ProjectModel projectModel = null;
-        try {
-            projectModel = dao.findProject(projectName, login);
-        } catch (SQLException e) {
-
-            StringJoiner msg = new StringJoiner(" ");
-            msg.add("Can't find projectModel").add(projectName).add("for user").add(login);
-
-            LOG.error(msg.toString());
-        }
-
-        return Optional.ofNullable((T) projectModel);
+    public T getProject(String projectName, String login) {
+        return dao.findProject(projectName, login);
     }
 }
