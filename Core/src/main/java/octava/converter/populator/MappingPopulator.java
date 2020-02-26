@@ -1,4 +1,4 @@
-package octava.populator;
+package octava.converter.populator;
 
 import octava.converter.Populator;
 import octava.dto.MappingDto;

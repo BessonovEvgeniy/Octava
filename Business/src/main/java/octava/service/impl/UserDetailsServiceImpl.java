@@ -1,4 +1,4 @@
-package octava.service.impl.project;
+package octava.service.impl;
 
 import octava.dao.UserRepository;
 import octava.model.user.User;

@@ -9,5 +9,9 @@ public interface ProjectFacade {
 
     ProjectDto create(ProjectDto project, Principal principal);
 
+    ProjectDto update(ProjectDto project, Principal principal);
+
+    ProjectDto get(String projectName, Principal principal);
+
     List<ProjectDto> projectsByUser(Principal principal);
 }

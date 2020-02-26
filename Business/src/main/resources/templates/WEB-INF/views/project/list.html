@@ -24,7 +24,7 @@
         <td th:text="${project.name}"></td>
         <td th:text="${project.created}"></td>
         <td th:text="${project.status}"></td>
-        <td><a href="/project/info">View</a></td>
+        <td><a th:href="@{'/project/info?project=' + ${project.name}}">View</a></td>
     </tr>
     </tbody>
 </table>

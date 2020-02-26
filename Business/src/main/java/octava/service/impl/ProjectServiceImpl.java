@@ -1,4 +1,4 @@
-package octava.service.impl.project;
+package octava.service.impl;
 
 import octava.dao.ProjectRepository;
 import octava.model.project.ProjectModel;
@@ -6,14 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import octava.service.ProjectService;
-import octava.service.impl.BaseServiceImpl;
 
 import java.security.Principal;
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.StringJoiner;
 
 import static org.apache.commons.collections4.ListUtils.emptyIfNull;
 

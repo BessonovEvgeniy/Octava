@@ -34,9 +34,14 @@ public abstract class AbstractPopulatingConverter<SOURCE, TARGET> extends Abstra
     }
 
     @Override
-    public TARGET convert(SOURCE source) {
+    public TARGET convert(final SOURCE source) {
 
         TARGET target = createFromClass();
+        populate(source, target);
+        return target;
+    }
+
+    public TARGET convert(final SOURCE source, final TARGET target) {
         populate(source, target);
         return target;
     }

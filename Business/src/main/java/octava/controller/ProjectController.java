@@ -30,14 +30,13 @@ public class ProjectController extends AbstractBusinessController {
     private ProjectFacade projectFacade;
 
     @PostMapping(value = Constants.Controller.Project.CREATE)
-    public String create(Model model,
-                         HttpServletRequest request,
-                         @Valid @ModelAttribute(name = PROJECT) ProjectDto project,
-                         BindingResult bindingResult,
-                         Principal principal) {
+    public String create(final Model model,
+                         final HttpServletRequest request,
+                         final @Valid @ModelAttribute(name = PROJECT) ProjectDto project,
+                         final BindingResult bindingResult,
+                         final Principal principal) {
 
         if (bindingResult.hasErrors()) {
-
             return request.getHeader("Referer").replace(request.getHeader("origin"), StringUtils.EMPTY);
         }
 
@@ -45,6 +44,25 @@ public class ProjectController extends AbstractBusinessController {
 
         model.addAttribute(PROJECT, createdProject);
         return "redirect:" + Constants.Controller.Project.LIST;
+    }
+
+    @PostMapping(value = Constants.Controller.Project.UPDATE)
+    public String update(final Model model,
+                         final HttpServletRequest request,
+                         final @Valid @ModelAttribute(name = PROJECT) ProjectDto project,
+                         final BindingResult bindingResult,
+                         final Principal principal) {
+
+        final String sourceUrl = request.getHeader("Referer").replace(request.getHeader("origin"), StringUtils.EMPTY);
+
+        if (bindingResult.hasErrors()) {
+            return sourceUrl;
+        }
+
+        final ProjectDto updatedProject = projectFacade.update(project, principal);
+
+        model.addAttribute(PROJECT, updatedProject);
+        return sourceUrl;
     }
 
     @GetMapping(value = Constants.Controller.Project.LIST)
@@ -55,6 +73,17 @@ public class ProjectController extends AbstractBusinessController {
         model.addAttribute(PROJECT, new ProjectDto());
         model.addAttribute(PROJECTS, projects);
         return Constants.Controller.Project.LIST;
+    }
+
+    @GetMapping(value = Constants.Controller.Project.INFO)
+    public String info( final Model model,
+                        final @RequestParam String project,
+                        final Principal principal) {
+
+        final ProjectDto readProject = projectFacade.get(project, principal);
+        model.addAttribute(PROJECT, readProject);
+
+        return Constants.Controller.Project.INFO;
     }
 
     @PostMapping(value = Constants.Controller.Project.UPLOAD)

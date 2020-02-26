@@ -36,6 +36,9 @@ public class ProjectFacadeImpl implements ProjectFacade {
     @Resource
     private AbstractPopulatingConverter<ProjectModel, ProjectDto> projectConverter;
 
+    @Resource
+    private AbstractPopulatingConverter<ProjectDto, ProjectModel> reverseProjectConverter;
+
     @Override
     public ProjectDto create(final ProjectDto project, final Principal principal) {
 
@@ -51,6 +54,39 @@ public class ProjectFacadeImpl implements ProjectFacade {
             LOG.error(MessageFormat.format("Can\\'t create projectModel {0}, for User {1}", projectModel, login), e);
             throw new ProjectException();
         }
+        final ProjectDto projectDto = projectConverter.convert(projectModel);
+
+        return projectDto;
+    }
+
+    @Override
+    public ProjectDto update(final ProjectDto projectDto, final Principal principal) {
+
+        final String userLogin = principal.getName();
+
+        final String projectName = projectDto.getName();
+
+        final ProjectModel projectModel = projectService.getProject(projectName, userLogin);
+
+        reverseProjectConverter.convert(projectDto, projectModel);
+
+        try {
+            projectService.update(projectModel);
+        } catch (final SQLException e) {
+            LOG.error(MessageFormat.format("Can\\'t create projectModel {0}, for User {1}", projectModel, userLogin), e);
+            throw new ProjectException();
+        }
+        final ProjectDto updatedProjectDto = projectConverter.convert(projectModel);
+
+        return updatedProjectDto;
+    }
+
+    @Override
+    public ProjectDto get(final String projectName, final Principal principal) {
+        final String userLogin = principal.getName();
+
+        final ProjectModel projectModel = projectService.getProject(projectName, userLogin);
+
         final ProjectDto projectDto = projectConverter.convert(projectModel);
 
         return projectDto;

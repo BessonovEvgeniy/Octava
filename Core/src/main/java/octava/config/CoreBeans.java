@@ -9,7 +9,7 @@ import octava.handler.RestTemplateResponseErrorHandler;
 import octava.interceptor.BearerAuthorizationInterceptor;
 import octava.interceptor.RestTemplateApiCallInterceptor;
 import octava.model.rinex.RinexFileModel;
-import octava.populator.MappingPopulator;
+import octava.converter.populator.MappingPopulator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

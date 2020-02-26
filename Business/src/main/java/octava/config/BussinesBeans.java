@@ -3,7 +3,8 @@ package octava.config;
 import com.google.common.collect.Lists;
 import octava.converter.AbstractPopulatingConverter;
 import octava.converter.Populator;
-import octava.populator.ProjectPopulator;
+import octava.converter.populator.ProjectPopulator;
+import octava.converter.populator.ReverseProjectPopulator;
 import octava.dto.ProjectDto;
 import octava.model.project.ProjectModel;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,23 @@ public class BussinesBeans {
     @Qualifier("projectPopulator")
     public Populator<ProjectModel, ProjectDto> projectPopulator() {
         return new ProjectPopulator();
+    }
+
+    @Bean(name = "reverseProjectConverter")
+    public AbstractPopulatingConverter<ProjectDto, ProjectModel> reverseProjectConverter() {
+        AbstractPopulatingConverter<ProjectDto, ProjectModel> converter = new AbstractPopulatingConverter(){};
+        converter.setTargetClass(ProjectModel.class);
+        converter.setPopulators(reverseProjectPopulators());
+        return converter;
+    }
+
+    @Bean(name = "reverseProjectPopulator")
+    public Populator<ProjectDto, ProjectModel> reverseProjectPopulator() {
+        return new ReverseProjectPopulator();
+    }
+
+    private List<Populator<ProjectDto, ProjectModel>> reverseProjectPopulators() {
+        return Lists.newArrayList(reverseProjectPopulator());
     }
 
     private List<Populator<ProjectModel, ProjectDto>> projectPopulators() {
