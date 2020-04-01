@@ -7,9 +7,8 @@ import octava.model.project.ProjectModel;
 public class ReverseProjectPopulator implements Populator<ProjectDto, ProjectModel> {
 
     @Override
-    public void populate(final ProjectDto target, final ProjectModel source) {
+    public void populate(final ProjectDto source, final ProjectModel target) {
 
-        source.setName(target.getName());
-        source.setStatus(ProjectModel.Status.valueOf(target.getStatus()));
+        target.setName(source.getName());
     }
 }

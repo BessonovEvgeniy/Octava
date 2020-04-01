@@ -1,6 +1,6 @@
 package octava.dao;
 
-import octava.model.rinex.RinexFileModel;
+import octava.model.rinex.RinexFileMediaModel;
 
-public interface RinexFileRepository<T extends RinexFileModel> extends BaseRepository<T>{
+public interface RinexFileRepository extends MediaRepository<RinexFileMediaModel> {
 }

@@ -3,13 +3,18 @@ package octava.config;
 import com.google.common.collect.Lists;
 import octava.converter.AbstractPopulatingConverter;
 import octava.converter.Populator;
+import octava.converter.populator.MediaPopulator;
+import octava.converter.populator.RinexFilePopulator;
 import octava.dto.MappingDto;
+import octava.dto.MediaDto;
 import octava.dto.RinexFileDto;
 import octava.handler.RestTemplateResponseErrorHandler;
 import octava.interceptor.BearerAuthorizationInterceptor;
 import octava.interceptor.RestTemplateApiCallInterceptor;
-import octava.model.rinex.RinexFileModel;
+import octava.model.media.MediaModel;
+import octava.model.rinex.RinexFileMediaModel;
 import octava.converter.populator.MappingPopulator;
+import octava.service.impl.storage.LocalStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -66,10 +71,33 @@ public class CoreBeans {
     }
 
     @Bean("rinexFileConverter")
-    public AbstractPopulatingConverter<RinexFileModel, RinexFileDto> rinexFileConverter() {
-        AbstractPopulatingConverter<RinexFileModel, RinexFileDto> mappingConverter = new AbstractPopulatingConverter(){};
+    public AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexFileConverter() {
+        AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> mappingConverter = new AbstractPopulatingConverter(){};
         mappingConverter.setTargetClass(RinexFileDto.class);
-        mappingConverter.setPopulators(Lists.newArrayList());
+        mappingConverter.setPopulators(Lists.newArrayList(rinexFilePopulator()));
         return mappingConverter;
+    }
+
+    @Bean
+    public RinexFilePopulator<RinexFileMediaModel, RinexFileDto> rinexFilePopulator() {
+        return new RinexFilePopulator();
+    }
+
+    @Bean("mediaConverter")
+    public AbstractPopulatingConverter<MediaModel, MediaDto> mediaConverter() {
+        AbstractPopulatingConverter<MediaModel, MediaDto> mappingConverter = new AbstractPopulatingConverter(){};
+        mappingConverter.setTargetClass(MediaDto.class);
+        mappingConverter.setPopulators(Lists.newArrayList(mediaPopulator()));
+        return mappingConverter;
+    }
+
+    @Bean("rinexLocalStorage")
+    public LocalStorage<RinexFileMediaModel> createRinexLocalStorage() {
+        return new LocalStorage<RinexFileMediaModel>();
+    }
+
+    @Bean
+    public MediaPopulator<MediaModel, MediaDto> mediaPopulator() {
+        return new MediaPopulator();
     }
 }

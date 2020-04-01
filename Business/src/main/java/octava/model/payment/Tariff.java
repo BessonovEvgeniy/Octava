@@ -1,7 +1,7 @@
 package octava.model.payment;
 
-import octava.model.BaseModel;
 import lombok.Data;
+import octava.model.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

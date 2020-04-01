@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymleaf.org">
 <head>
     <title>Project</title>
 </head>
@@ -22,7 +22,7 @@
     <tbody th:unless="${#lists.isEmpty(projects)}">
     <tr th:each="project: ${projects}">
         <td th:text="${project.name}"></td>
-        <td th:text="${project.created}"></td>
+        <td th:text="${project.createdBy.name}"></td>
         <td th:text="${project.status}"></td>
         <td><a th:href="@{'/project/info?project=' + ${project.name}}">View</a></td>
     </tr>

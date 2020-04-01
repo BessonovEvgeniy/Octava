@@ -8,8 +8,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+@Data
 @Embeddable
-public @Data class MonetaryAmount extends BaseModel implements Serializable {
+public class MonetaryAmount extends BaseModel implements Serializable {
 
     protected BigDecimal value;
 

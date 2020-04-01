@@ -1,17 +1,16 @@
 package octava.service.impl.storage;
 
-import octava.model.NullStoredFileModel;
-import octava.model.StoredFileModel;
+import octava.model.media.MediaModel;
+import octava.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import octava.service.StorageService;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.function.Function;
@@ -19,22 +18,28 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.BooleanUtils.negate;
 
-@Service("localStorage")
 @PropertySource("classpath:core.storage.properties")
-public class LocalStorage implements StorageService {
+public class LocalStorage<T extends MediaModel> implements StorageService<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocalStorage.class);
+
+    private Class<T> entityClass;
 
     @Value("${storage.local.folder}")
     private String path;
 
+    public LocalStorage() {
+        ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
+        this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+    }
+
     @Override
-    public List<StoredFileModel> store(final List<MultipartFile> multipartFiles) {
+    public List<T> store(final List<MultipartFile> multipartFiles) {
         return multipartFiles.stream().map(this::store).collect(Collectors.toList());
     }
 
     @Override
-    public StoredFileModel store(final MultipartFile file) {
+    public T store(final MultipartFile file) {
         return storage.apply(file);
     }
 
@@ -58,7 +63,7 @@ public class LocalStorage implements StorageService {
 
     }
 
-    private Function<MultipartFile, StoredFileModel> storage = multipartFile -> {
+    private Function<MultipartFile, T> storage = multipartFile -> {
 
         final String userPath = "admin";
         final File folder = new File(path + "/" + userPath + "/");
@@ -67,7 +72,7 @@ public class LocalStorage implements StorageService {
             folder.mkdir();
         }
 
-        StoredFileModel storedFileModel = new NullStoredFileModel();
+        T media = null;
 
         final String fileName = multipartFile.getOriginalFilename();
 
@@ -75,15 +80,24 @@ public class LocalStorage implements StorageService {
             final File targetFile = new File(folder + fileName);
 
             multipartFile.transferTo(targetFile);
-            storedFileModel = new StoredFileModel();
+            media = createMedia();
+            media.setPath(folder.getPath());
+            media.setFileName(fileName);
 
         } catch (IOException e) {
             LOG.error(MessageFormat.format("Can't save file {0}", fileName));
         }
-        storedFileModel.setPath(folder.getPath());
-        storedFileModel.setFileName(fileName);
 
-        return storedFileModel;
+        return media;
     };
+
+    protected T createMedia() {
+        try {
+            return entityClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            LOG.error("Can not create media", e);
+            return null;
+        }
+    }
 
 }

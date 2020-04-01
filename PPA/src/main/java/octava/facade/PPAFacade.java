@@ -1,6 +1,7 @@
 package octava.facade;
 
 import octava.controller.PPAController;
+import octava.dto.MediaDto;
 import octava.dto.ProjectDto;
 import octava.model.observation.ReceiverDataModel;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import octava.service.impl.observations.processors.impl.EnhancedSectionService;
 import octava.util.plot.Figure;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
 
@@ -21,14 +23,14 @@ public class PPAFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(PPAController.class);
 
-    @Autowired
+    @Resource
     private RinexFileService rinexFileService;
 
-    @Autowired
+    @Resource
     private RinexReader rinexReader;
 
-    @Autowired
-    private EnhancedSectionService sectionFinder;
+    @Resource
+    private EnhancedSectionService enhancedSectionService;
 
     @PostConstruct
     private void init() {
@@ -37,15 +39,15 @@ public class PPAFacade {
 
     public void process(ProjectDto projectDto) {
         LOG.info("PPA perform data processing. Uploaded " + projectDto.getNumberOfFiles() + "file/s");
-        List<File> files = projectDto.getFiles();
-        for (File file : files) {
-            LOG.info("Processing " + file.getName() + " file...");
+        List<MediaDto> files = projectDto.getRinexFiles();
+        for (MediaDto rinexFile : files) {
+            LOG.info("Processing " + rinexFile.getFileName() + " file...");
             try {
                 LOG.info("Reading RINEX data...");
 
-                ReceiverDataModel rdm = rinexReader.read(file);
+//                ReceiverDataModel rdm = rinexReader.read(file);
 
-                sectionFinder.find(rdm);
+//                sectionFinder.find(rdm);
 
                 Figure fig = new Figure("Observations", "Time, sec", "Pseudo distance");
 //                fig.plot(rdm, ObsType.C1);
@@ -62,7 +64,7 @@ public class PPAFacade {
                 //PlotCAtest
 
             } catch (Exception e) {
-                LOG.warn("File " + file.getAbsolutePath() + " isn't processed due to some problems. File skipped.");
+//                LOG.warn("File " + file.getAbsolutePath() + " isn't processed due to some problems. File skipped.");
                 e.printStackTrace();
             }
         }

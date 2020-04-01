@@ -18,9 +18,6 @@ public class AbstractBusinessController extends AbstractController {
     @Resource
     private Environment env;
 
-    @Resource
-    private StorageService storageService;
-
     protected HttpEntity<MultiValueMap<String, Object>> prepareHttpEntityForMultipartFile(MultipartFile file) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -30,9 +27,5 @@ public class AbstractBusinessController extends AbstractController {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         return requestEntity;
-    }
-
-    public StorageService getStorageService() {
-        return storageService;
     }
 }

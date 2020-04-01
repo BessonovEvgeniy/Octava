@@ -1,5 +1,5 @@
 package octava.service;
 
-import octava.model.rinex.RinexFileModel;
+import octava.model.rinex.RinexFileMediaModel;
 
-public interface RinexFileService<T extends RinexFileModel> extends BaseService<T> {}
+public interface RinexFileService extends MediaService<RinexFileMediaModel> {}

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProjectRepository<T extends ProjectModel> extends BaseRepository<T> {
 
-    List<T> findAllByUser(String login);
+    List<T> findAll();
 
-    T findProject(String projectName, String userId);
+    T findProject(String projectName);
 }

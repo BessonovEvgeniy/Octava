@@ -2,9 +2,12 @@ package octava.facade;
 
 import octava.converter.AbstractPopulatingConverter;
 import octava.dto.RinexFileDto;
-import octava.model.StoredFileModel;
+import octava.model.media.MediaModel;
 import octava.model.observation.ReceiverDataModel;
-import octava.model.rinex.RinexFileModel;
+import octava.model.rinex.RinexFileMediaModel;
+import octava.service.RinexFileService;
+import octava.service.StorageService;
+import octava.service.impl.rinex.ReadHeaderImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
@@ -12,14 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import octava.service.RinexFileService;
-import octava.service.StorageService;
-import octava.service.impl.rinex.ReadHeaderImpl;
 
 import javax.annotation.Resource;
 import javax.inject.Provider;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +30,7 @@ public class RinexFacade {
     private static final Logger LOG = LoggerFactory.getLogger(RinexFacade.class);
 
     private static final String ERR_STORE_MSG = "Can't store Rinex file %s";
-    private static final String ERR_INSERT_MSG = "Can't create " + RinexFileModel.class.getCanonicalName();
+    private static final String ERR_INSERT_MSG = "Can't create " + RinexFileMediaModel.class.getCanonicalName();
 
     @Resource
     private StorageService storageService;
@@ -37,7 +39,7 @@ public class RinexFacade {
     private RinexFileService rinexFileService;
 
     @Resource(name = "rinexFileConverter")
-    private AbstractPopulatingConverter<RinexFileModel, RinexFileDto> rinexFileConverter;
+    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexFileConverter;
 
     @Autowired
     private Provider<ReceiverDataModel> rdmProvider;
@@ -46,26 +48,21 @@ public class RinexFacade {
     private ReadHeaderImpl readHeader;
 
 
-    public RinexFileDto convert(RinexFileModel rinexFileModel) {
-        return rinexFileConverter.convert(rinexFileModel);
+    public RinexFileDto convert(RinexFileMediaModel rinexFileMediaModel) {
+        return rinexFileConverter.convert(rinexFileMediaModel);
     }
 
     public RinexFileDto store(MultipartFile file) {
-        RinexFileModel rinexFileModel = null;
+        RinexFileMediaModel rinexFileMediaModel = null;
 
         try {
-            StoredFileModel storedFile = storageService.store(file);
+            MediaModel media = storageService.store(file);
 
-            rinexFileModel = new RinexFileModel();
+            rinexFileMediaModel = new RinexFileMediaModel();
 //            rinexFileModel.setStoredFile(storedFile);
-            rinexFileService.insert(rinexFileModel);
-
-        } catch (SQLException e) {
-            LOG.error(ERR_INSERT_MSG);
-        } catch (FileUploadException e) {
-            LOG.error(String.format(ERR_STORE_MSG, file.getName()));
+            rinexFileService.insert(rinexFileMediaModel);
         } finally {
-            RinexFileDto rinexFileDto = convert(rinexFileModel);
+            RinexFileDto rinexFileDto = convert(rinexFileMediaModel);
             return Optional.ofNullable(rinexFileDto).orElse(null);
         }
     }

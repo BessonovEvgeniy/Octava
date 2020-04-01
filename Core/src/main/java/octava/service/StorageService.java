@@ -1,19 +1,18 @@
 package octava.service;
 
-import octava.model.StoredFileModel;
-import org.apache.commons.fileupload.FileUploadException;
+import octava.model.media.MediaModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
 
-public interface StorageService {
+public interface StorageService<T extends MediaModel> {
 
-    List<StoredFileModel> store(List<MultipartFile> file) throws FileUploadException;
+    List<T> store(List<MultipartFile> file);
 
-    StoredFileModel store(MultipartFile file) throws FileUploadException;
+    T store(MultipartFile file);
 
-    File store(File file) throws FileUploadException;
+    File store(File file);
 
     void delete(String fileName);
 
