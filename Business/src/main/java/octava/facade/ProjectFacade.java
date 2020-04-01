@@ -2,16 +2,17 @@ package octava.facade;
 
 import octava.dto.ProjectDto;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface ProjectFacade {
 
-    ProjectDto create(ProjectDto project, Principal principal);
+    ProjectDto create(ProjectDto project);
 
-    ProjectDto update(ProjectDto project, Principal principal);
+    ProjectDto update(ProjectDto project);
 
-    ProjectDto get(String projectName, Principal principal);
+    ProjectDto get(String projectName);
 
-    List<ProjectDto> projectsByUser(Principal principal);
+    List<ProjectDto> getAll();
+
+    ProjectDto addRinexFiles(ProjectDto projectDto);
 }

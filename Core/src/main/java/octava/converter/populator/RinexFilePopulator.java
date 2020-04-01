@@ -1,17 +1,13 @@
 package octava.converter.populator;
 
-import octava.converter.Populator;
 import octava.dto.RinexFileDto;
-import octava.model.rinex.RinexFileModel;
+import octava.model.rinex.RinexFileMediaModel;
 
-import static org.apache.commons.lang3.StringUtils.defaultString;
-
-public class RinexFilePopulator<SOURCE extends RinexFileModel, TARGET extends RinexFileDto> implements Populator<SOURCE, TARGET> {
+public class RinexFilePopulator<SOURCE extends RinexFileMediaModel, TARGET extends RinexFileDto> extends MediaPopulator<SOURCE, TARGET> {
 
     @Override
     public void populate(SOURCE source, TARGET target) {
-
-        target.setName(defaultString(source.getName()));
+        super.populate(source, target);
         target.setStatus(source.getStatus().name());
     }
 }

@@ -31,7 +31,7 @@ subprojects {
     ext {
         springBootVersion = '2.2.1.RELEASE'
         springVersion = '5.2.1.RELEASE'
-        hibernateVersion = '5.4.10.Final'
+        hibernateVersion = '5.4.12.Final'
         hibernateValidatorVersion = '6.1.0.Final'
     }
 
@@ -60,6 +60,7 @@ subprojects {
         compile (group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0') {
             exclude(module: 'commons-logging')
         }
+        compile group: 'org.hibernate', name: 'hibernate-envers', version: "${hibernateVersion}"
         compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
         compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.224'
         compile group: 'org.springframework.session', name: 'spring-session-data-mongodb', version: "${springBootVersion}"

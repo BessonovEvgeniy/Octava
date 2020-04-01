@@ -2,12 +2,15 @@ package octava.config;
 
 import com.google.common.primitives.Ints;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.engine.internal.StatisticalLoggingSessionEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
@@ -25,20 +28,27 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
+@EnableJpaAuditing
 @PropertySource("classpath:rdbmsDev.properties")
 public class BusinessHibernateConfig {
 
     @Autowired
     private Environment env;
 
+//    @Bean(name = "hibernateInterceptor")
+//    public HibernateInterceptorImpl createInterceptor() {
+//        return new HibernateInterceptorImpl();
+//    }
+
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 
-        Properties createStrategy = new Properties();
-        createStrategy.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        Properties properties = new Properties();
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+//        properties.put("hibernate.ejb.interceptor", hibernateInterceptor);
 
-        emf.setJpaProperties(createStrategy);
+        emf.setJpaProperties(properties);
         emf.setPackagesToScan("*.model*");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         BasicDataSource dataSource = getDataSource();

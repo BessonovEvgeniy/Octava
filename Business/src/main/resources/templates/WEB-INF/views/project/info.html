@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-    <title>Upload Rinex file</title>
-    <div class="row">
-
-    </div>
-</body>
+    <body>
+        <title>Upload Rinex file</title>
+        <div class="row">
+            <form method="post" action="#" th:action="@{/project/update}" th:object="${project}">
+                <div class="form-group">
+                    <label for="projectName">Project name</label>
+                    <input type="text" th:field="*{name}" id="projectName" placeholder="Enter project name" value="${project.name}"/>
+                    <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+        <div th:replace="fragments/upload :: upload-rinex" th:with="project=${project}">Upload Rinex file form</div>
+        <div th:replace="fragments/list :: media-list" th:with="media=${project.rinexFiles}">Rinex files</div>
+    </body>
 </html>

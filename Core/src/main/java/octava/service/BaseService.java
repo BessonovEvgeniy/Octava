@@ -2,23 +2,22 @@ package octava.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Transactional
 public interface BaseService<T> {
 
-    List<T> getAll() throws SQLException;
+    List<T> getAll();
 
-    T getById(Long id) throws SQLException;
+    T getById(Long id);
 
-    void delete(T o) throws SQLException;
+    void delete(T o);
 
-    void insert(T o) throws SQLException;
+    void insert(T o);
 
-    void update(T o) throws SQLException;
+    void update(T o);
 
-    boolean isExists(Long id) throws SQLException;
+    boolean isExists(Long id);
 
-    long count() throws SQLException;
+    long count();
 }

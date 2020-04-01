@@ -1,16 +1,20 @@
 package octava.model.project;
 
-import octava.model.BaseModel;
 import lombok.Data;
-import octava.model.rinex.RinexFileModel;
-import octava.model.user.User;
+import octava.model.BaseModel;
+import octava.model.rinex.RinexFileMediaModel;
+import octava.model.user.UserPrincipal;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "PROJECTS")
 @Inheritance(strategy = InheritanceType.JOINED)
 public @Data class ProjectModel extends BaseModel {
@@ -20,33 +24,32 @@ public @Data class ProjectModel extends BaseModel {
     private String name;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @CreatedBy
     @JoinColumn(name = "USER_ID")
-    private User createdBy;
+    private UserPrincipal createdBy;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
-    private List<RinexFileModel> rinexFileModels;
+    private List<RinexFileMediaModel> rinexFileMediaModels;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
 
-    public ProjectModel(){}
-
-    public ProjectModel(String name, User user){
-        this.name = name;
-        createdBy = user;
+    public void addRinexFiles(List<RinexFileMediaModel> rinexFiles) {
+        this.rinexFileMediaModels.addAll(rinexFiles);
     }
 
-    public void addRinexFiles(List<RinexFileModel> rinexFiles) {
-        this.rinexFileModels.addAll(rinexFiles);
-    }
-
-    public void addRinexFile(RinexFileModel rinexFile) {
-        this.rinexFileModels.add(rinexFile);
+    public void addRinexFile(RinexFileMediaModel rinexFile) {
+        this.rinexFileMediaModels.add(rinexFile);
     }
 
     public enum Status {
         NEW, READY, PROCESSING, PROCESSED
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymleaf.org">
+<body>
+<div class="row" th:fragment="media-list">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Created By</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody th:unless="${#lists.isEmpty(media)}">
+        <tr th:each="currentMedia: ${media}">
+            <td th:text="${currentMedia.fileName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

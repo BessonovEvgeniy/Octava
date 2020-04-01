@@ -1,9 +1,16 @@
 package octava.model;
 
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 
+@Data
 @MappedSuperclass
 public abstract class BaseModel {
 
@@ -11,9 +18,14 @@ public abstract class BaseModel {
     @GeneratedValue(generator = "BASE_GENERATOR")
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
+    @Column
+    @CreatedDate
+    protected LocalDateTime created;
+
+    @Column
+    @LastModifiedDate
+    protected LocalDateTime updated;
+
 
     @Override
     public boolean equals(Object o) {

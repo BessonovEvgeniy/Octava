@@ -1,37 +1,42 @@
 package octava.facade.impl;
 
 
+import lombok.Data;
 import octava.converter.AbstractPopulatingConverter;
+import octava.dto.MediaDto;
 import octava.dto.ProjectDto;
-import octava.exception.ProjectException;
+import octava.dto.RinexFileDto;
 import octava.facade.ProjectFacade;
+import octava.model.media.MediaModel;
 import octava.model.project.ProjectModel;
-import octava.model.user.User;
-import octava.service.ProjectService;
-import octava.service.UserService;
+import octava.model.rinex.RinexFileMediaModel;
+import octava.service.*;
+import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.security.Principal;
-import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component("projectFacade")
-public class ProjectFacadeImpl implements ProjectFacade {
+public @Data class ProjectFacadeImpl implements ProjectFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProjectFacadeImpl.class);
 
-    @Autowired
+    @Resource
     private ProjectService projectService;
 
-    @Autowired
-    private UserService userService;
+    @Resource
+    private MediaService<RinexFileMediaModel> rinexFileService;
+
+    @Resource
+    private StorageService<RinexFileMediaModel> rinexLocalStorage;
+
+    @Resource
+    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexConverter;
 
     @Resource
     private AbstractPopulatingConverter<ProjectModel, ProjectDto> projectConverter;
@@ -40,64 +45,68 @@ public class ProjectFacadeImpl implements ProjectFacade {
     private AbstractPopulatingConverter<ProjectDto, ProjectModel> reverseProjectConverter;
 
     @Override
-    public ProjectDto create(final ProjectDto project, final Principal principal) {
+    public ProjectDto create(final ProjectDto project) {
 
-        final String login = principal.getName();
-        final User user = userService.getByLogin(login);
+        final ProjectModel projectModel = getReverseProjectConverter().convert(project);
 
-        final String projectName = project.getName();
-        final ProjectModel projectModel = new ProjectModel(projectName, user);
+        getProjectService().insert(projectModel);
 
-        try {
-            projectService.insert(projectModel);
-        } catch (final SQLException e) {
-            LOG.error(MessageFormat.format("Can\\'t create projectModel {0}, for User {1}", projectModel, login), e);
-            throw new ProjectException();
-        }
-        final ProjectDto projectDto = projectConverter.convert(projectModel);
+        final ProjectDto projectDto = getProjectConverter().convert(projectModel);
 
         return projectDto;
     }
 
     @Override
-    public ProjectDto update(final ProjectDto projectDto, final Principal principal) {
-
-        final String userLogin = principal.getName();
+    public ProjectDto update(final ProjectDto projectDto) {
 
         final String projectName = projectDto.getName();
 
-        final ProjectModel projectModel = projectService.getProject(projectName, userLogin);
+        final ProjectModel projectModel = getProjectService().getProject(projectName);
 
-        reverseProjectConverter.convert(projectDto, projectModel);
+        getReverseProjectConverter().convert(projectDto, projectModel);
 
-        try {
-            projectService.update(projectModel);
-        } catch (final SQLException e) {
-            LOG.error(MessageFormat.format("Can\\'t create projectModel {0}, for User {1}", projectModel, userLogin), e);
-            throw new ProjectException();
-        }
-        final ProjectDto updatedProjectDto = projectConverter.convert(projectModel);
+        getProjectService().update(projectModel);
+
+        final ProjectDto updatedProjectDto = getProjectConverter().convert(projectModel);
 
         return updatedProjectDto;
     }
 
     @Override
-    public ProjectDto get(final String projectName, final Principal principal) {
-        final String userLogin = principal.getName();
+    public ProjectDto get(final String projectName) {
 
-        final ProjectModel projectModel = projectService.getProject(projectName, userLogin);
+        final ProjectModel projectModel = getProjectService().getProject(projectName);
 
-        final ProjectDto projectDto = projectConverter.convert(projectModel);
+        final ProjectDto projectDto = getProjectConverter().convert(projectModel);
 
         return projectDto;
     }
 
     @Override
-    public List<ProjectDto> projectsByUser(final Principal principal) {
+    public List<ProjectDto> getAll() {
 
-        final List<ProjectModel> projectModels = projectService.getAllByUser(principal);
-        final List<ProjectDto> projectDtoList = projectConverter.convertAll(projectModels);
+        final List<ProjectModel> projectModels = getProjectService().getAll();
+        final List<ProjectDto> projectDtoList = getProjectConverter().convertAll(projectModels);
 
         return projectDtoList;
+    }
+
+
+    @Override
+    public ProjectDto addRinexFiles(ProjectDto project) {
+
+        final ProjectModel projectModel = getProjectService().getProject(project.getName());
+
+        final List<RinexFileMediaModel> storedRinexFiles = getRinexLocalStorage().store(project.getFiles());
+
+        projectModel.setRinexFileMediaModels(storedRinexFiles);
+
+        getProjectService().update(projectModel);
+
+        storedRinexFiles.forEach(getRinexFileService()::insert);
+
+        final ProjectDto updatedProjectDto = getProjectConverter().convert(projectModel);
+
+        return updatedProjectDto;
     }
 }

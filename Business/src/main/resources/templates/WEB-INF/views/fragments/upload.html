@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymleaf.org">
+    <body>
+        <div class="row" th:fragment="upload-rinex">
+            <title>Upload Rinex file</title>
+            <form method="post" action="#" th:action="@{/project/upload}" th:object="${project}" enctype="multipart/form-data">
+                <div class="file_upload">
+                    <input hidden="hidden" th:field="*{name}" value="${project.name}"/>
+                    <input type="file" th:field="*{files}" multiple="multiple"/>
+                    <button type="submit">Upload Rinex</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

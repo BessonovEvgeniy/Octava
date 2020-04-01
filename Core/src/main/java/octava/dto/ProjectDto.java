@@ -1,7 +1,9 @@
 package octava.dto;
 
 import lombok.Data;
+import octava.model.media.MediaModel;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -18,31 +20,19 @@ public class ProjectDto {
     @Size(min=4, max=18)
     private String name;
 
+    private UserDto createdBy;
+
     private String status;
 
     private LocalDateTime created;
 
-    private List<File> files = new ArrayList<>();
+    private List<MultipartFile> files = new ArrayList<>();
+
+    private List<MediaDto> rinexFiles = new ArrayList<>();
 
     public ProjectDto(){}
 
-    public ProjectDto(String fileName) {
-        files.add(new File(fileName));
-    }
-
-    public ProjectDto(List<String> fileNames) {
-        fileNames.forEach(fileName -> files.add(new File(fileName)));
-    }
-
     public int getNumberOfFiles() {
         return CollectionUtils.isEmpty(files) ? 0 : files.size();
-    }
-
-    public List<File> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<File> files) {
-        this.files = files;
     }
 }

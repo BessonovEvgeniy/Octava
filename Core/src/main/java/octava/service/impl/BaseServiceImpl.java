@@ -2,10 +2,9 @@ package octava.service.impl;
 
 import octava.dao.BaseRepository;
 import octava.model.BaseModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import octava.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public abstract class BaseServiceImpl<T extends BaseModel, P extends BaseRepository<T>> implements BaseService<T> {
@@ -18,33 +17,33 @@ public abstract class BaseServiceImpl<T extends BaseModel, P extends BaseReposit
     }
 
     @Override
-    public List<T> getAll() throws SQLException {
+    public List<T> getAll() {
         return (List<T>) (dao.findAll());
     }
 
     @Override
-    public T getById(Long id) throws SQLException {
+    public T getById(final Long id) {
         return dao.findOne(id);
     }
 
     @Override
-    public void delete(T o) throws SQLException {
-        T d = getById(o.getId());
+    public void delete(final T o) {
+        final T d = getById(o.getId());
         dao.delete(d);
     }
 
     @Override
-    public void insert(T o) throws SQLException {
+    public void insert(final T o) {
         dao.save(o);
     }
 
     @Override
-    public void update(T o) throws SQLException {
+    public void update(final T o) {
         dao.save(o);
     }
 
     @Override
-    public boolean isExists(Long id) throws SQLException {
+    public boolean isExists(final Long id) {
         return dao.exists(id);
     }
 
