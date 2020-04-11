@@ -5,6 +5,7 @@ import octava.model.observation.ReceiverDataModel;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Path;
 
 public interface RinexReader {
 

@@ -2,11 +2,9 @@ package octava.config;
 
 import com.google.common.primitives.Ints;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.engine.internal.StatisticalLoggingSessionEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -23,7 +21,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
@@ -34,9 +33,9 @@ public class BusinessHibernateConfig {
 
     @Autowired
     private Environment env;
-
-//    @Bean(name = "hibernateInterceptor")
-//    public HibernateInterceptorImpl createInterceptor() {
+//
+//    @Bean
+//    public EmptyInterceptor createInterceptor() {
 //        return new HibernateInterceptorImpl();
 //    }
 
@@ -44,11 +43,11 @@ public class BusinessHibernateConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 
-        Properties properties = new Properties();
+        Map<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-//        properties.put("hibernate.ejb.interceptor", hibernateInterceptor);
+//        properties.put("hibernate.ejb.interceptor", createInterceptor());
 
-        emf.setJpaProperties(properties);
+        emf.setJpaPropertyMap(properties);
         emf.setPackagesToScan("*.model*");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         BasicDataSource dataSource = getDataSource();

@@ -1,22 +1,18 @@
 package octava.model.observation;
 
 import com.google.common.primitives.Ints;
-import octava.dto.EpochDto;
 import lombok.Data;
-import octava.model.observation.header.impl.*;
+import octava.dto.EpochDto;
 import octava.model.Gnss;
+import octava.model.observation.header.impl.*;
 import octava.model.rinex.Observations;
+import octava.util.time.SectionFinder;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import octava.util.time.SectionFinder;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Component("receiverDataModel")
-@Scope("prototype")
 public @Data class ReceiverDataModel implements Gnss {
 
     public static final ReceiverDataModel NULL = new NullReceiverDataModel();

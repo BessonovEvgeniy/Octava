@@ -86,8 +86,8 @@ public class ProjectController extends AbstractBusinessController {
                                 final @ModelAttribute(name = PROJECT) ProjectDto project,
                                 final HttpServletRequest request) {
 
-        final ProjectDto readProject = projectFacade.addRinexFiles(project);
-        model.addAttribute(PROJECT, readProject);
+        final ProjectDto updatedProject = projectFacade.addRinexFiles(project);
+        model.addAttribute(PROJECT, updatedProject);
 
         return OctavaUrlUtils.getOriginUrl(request);
     }

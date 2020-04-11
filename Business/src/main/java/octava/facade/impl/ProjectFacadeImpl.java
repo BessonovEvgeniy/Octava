@@ -3,22 +3,17 @@ package octava.facade.impl;
 
 import lombok.Data;
 import octava.converter.AbstractPopulatingConverter;
-import octava.dto.MediaDto;
 import octava.dto.ProjectDto;
 import octava.dto.RinexFileDto;
 import octava.facade.ProjectFacade;
-import octava.model.media.MediaModel;
 import octava.model.project.ProjectModel;
 import octava.model.rinex.RinexFileMediaModel;
 import octava.service.*;
-import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component("projectFacade")
@@ -30,7 +25,7 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
     private ProjectService projectService;
 
     @Resource
-    private MediaService<RinexFileMediaModel> rinexFileService;
+    private RinexMediaService rinexMediaService;
 
     @Resource
     private StorageService<RinexFileMediaModel> rinexLocalStorage;
@@ -86,9 +81,10 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
     public List<ProjectDto> getAll() {
 
         final List<ProjectModel> projectModels = getProjectService().getAll();
-        final List<ProjectDto> projectDtoList = getProjectConverter().convertAll(projectModels);
 
-        return projectDtoList;
+        final List<ProjectDto> projectDtos = getProjectConverter().convertAll(projectModels);
+
+        return projectDtos;
     }
 
 
@@ -103,7 +99,7 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
 
         getProjectService().update(projectModel);
 
-        storedRinexFiles.forEach(getRinexFileService()::insert);
+        storedRinexFiles.forEach(getRinexMediaService()::insert);
 
         final ProjectDto updatedProjectDto = getProjectConverter().convert(projectModel);
 

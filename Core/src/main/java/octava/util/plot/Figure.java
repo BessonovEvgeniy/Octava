@@ -1,27 +1,22 @@
 package octava.util.plot;
 
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import lombok.Data;
 import octava.model.observation.ReceiverDataModel;
 import octava.model.observation.header.impl.ObsType;
+import octava.util.time.SectionFinder;
+import octava.util.time.TimeUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import octava.util.time.SectionFinder;
-import octava.util.time.TimeUtils;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public @Data class Figure {
-
-    @Autowired
-    private ExecutorService executorService;
 
     private String title = "";
     private String xLabel = "";
@@ -30,7 +25,7 @@ public @Data class Figure {
     private List<String> series = new LinkedList<>();
     private double[] time;
 
-    private boolean fullScreen = true;
+    private boolean fullScreen;
     private boolean skipZeroData = true;
 
     private int widthDefaultScreenPixels = 800;
@@ -40,12 +35,9 @@ public @Data class Figure {
 
     private XYChart chart;
 
-    public Figure() {
-        init();
-    }
+    public Figure() {}
 
     public Figure(String xLabel, String yLabel) {
-        this();
         this.xLabel = xLabel;
         this.yLabel = yLabel;
     }
@@ -53,12 +45,6 @@ public @Data class Figure {
     public Figure(String title, String xLabel, String yLabel) {
         this(xLabel, yLabel);
         this.title = title;
-    }
-
-    private void init() {
-        if (executorService == null) {
-            executorService = Executors.newFixedThreadPool(10);
-        }
     }
 
     private void beforePlot() {
@@ -94,9 +80,13 @@ public @Data class Figure {
         for (int i = 0; i < sv; i++) {
             double[] vector = data.getSubMatrix(0, time.length, sv, sv).getColumn(0);
             int series = i;
-            executorService.submit(() -> plot(series, time, vector));
+            plot(series, time, vector);
         }
 
+        display();
+    }
+
+    public void display() {
         new SwingWrapper<>(chart).displayChart();
     }
 
@@ -116,10 +106,8 @@ public @Data class Figure {
 
             double[] vector = matrix.getSubMatrix(start, stop, sv, sv).getColumn(0);
             int series = i;
-            executorService.submit(() -> plot(series, TimeUtils.createDoubleTimeArray(start, stop), vector));
+            plot(series, TimeUtils.createDoubleTimeArray(start, stop), vector);
         }
-
-        new SwingWrapper<>(chart).displayChart();
     }
 
     private void plot(int series, double[] x, double[] y) {
@@ -134,6 +122,8 @@ public @Data class Figure {
     }
 
     private void plot(int series, double[] y) {
+
+        beforePlot();
         if (skipZeroData) {
             boolean noZeros = Arrays.stream(y).anyMatch(value -> value != 0.0d);
             if (noZeros) {
@@ -150,5 +140,6 @@ public @Data class Figure {
         double[] nonZeroArray = new double[]{0,0,0,1.0,0,0,0};
         figure.plot(1, zeroArray);
         figure.plot(1, nonZeroArray);
+        figure.display();
     }
 }

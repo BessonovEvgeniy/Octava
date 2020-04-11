@@ -11,9 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static java.util.Objects.isNull;
+
 public class SectionFinder {
 
-    private ReceiverDataModel.ObservationMode mode = ReceiverDataModel.ObservationMode.KINEMATIC_MODE;
+    private ReceiverDataModel.ObservationMode mode;
 
     private int edgePoints;
     private int delT;
@@ -29,11 +31,9 @@ public class SectionFinder {
     private List<Integer> NSect = new LinkedList<>();
     private List<Integer> time = Collections.emptyList();
 
-    private SectionFinder() {}
-
     public SectionFinder(List<Integer> time, RealMatrix matrix, ReceiverDataModel.ObservationMode mode, int delT) {
         this.matrix = matrix;
-        this.mode = mode;
+        this.mode = isNull(mode) ? ReceiverDataModel.ObservationMode.KINEMATIC_MODE : mode;
         this.time = time;
         this.delT = delT;
         init();

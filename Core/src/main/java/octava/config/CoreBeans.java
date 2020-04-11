@@ -3,6 +3,7 @@ package octava.config;
 import com.google.common.collect.Lists;
 import octava.converter.AbstractPopulatingConverter;
 import octava.converter.Populator;
+import octava.converter.populator.MappingPopulator;
 import octava.converter.populator.MediaPopulator;
 import octava.converter.populator.RinexFilePopulator;
 import octava.dto.MappingDto;
@@ -13,10 +14,13 @@ import octava.interceptor.BearerAuthorizationInterceptor;
 import octava.interceptor.RestTemplateApiCallInterceptor;
 import octava.model.media.MediaModel;
 import octava.model.rinex.RinexFileMediaModel;
-import octava.converter.populator.MappingPopulator;
+import octava.service.MediaService;
+import octava.service.impl.MediaServiceImpl;
 import octava.service.impl.storage.LocalStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.HandlerMethod;
@@ -24,7 +28,13 @@ import org.springframework.web.method.HandlerMethod;
 import java.util.List;
 
 @Configuration
+@PropertySource("classpath:core.storage.properties")
 public class CoreBeans {
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public RestTemplate createRestTemplate() {
@@ -93,7 +103,7 @@ public class CoreBeans {
 
     @Bean("rinexLocalStorage")
     public LocalStorage<RinexFileMediaModel> createRinexLocalStorage() {
-        return new LocalStorage<RinexFileMediaModel>();
+        return new LocalStorage<>();
     }
 
     @Bean

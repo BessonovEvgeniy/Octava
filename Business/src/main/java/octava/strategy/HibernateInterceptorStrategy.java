@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Map;
 
-@Component("hibernateInterceptorStrategy")
+//@Component("hibernateInterceptorStrategy")
 public class HibernateInterceptorStrategy {
 
     @Resource
