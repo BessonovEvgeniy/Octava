@@ -1,15 +1,15 @@
 package octava.facade;
 
+import lombok.Data;
 import octava.converter.AbstractPopulatingConverter;
 import octava.dto.RinexFileDto;
 import octava.model.media.MediaModel;
 import octava.model.observation.ReceiverDataModel;
 import octava.model.rinex.RinexFileMediaModel;
-import octava.service.RinexFileService;
+import octava.service.MediaService;
 import octava.service.StorageService;
 import octava.service.impl.rinex.ReadHeaderImpl;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Data
 @Component
 public class RinexFacade {
 
@@ -36,7 +37,7 @@ public class RinexFacade {
     private StorageService storageService;
 
     @Resource
-    private RinexFileService rinexFileService;
+    private MediaService<RinexFileMediaModel> mediaService;
 
     @Resource(name = "rinexFileConverter")
     private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexFileConverter;
@@ -60,7 +61,7 @@ public class RinexFacade {
 
             rinexFileMediaModel = new RinexFileMediaModel();
 //            rinexFileModel.setStoredFile(storedFile);
-            rinexFileService.insert(rinexFileMediaModel);
+            getMediaService().insert(rinexFileMediaModel);
         } finally {
             RinexFileDto rinexFileDto = convert(rinexFileMediaModel);
             return Optional.ofNullable(rinexFileDto).orElse(null);

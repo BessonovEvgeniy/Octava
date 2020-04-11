@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class EnhancedSectionService {
 
-    public void find(ReceiverDataModel rdm) {
+    public void find(final ReceiverDataModel rdm) {
         Map<ObsType, Observations> obs = rdm.getObs();
         List<LocalDateTime> time = rdm.getTime();
 

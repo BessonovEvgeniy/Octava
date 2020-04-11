@@ -2,9 +2,8 @@ package octava.controller;
 
 import octava.config.injector.InjectThreadPool;
 import octava.dto.ProjectDto;
-import octava.facade.PPAFacade;
+import octava.facade.impl.PPAFacadeImpl;
 import octava.model.PpaResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,17 +19,17 @@ import java.util.concurrent.ExecutorService;
 public class PPAController implements ProcessorState {
 
     @Resource
-    private PPAFacade ppaFacade;
+    private PPAFacadeImpl ppaFacadeImpl;
 
     @InjectThreadPool
     private ExecutorService executor;
 
 
-    @PostMapping(value = "/process")
-    public PpaResult process(@Valid ProjectDto projectDto, BindingResult bindingResult, HttpServletRequest request) throws Exception {
-
-        ppaFacade.process(projectDto);
-
-        return null;
-    }
+//    @PostMapping(value = "/process")
+//    public PpaResult process(@Valid ProjectDto projectDto, BindingResult bindingResult, HttpServletRequest request) throws Exception {
+//
+//        ppaFacadeImpl.process(projectDto);
+//
+//        return null;
+//    }
 }

@@ -12,14 +12,12 @@ import octava.service.impl.rinex.ReadRinexObservationsDecorator;
 
 import javax.inject.Provider;
 import java.io.*;
+import java.nio.file.Path;
 
 @Component
 public class DefaultRinexReader implements RinexReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultRinexReader.class);
-
-    @Autowired
-    private Provider<ReceiverDataModel> rdmProvider;
 
     @Autowired
     private ReadHeaderImpl readHeader;
@@ -31,7 +29,7 @@ public class DefaultRinexReader implements RinexReader {
         if (inputStream == null) {
             return ReceiverDataModel.NULL;
         } else {
-            ReceiverDataModel data = rdmProvider.get();
+            final ReceiverDataModel data = new ReceiverDataModel();
 
             LOG.info("Rinex reading...");
             try (BufferedReader reader =
@@ -49,12 +47,13 @@ public class DefaultRinexReader implements RinexReader {
         }
     }
 
-    public ReceiverDataModel read(File file) {
+    @Override
+    public ReceiverDataModel read(final File file) {
         InputStream inputStream;
         try {
             inputStream = new FileInputStream(file);
         } catch (Exception e) {
-            LOG.error("Invalid file " + file.getPath());
+            LOG.error("Invalid file " + file.getAbsoluteFile());
             e.printStackTrace();
             return ReceiverDataModel.NULL;
         }

@@ -10,6 +10,8 @@ public interface BaseRepository<T extends BaseModel> {
 
     T findOne(Long id);
 
+    T create();
+
     void save(T t);
 
     void delete(T t);
