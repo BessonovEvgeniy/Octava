@@ -4,7 +4,7 @@ package octava.facade.impl;
 import lombok.Data;
 import octava.converter.AbstractPopulatingConverter;
 import octava.dto.ProjectDto;
-import octava.dto.RinexFileDto;
+import octava.dto.RinexFileMediaDto;
 import octava.facade.ProjectFacade;
 import octava.model.project.ProjectModel;
 import octava.model.rinex.RinexFileMediaModel;
@@ -31,7 +31,7 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
     private StorageService<RinexFileMediaModel> rinexLocalStorage;
 
     @Resource
-    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexConverter;
+    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileMediaDto> rinexConverter;
 
     @Resource
     private AbstractPopulatingConverter<ProjectModel, ProjectDto> projectConverter;
@@ -95,11 +95,11 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
 
         final List<RinexFileMediaModel> storedRinexFiles = getRinexLocalStorage().store(project.getFiles());
 
+        storedRinexFiles.forEach(getRinexMediaService()::insert);
+
         projectModel.setRinexFileMediaModels(storedRinexFiles);
 
         getProjectService().update(projectModel);
-
-        storedRinexFiles.forEach(getRinexMediaService()::insert);
 
         final ProjectDto updatedProjectDto = getProjectConverter().convert(projectModel);
 

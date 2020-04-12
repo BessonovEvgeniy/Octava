@@ -16,7 +16,10 @@
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
-        <div th:replace="fragments/upload :: upload-rinex" th:with="project=${project}">Upload Rinex file form</div>
-        <div th:replace="fragments/list :: media-list" th:with="media=${project.rinexFiles}">Rinex files</div>
+
+        <div th:replace="fragments/upload :: upload-rinex">Upload Rinex file form</div>
+
+        <div th:replace="fragments/rinex :: rinex-list">Rinex files</div>
+
     </body>
 </html>

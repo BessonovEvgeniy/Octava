@@ -89,7 +89,7 @@ public class ProjectController extends AbstractBusinessController {
         final ProjectDto updatedProject = projectFacade.addRinexFiles(project);
         model.addAttribute(PROJECT, updatedProject);
 
-        return OctavaUrlUtils.getOriginUrl(request);
+        return "redirect:" + OctavaUrlUtils.getOriginUrl(request);
     }
 
 }

@@ -1,9 +1,9 @@
 package octava.converter.populator;
 
-import octava.dto.RinexFileDto;
+import octava.dto.RinexFileMediaDto;
 import octava.model.rinex.RinexFileMediaModel;
 
-public class RinexFilePopulator<SOURCE extends RinexFileMediaModel, TARGET extends RinexFileDto> extends MediaPopulator<SOURCE, TARGET> {
+public class RinexFilePopulator<SOURCE extends RinexFileMediaModel, TARGET extends RinexFileMediaDto> extends MediaPopulator<SOURCE, TARGET> {
 
     @Override
     public void populate(SOURCE source, TARGET target) {
