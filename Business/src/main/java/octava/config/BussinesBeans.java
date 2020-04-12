@@ -10,11 +10,17 @@ import octava.dto.ProjectDto;
 import octava.dto.UserDto;
 import octava.model.project.ProjectModel;
 import octava.model.user.UserPrincipal;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
+
 @Configuration
 public class BussinesBeans {
+
+    @Resource
+    private ApplicationContext applicationContext;
 
     @Bean(name = "projectConverter")
     public AbstractPopulatingConverter<ProjectModel, ProjectDto> projectConverter() {

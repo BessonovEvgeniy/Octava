@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymleaf.org">
+<body>
+<div class="row" th:fragment="rinex-list">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody th:unless="${#lists.isEmpty(project.rinexFiles)}">
+        <tr th:each="rinexFile: ${project.rinexFiles}">
+            <td th:text="${rinexFile.fileName}"></td>
+            <td th:text="${rinexFile.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

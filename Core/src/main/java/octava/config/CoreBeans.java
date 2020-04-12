@@ -5,17 +5,16 @@ import octava.converter.AbstractPopulatingConverter;
 import octava.converter.Populator;
 import octava.converter.populator.MappingPopulator;
 import octava.converter.populator.MediaPopulator;
+import octava.converter.populator.MultipartFile2MediaPopulator;
 import octava.converter.populator.RinexFilePopulator;
 import octava.dto.MappingDto;
 import octava.dto.MediaDto;
-import octava.dto.RinexFileDto;
+import octava.dto.RinexFileMediaDto;
 import octava.handler.RestTemplateResponseErrorHandler;
 import octava.interceptor.BearerAuthorizationInterceptor;
 import octava.interceptor.RestTemplateApiCallInterceptor;
 import octava.model.media.MediaModel;
 import octava.model.rinex.RinexFileMediaModel;
-import octava.service.MediaService;
-import octava.service.impl.MediaServiceImpl;
 import octava.service.impl.storage.LocalStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +23,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -81,15 +81,15 @@ public class CoreBeans {
     }
 
     @Bean("rinexFileConverter")
-    public AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexFileConverter() {
-        AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> mappingConverter = new AbstractPopulatingConverter(){};
-        mappingConverter.setTargetClass(RinexFileDto.class);
+    public AbstractPopulatingConverter<RinexFileMediaModel, RinexFileMediaDto> rinexFileConverter() {
+        AbstractPopulatingConverter<RinexFileMediaModel, RinexFileMediaDto> mappingConverter = new AbstractPopulatingConverter(){};
+        mappingConverter.setTargetClass(RinexFileMediaDto.class);
         mappingConverter.setPopulators(Lists.newArrayList(rinexFilePopulator()));
         return mappingConverter;
     }
 
     @Bean
-    public RinexFilePopulator<RinexFileMediaModel, RinexFileDto> rinexFilePopulator() {
+    public RinexFilePopulator<RinexFileMediaModel, RinexFileMediaDto> rinexFilePopulator() {
         return new RinexFilePopulator();
     }
 
@@ -98,6 +98,19 @@ public class CoreBeans {
         AbstractPopulatingConverter<MediaModel, MediaDto> mappingConverter = new AbstractPopulatingConverter(){};
         mappingConverter.setTargetClass(MediaDto.class);
         mappingConverter.setPopulators(Lists.newArrayList(mediaPopulator()));
+        return mappingConverter;
+    }
+
+    @Bean
+    public MultipartFile2MediaPopulator<MultipartFile, RinexFileMediaModel> multipartFile2MediaPopulator() {
+        return new MultipartFile2MediaPopulator();
+    }
+
+    @Bean("multipartFile2MediaConverter")
+    public AbstractPopulatingConverter<MultipartFile, RinexFileMediaModel> multipartFile2MediaConverter() {
+        AbstractPopulatingConverter<MultipartFile, RinexFileMediaModel> mappingConverter = new AbstractPopulatingConverter(){};
+        mappingConverter.setTargetClass(RinexFileMediaModel.class);
+        mappingConverter.setPopulators(Lists.newArrayList(multipartFile2MediaPopulator()));
         return mappingConverter;
     }
 

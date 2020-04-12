@@ -2,7 +2,7 @@ package octava.facade;
 
 import lombok.Data;
 import octava.converter.AbstractPopulatingConverter;
-import octava.dto.RinexFileDto;
+import octava.dto.RinexFileMediaDto;
 import octava.model.media.MediaModel;
 import octava.model.observation.ReceiverDataModel;
 import octava.model.rinex.RinexFileMediaModel;
@@ -40,7 +40,7 @@ public class RinexFacade {
     private MediaService<RinexFileMediaModel> mediaService;
 
     @Resource(name = "rinexFileConverter")
-    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileDto> rinexFileConverter;
+    private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileMediaDto> rinexFileConverter;
 
     @Autowired
     private Provider<ReceiverDataModel> rdmProvider;
@@ -49,11 +49,11 @@ public class RinexFacade {
     private ReadHeaderImpl readHeader;
 
 
-    public RinexFileDto convert(RinexFileMediaModel rinexFileMediaModel) {
+    public RinexFileMediaDto convert(RinexFileMediaModel rinexFileMediaModel) {
         return rinexFileConverter.convert(rinexFileMediaModel);
     }
 
-    public RinexFileDto store(MultipartFile file) {
+    public RinexFileMediaDto store(MultipartFile file) {
         RinexFileMediaModel rinexFileMediaModel = null;
 
         try {
@@ -63,14 +63,14 @@ public class RinexFacade {
 //            rinexFileModel.setStoredFile(storedFile);
             getMediaService().insert(rinexFileMediaModel);
         } finally {
-            RinexFileDto rinexFileDto = convert(rinexFileMediaModel);
-            return Optional.ofNullable(rinexFileDto).orElse(null);
+            RinexFileMediaDto rinexFileMediaDto = convert(rinexFileMediaModel);
+            return Optional.ofNullable(rinexFileMediaDto).orElse(null);
         }
     }
 
-    public List<RinexFileDto> store(List<MultipartFile> files) {
+    public List<RinexFileMediaDto> store(List<MultipartFile> files) {
 
-        List<RinexFileDto> rinexFiles = Collections.emptyList();
+        List<RinexFileMediaDto> rinexFiles = Collections.emptyList();
 
         if (CollectionUtils.isNotEmpty(files)) {
             rinexFiles = files.stream()

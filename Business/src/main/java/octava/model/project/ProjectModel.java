@@ -29,7 +29,7 @@ public @Data class ProjectModel extends BaseModel {
     @JoinColumn(name = "USER_ID")
     private UserPrincipal createdBy;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "PROJECT_ID")
     private List<RinexFileMediaModel> rinexFileMediaModels;
 

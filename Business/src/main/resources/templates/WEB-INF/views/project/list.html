@@ -11,22 +11,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Created By</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody th:unless="${#lists.isEmpty(projects)}">
-    <tr th:each="project: ${projects}">
-        <td th:text="${project.name}"></td>
-        <td th:text="${project.createdBy.name}"></td>
-        <td th:text="${project.status}"></td>
-        <td><a th:href="@{'/project/info?project=' + ${project.name}}">View</a></td>
-    </tr>
-    </tbody>
-</table>
+
+<div th:replace="fragments/project :: project-list"></div>
 </body>
 </html>

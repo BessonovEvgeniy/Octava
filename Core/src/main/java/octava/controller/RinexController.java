@@ -1,7 +1,7 @@
 package octava.controller;
 
 
-import octava.dto.RinexFileDto;
+import octava.dto.RinexFileMediaDto;
 import octava.facade.RinexFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Validator;
@@ -30,10 +30,10 @@ public class RinexController {
 
     @PostMapping(value = "/upload")
     @ResponseStatus(HttpStatus.OK)
-    public RinexFileDto uploadRinexFile(@RequestParam String projectName,
-                                        @Valid @RequestParam(value = "file") MultipartFile file,
-                                        final RedirectAttributes redirectAttributes,
-                                        Principal principal) throws Exception {
+    public RinexFileMediaDto uploadRinexFile(@RequestParam String projectName,
+                                             @Valid @RequestParam(value = "file") MultipartFile file,
+                                             final RedirectAttributes redirectAttributes,
+                                             Principal principal) throws Exception {
 
         return rinexFacade.store(file);
     }
