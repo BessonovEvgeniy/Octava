@@ -33,6 +33,11 @@ public abstract class BaseServiceImpl<T extends BaseModel, P extends BaseReposit
     }
 
     @Override
+    public T create() {
+        return dao.create();
+    }
+
+    @Override
     public void insert(final T o) {
         dao.save(o);
     }

@@ -19,4 +19,8 @@ public @Data class MediaModel extends BaseModel {
     public boolean isNull() {
         return false;
     }
+
+    public String getFullName() {
+        return path + "\\" + fileName;
+    }
 }

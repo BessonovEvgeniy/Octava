@@ -15,6 +15,7 @@ import octava.interceptor.BearerAuthorizationInterceptor;
 import octava.interceptor.RestTemplateApiCallInterceptor;
 import octava.model.media.MediaModel;
 import octava.model.rinex.RinexFileMediaModel;
+import octava.service.StorageService;
 import octava.service.impl.storage.LocalStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -114,8 +115,8 @@ public class CoreBeans {
         return mappingConverter;
     }
 
-    @Bean("rinexLocalStorage")
-    public LocalStorage<RinexFileMediaModel> createRinexLocalStorage() {
+    @Bean("localStorage")
+    public StorageService<RinexFileMediaModel> createStorageService() {
         return new LocalStorage<>();
     }
 

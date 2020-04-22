@@ -27,8 +27,8 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
     @Resource
     private RinexMediaService rinexMediaService;
 
-    @Resource
-    private StorageService<RinexFileMediaModel> rinexLocalStorage;
+    @Resource(name = "localStorage")
+    private StorageService<RinexFileMediaModel> storageService;
 
     @Resource
     private AbstractPopulatingConverter<RinexFileMediaModel, RinexFileMediaDto> rinexConverter;
@@ -93,9 +93,7 @@ public @Data class ProjectFacadeImpl implements ProjectFacade {
 
         final ProjectModel projectModel = getProjectService().getProject(project.getName());
 
-        final List<RinexFileMediaModel> storedRinexFiles = getRinexLocalStorage().store(project.getFiles());
-
-        storedRinexFiles.forEach(getRinexMediaService()::insert);
+        final List<RinexFileMediaModel> storedRinexFiles = getStorageService().store(project.getFiles());
 
         projectModel.setRinexFileMediaModels(storedRinexFiles);
 

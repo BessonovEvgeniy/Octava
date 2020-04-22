@@ -28,12 +28,13 @@ public interface StorageService<T extends MediaModel> {
     void deleteFolder(String folderName);
 
     @Async
-    default void store(final MultipartFile file, final String fileName) {
+    default void store(final MultipartFile file, final T media) {
+        final String fullName = media.getFullName();
         try {
-            final File targetFile = new File(fileName);
+            final File targetFile = new File(fullName);
             file.transferTo(targetFile);
         } catch (IOException e) {
-            LOG.error(MessageFormat.format("Can't save file {0}", fileName));
+            LOG.error(MessageFormat.format("Can't save file {0}", fullName));
         }
     }
 }

@@ -32,8 +32,7 @@ public class MultipartFile2MediaPopulator<S extends MultipartFile, T extends Med
             folder.mkdir();
         }
 
-        final String fileName = fullPath.add(source.getOriginalFilename()).toString();
-        target.setPath(folder.getPath());
-        target.setFileName(fileName);
+        target.setPath(path);
+        target.setFileName(source.getOriginalFilename());
     }
 }
