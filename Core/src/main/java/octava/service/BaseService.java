@@ -17,6 +17,8 @@ public interface BaseService<T> {
 
     void update(T o);
 
+    T create();
+
     boolean isExists(Long id);
 
     long count();

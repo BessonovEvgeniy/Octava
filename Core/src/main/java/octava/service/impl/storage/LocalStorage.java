@@ -31,7 +31,9 @@ public class LocalStorage<T extends MediaModel> implements StorageService<T> {
 
         multipartFile2MediaConverter.convert(file, media);
 
-        store(file, media.getFileName());
+        mediaRepository.save(media);
+
+        store(file, media);
 
         return media;
     }

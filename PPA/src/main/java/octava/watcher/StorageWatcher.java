@@ -46,7 +46,7 @@ public class StorageWatcher implements ApplicationRunner {
                 final WatchKey key = storageWatchService.take();
                 for (WatchEvent<?> event : key.pollEvents()) {
                     if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE && event.context() instanceof Path) {
-                        final String fullPath = environment.getProperty(RINEX_FOLDER) + event.context().toString();
+                        final String fullPath = KEY_PATH_MAP.get(key) + "\\" + event.context().toString();
                         final File file = new File(fullPath);
 
                         if (file.isDirectory()) {

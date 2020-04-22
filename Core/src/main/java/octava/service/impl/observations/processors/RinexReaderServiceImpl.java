@@ -2,22 +2,21 @@ package octava.service.impl.observations.processors;
 
 
 import octava.model.observation.ReceiverDataModel;
+import octava.model.rinex.RinexFileMediaModel;
+import octava.service.RinexReaderService;
+import octava.service.impl.rinex.ReadHeaderImpl;
+import octava.service.impl.rinex.ReadRinexObservationsDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import octava.service.RinexReader;
-import octava.service.impl.rinex.ReadHeaderImpl;
-import octava.service.impl.rinex.ReadRinexObservationsDecorator;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Provider;
 import java.io.*;
-import java.nio.file.Path;
 
-@Component
-public class DefaultRinexReader implements RinexReader {
+@Service("rinexReaderService")
+public class RinexReaderServiceImpl implements RinexReaderService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultRinexReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RinexReaderServiceImpl.class);
 
     @Autowired
     private ReadHeaderImpl readHeader;
@@ -39,7 +38,7 @@ public class DefaultRinexReader implements RinexReader {
                 readHeader.read(reader, data);
                 readObservations.read(reader, data);
             } catch (Exception e) {
-                LOG.error("Can't read rinex.");
+                LOG.error("Can't read rinex.", e);
                 e.printStackTrace();
                 return ReceiverDataModel.NULL;
             }
@@ -49,14 +48,19 @@ public class DefaultRinexReader implements RinexReader {
 
     @Override
     public ReceiverDataModel read(final File file) {
-        InputStream inputStream;
-        try {
-            inputStream = new FileInputStream(file);
+        ReceiverDataModel receiverDataModel = ReceiverDataModel.NULL;
+        try (InputStream inputStream = new FileInputStream(file)) {
+            receiverDataModel = read(inputStream);
         } catch (Exception e) {
-            LOG.error("Invalid file " + file.getAbsoluteFile());
-            e.printStackTrace();
-            return ReceiverDataModel.NULL;
+            LOG.error("Invalid file " + file.getAbsoluteFile(), e);
         }
-        return read(inputStream);
+        return receiverDataModel;
+    }
+
+    @Override
+    public ReceiverDataModel read(RinexFileMediaModel file) {
+        final String fileName = file.getFullName();
+
+        return read(new File(fileName));
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import java.util.Optional;
 
-@Repository
+@Repository("userRepository")
 public class UserRepositoryImpl extends BaseRepositoryImpl<UserPrincipal> implements UserRepository<UserPrincipal>{
 
     public Optional<UserPrincipal> findByLogin(final String login) {
