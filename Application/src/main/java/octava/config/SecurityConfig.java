@@ -31,7 +31,6 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@PropertySource("classpath:security.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource

@@ -21,6 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,6 @@ import java.util.Map;
 @EnableTransactionManagement
 @EnableJpaRepositories
 @EnableJpaAuditing
-@PropertySource("classpath:rdbmsDev.properties")
 public class BusinessHibernateConfig {
 
     @Autowired
@@ -40,27 +40,26 @@ public class BusinessHibernateConfig {
 //    }
 
     @Bean(name = "entityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.properties.hibernate.hbm2ddl.auto"));
 //        properties.put("hibernate.ejb.interceptor", createInterceptor());
 
         emf.setJpaPropertyMap(properties);
         emf.setPackagesToScan("*.model*");
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
-        BasicDataSource dataSource = getDataSource();
         emf.setDataSource(dataSource);
 
         return emf;
     }
 
     @Bean
-    public DatabasePopulator createDatabasePopulator(BasicDataSource dataSource) {
+    public DatabasePopulator createDatabasePopulator(DataSource dataSource) {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.setContinueOnError(false);
-        databasePopulator.addScript(new ClassPathResource("create.sql"));
+        databasePopulator.addScript(new ClassPathResource("data-postgresql.sql"));
         DatabasePopulatorUtils.execute(databasePopulator, dataSource);
         return databasePopulator;
     }
@@ -69,20 +68,8 @@ public class BusinessHibernateConfig {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
         jpaVendorAdapter.setGenerateDdl(false);
-        jpaVendorAdapter.setDatabasePlatform(env.getProperty("hibernate.dialect"));
+        jpaVendorAdapter.setDatabasePlatform(env.getProperty("spring.jpa.properties.hibernate.dialect"));
         return jpaVendorAdapter;
-    }
-
-    @Bean
-    public BasicDataSource getDataSource() {
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        basicDataSource.setUsername(env.getProperty("jdbc.username"));
-        basicDataSource.setPassword(env.getProperty("jdbc.password"));
-        basicDataSource.setUrl(env.getProperty("jdbc.url"));
-        basicDataSource.setInitialSize(Ints.tryParse(env.getProperty("connection.init_size")));
-        basicDataSource.setMaxIdle(Ints.tryParse(env.getProperty("connection.pool_size")));
-        return basicDataSource;
     }
 
     @Bean

@@ -18,6 +18,7 @@ public class Constants {
 
             public static final String CREATE = PREFIX + "/create";
             public static final String UPDATE = PREFIX + "/update";
+            public static final String UPDATE_REST = UPDATE + "/{path}/{status}";
             public static final String INFO = PREFIX + "/info";
             public static final String LIST = PREFIX + "/list";
             public static final String UPLOAD = PREFIX + "/upload";

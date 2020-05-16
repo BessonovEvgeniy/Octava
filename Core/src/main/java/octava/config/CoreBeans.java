@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Configuration
-@PropertySource("classpath:core.storage.properties")
 public class CoreBeans {
 
     @Bean
