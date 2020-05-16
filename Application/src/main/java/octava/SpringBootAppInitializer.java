@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class, MongoAutoConfiguration.class})
+@SpringBootApplication(exclude={MongoAutoConfiguration.class})
 public class SpringBootAppInitializer {
 
     public static void main(String[] args) {

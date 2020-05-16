@@ -1,6 +1,5 @@
 package octava.controller;
 
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,11 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-import octava.service.StorageService;
 
 import javax.annotation.Resource;
 
-@PropertySource({"classpath:rdbmsDev.properties", "classpath:security.properties"})
 public class AbstractBusinessController extends AbstractController {
 
     @Resource

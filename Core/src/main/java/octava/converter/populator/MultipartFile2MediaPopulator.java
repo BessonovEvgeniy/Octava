@@ -23,9 +23,9 @@ public class MultipartFile2MediaPopulator<S extends MultipartFile, T extends Med
 
         final String userPath = "admin";
 
-        fullPath.add(environment.getProperty("storage.local.folder")).add(userPath);
+        fullPath.add(environment.getProperty("ppa.rinex.folder")).add(userPath);
 
-        final String path = fullPath.toString();
+        final String path = fullPath.toString().replace("\\\\","\\");
         final File folder = new File(path);
 
         if (negate(folder.exists())) {

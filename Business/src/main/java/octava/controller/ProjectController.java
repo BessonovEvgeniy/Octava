@@ -92,4 +92,13 @@ public class ProjectController extends AbstractBusinessController {
         return "redirect:" + OctavaUrlUtils.getOriginUrl(request);
     }
 
+    @ResponseBody
+    @PutMapping(value = Constants.Controller.Project.UPDATE_REST)
+    public void update(@PathVariable String path,
+                     @PathVariable String status) {
+
+
+
+    }
+
 }

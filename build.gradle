@@ -1,10 +1,13 @@
 plugins {
     id 'groovy'
+    id 'java'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
 }
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'project-report'
+    apply plugin: 'io.spring.dependency-management'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     group = 'Octava'
@@ -31,8 +34,9 @@ subprojects {
     ext {
         springBootVersion = '2.2.1.RELEASE'
         springVersion = '5.2.1.RELEASE'
-        hibernateVersion = '5.4.12.Final'
+        hibernateVersion = '5.4.15.Final'
         hibernateValidatorVersion = '6.1.0.Final'
+        hikariCPVersion = '3.4.5'
     }
 
     dependencies {
@@ -51,6 +55,13 @@ subprojects {
         }
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
         compile 'javax.inject:javax.inject:1'
+        compile(group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}") {
+            exclude group: 'org.hibernate', module: 'hibernate-core'
+        }
+        compile(group: 'org.hibernate', name: 'hibernate-hikaricp', version: "${hibernateVersion}") {
+            exclude group: 'org.hibernate', module: 'hibernate-core'
+            exclude group: 'com.zaxxer', module: 'HikariCP'
+        }
         compile(group: 'org.hibernate', name: 'hibernate-core', version: "${hibernateVersion}") {
             exclude(module: 'xml-apis')
         }

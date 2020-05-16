@@ -13,7 +13,6 @@ import java.nio.file.*;
 import static octava.consts.PPAConstants.Properties.RINEX_FOLDER;
 
 @Configuration
-@PropertySource("classpath:ppa.storage.properties")
 public class PpaBeanConfiguration {
 
     @Resource
