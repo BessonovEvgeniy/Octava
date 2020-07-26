@@ -1,28 +1,35 @@
 package octava.model.observation.header.impl;
 
 import lombok.Data;
+import octava.model.BaseModel;
 import octava.model.observation.header.HeaderLabel;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
-public @Data class PgmRunByDate implements HeaderLabel {
+@Entity
+@Table(name = "PGM_RUN_BY_DATES")
+public @Data class PgmRunByDateModel extends BaseModel implements HeaderLabel {
 
-    public static final PgmRunByDate NULL = new PgmRunByDate.NullPgmRunByDate();
+    @Transient
+    public static final PgmRunByDateModel NULL = new NullPgmRunByDateModel();
 
     private String program;
     private String agency;
     private LocalDateTime created;
 
-    private PgmRunByDate() {}
+    protected PgmRunByDateModel() {}
 
-    public PgmRunByDate(String program, String agency, LocalDateTime created) {
+    public PgmRunByDateModel(final String program, final String agency, final LocalDateTime created) {
         this.program = program;
         this.agency = agency;
         this.created = created;
     }
 
-    private static class NullPgmRunByDate extends PgmRunByDate {
+    private static class NullPgmRunByDateModel extends PgmRunByDateModel {
         @Override
         public String toString() {
             return "NullPgmRunByDate";

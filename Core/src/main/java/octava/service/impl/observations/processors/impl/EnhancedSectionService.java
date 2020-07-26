@@ -3,7 +3,7 @@ package octava.service.impl.observations.processors.impl;
 import octava.model.observation.ReceiverDataModel;
 import octava.model.observation.header.impl.ObsType;
 import octava.model.Gnss;
-import octava.model.rinex.Observations;
+import octava.model.rinex.ObservationsModel;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.springframework.stereotype.Service;
 import octava.util.matrix.MatrixToolSet;
@@ -17,15 +17,15 @@ import java.util.Map;
 public class EnhancedSectionService {
 
     public void find(final ReceiverDataModel rdm) {
-        Map<ObsType, Observations> obs = rdm.getObs();
-        List<LocalDateTime> time = rdm.getTime();
+        final Map<ObsType, ObservationsModel> obs = rdm.getObservations();
+        final List<LocalDateTime> time = rdm.getTime();
 
-        RealMatrix flags = MatrixToolSet.ones(time.size(), Gnss.MAX_SAT);
+        final RealMatrix flags = MatrixToolSet.ones(time.size(), Gnss.MAX_SAT);
 
-        for (Map.Entry<ObsType, Observations> typedObs : obs.entrySet()) {
+        for (Map.Entry<ObsType, ObservationsModel> typedObs : obs.entrySet()) {
             for (int e = 0; e < time.size(); e++) {
-                LocalDateTime epochTime = time.get(e);
-                RealMatrix obsByEpoches = typedObs.getValue().getEpoch(epochTime);
+                final LocalDateTime epochTime = time.get(e);
+                final RealMatrix obsByEpoches = typedObs.getValue().getEpoch(epochTime);
                 for (int i = 0; i < Gnss.MAX_SAT; i++) {
                     if (obsByEpoches.getEntry(0,i) == 0) {
                         flags.setEntry(e,i,0);

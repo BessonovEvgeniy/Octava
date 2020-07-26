@@ -9,30 +9,54 @@ import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import octava.util.time.SectionFinder;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
-public @Data class Observations extends BaseModel implements Gnss {
+@Entity
+@Table(name = "OBSERVATIONS")
+public @Data class ObservationsModel extends BaseModel implements Gnss {
 
     protected ObsType obsType;
 
+    @Transient
     private RealMatrix fullSizeMatrix;
 
+    @Transient
     private Map<LocalDateTime, RealMatrix> obsMatrix = new LinkedHashMap<>();
 
+    @ElementCollection
+    protected List<Double> fullSizeMatrixData = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "observations_double_mapping",
+        joinColumns = {@JoinColumn(name = "observations_id", referencedColumnName = "id")}
+    )
+    @MapKeyColumn(name = "time")
     private Map<LocalDateTime, Double> obs = new LinkedHashMap<>();
 
+    @ElementCollection
+    @CollectionTable(name = "observations_integer_mapping",
+            joinColumns = {@JoinColumn(name = "observations_id", referencedColumnName = "id")}
+    )
+    @MapKeyColumn(name = "time")
     private Map<LocalDateTime, Integer> flags = new LinkedHashMap<>();
 
+    @Transient
     private SectionFinder.SectionsData sectionsData;
 
     public int size() {
         return obs.size();
     }
 
-    public Observations(ObsType type) {
+    protected ObservationsModel() {
+    }
+
+    public ObservationsModel(final ObsType type) {
         obsType = type;
     }
 

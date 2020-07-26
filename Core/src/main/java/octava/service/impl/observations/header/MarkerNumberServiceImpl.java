@@ -14,12 +14,12 @@ public @Data class MarkerNumberServiceImpl implements HeaderLabelParserService<M
     public final static Pattern PATTERN = Pattern.compile("(.{1,60})MARKER NUMBER");
 
     @Override
-    public MarkerNumber parse(String line) {
+    public MarkerNumber parse(final String line) {
 
-        Matcher matcher = PATTERN.matcher(line);
+        final Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
-            String markerNumber = matcher.group(1).trim();
+            final String markerNumber = matcher.group(1).trim();
             return new MarkerNumber(markerNumber);
         }
         return MarkerNumber.NULL;

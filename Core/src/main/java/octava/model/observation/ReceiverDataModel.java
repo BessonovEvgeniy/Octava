@@ -3,58 +3,120 @@ package octava.model.observation;
 import com.google.common.primitives.Ints;
 import lombok.Data;
 import octava.dto.EpochDto;
+import octava.model.BaseModel;
 import octava.model.Gnss;
+import octava.model.Status;
 import octava.model.observation.header.impl.*;
-import octava.model.rinex.Observations;
+import octava.model.rinex.ObservationsModel;
 import octava.util.time.SectionFinder;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 
+import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public @Data class ReceiverDataModel implements Gnss {
+import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.StringUtils.SPACE;
 
+@Entity
+@Table(name = "RECEIVER_DATA")
+public @Data class ReceiverDataModel extends BaseModel implements Gnss {
+
+    @Transient
     public static final ReceiverDataModel NULL = new NullReceiverDataModel();
+
+    @Transient
+    private SectionFinder.SectionsData sections;
+
+    private Status status = Status.NEW;
+
+    private File file;
 
     private ObservationMode observationMode;
 
-    private RinexVersionType rinexVersionType;
+    @ElementCollection
+    private Set<Correction> appliedCorrections = new HashSet<>();
 
-    private PgmRunByDate pgmRunByDate;
-
-    private MarkerName markerName;
-
-    private ObserverAgency observerAgency;
-
-    private RecTypeVers recTypeVers;
-
-    private AntType antType;
-
-    private ApproxPos approxPos;
-
-    private AntennaDelta antennaDelta;
-
-    private WaveLengthFact wavelengthFact;
-
-    private TypesOfObs typesOfObs;
-
-    private LeapSeconds leapSeconds;
-
+    @ElementCollection
     private List<Integer> seconds = new LinkedList<>();
 
+    @ElementCollection
     private List<LocalDateTime> time = new LinkedList<>();
 
-    private Map<ObsType, Observations> obs = new LinkedHashMap<>();
+    @ElementCollection
+    private Set<Double> epoch = new LinkedHashSet<>();
 
-    private Set<Double> epoch;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private RinexVersionTypeModel rinexVersionType;
 
-    private SectionFinder.SectionsData sections;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private PgmRunByDateModel pgmRunByDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private MarkerNameModel markerName;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private ObserverAgencyModel observerAgency;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private RecTypeVersModel recTypeVers;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private AntTypeModel antType;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private ApproxPosModel approxPos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private AntennaDeltaModel antennaDelta;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private WaveLengthFactorModel wavelengthFactor;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private TypesOfObsModel typesOfObs;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private LeapSecondsModel leapSeconds;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "RECEIVERDATA_OBSERVATIONS_MAPPING",
+            joinColumns =
+                @JoinColumn(name = "receiverdata_id", referencedColumnName = "id"),
+            inverseJoinColumns =
+                @JoinColumn(name = "observations_id", referencedColumnName = "id")
+    )
+    @MapKeyEnumerated
+    private Map<ObsType, ObservationsModel> observations = new LinkedHashMap<>();
 
     private int numberOfObsTypes;
 
-    public void addObservations(EpochDto epoch) {
-        if (epoch == null) {
+    private int observationRate;
+
+    public String getFileName() {
+        return isNull(getFile()) ? null : getFile().getName();
+    }
+
+    public void addAppliedCorrection(final Correction correction) {
+        appliedCorrections.add(correction);
+    }
+
+    public void addObservations(final EpochDto epoch) {
+        if (isNull(epoch)) {
             return;
         }
         LocalDateTime epochTime = epoch.getEpochTime();
@@ -67,171 +129,32 @@ public @Data class ReceiverDataModel implements Gnss {
             for (int index = 0; index < typesOfObs.size(); index++) {
 
                 ObsType type = typesOfObs.get(index);
-                Observations observations = obs.get(type);
+                ObservationsModel observationsModel = this.observations.get(type);
 
-                if (observations == null) {
-                    observations = new Observations(type);
-                    obs.put(type, observations);
+                if (observationsModel == null) {
+                    observationsModel = new ObservationsModel(type);
+                    this.observations.put(type, observationsModel);
                 }
 
-                RealMatrix epochArray = observations.getEpoch(epochTime);
+                RealMatrix epochArray = observationsModel.getEpoch(epochTime);
                 if (epochArray == null) {
                     epochArray = new Array2DRowRealMatrix(1, Gnss.MAX_SAT);
-                    observations.putEpoch(epochTime, epochArray);
+                    observationsModel.putEpoch(epochTime, epochArray);
                 }
 
                 double obsValue = epoch.getEpochData(index, svCode);
                 epochArray.setEntry(0, satellite, obsValue);
 
-                observations.putEpoch(epochTime, epochArray);
-                observations.putFlag(epochTime, epoch.getFlag());
+                observationsModel.putEpoch(epochTime, epochArray);
+                observationsModel.putFlag(epochTime, epoch.getFlag());
             }
         }
     }
 
-    public SectionFinder.SectionsData getSections() {
-        return sections;
-    }
-
-    public ObservationMode getObservationMode() {
-        return observationMode;
-    }
-
-    public void setObservationMode(ObservationMode observationMode) {
-        this.observationMode = observationMode;
-    }
-
-    public RinexVersionType getRinexVersionType() {
-        return rinexVersionType;
-    }
-
-    public void setRinexVersionType(RinexVersionType rinexVersionType) {
-        this.rinexVersionType = rinexVersionType;
-    }
-
-    public PgmRunByDate getPgmRunByDate() {
-        return pgmRunByDate;
-    }
-
-    public void setPgmRunByDate(PgmRunByDate pgmRunByDate) {
-        this.pgmRunByDate = pgmRunByDate;
-    }
-
-    public MarkerName getMarkerName() {
-        return markerName;
-    }
-
-    public void setMarkerName(MarkerName markerName) {
-        this.markerName = markerName;
-    }
-
-    public ObserverAgency getObserverAgency() {
-        return observerAgency;
-    }
-
-    public void setObserverAgency(ObserverAgency observerAgency) {
-        this.observerAgency = observerAgency;
-    }
-
-    public RecTypeVers getRecTypeVers() {
-        return recTypeVers;
-    }
-
-    public void setRecTypeVers(RecTypeVers recTypeVers) {
-        this.recTypeVers = recTypeVers;
-    }
-
-    public AntType getAntType() {
-        return antType;
-    }
-
-    public void setAntType(AntType antType) {
-        this.antType = antType;
-    }
-
-    public ApproxPos getApproxPos() {
-        return approxPos;
-    }
-
-    public void setApproxPos(ApproxPos approxPos) {
-        this.approxPos = approxPos;
-    }
-
-    public AntennaDelta getAntennaDelta() {
-        return antennaDelta;
-    }
-
-    public void setAntennaDelta(AntennaDelta antennaDelta) {
-        this.antennaDelta = antennaDelta;
-    }
-
-    public WaveLengthFact getWavelengthFact() {
-        return wavelengthFact;
-    }
-
-    public void setWavelengthFact(WaveLengthFact wavelengthFact) {
-        this.wavelengthFact = wavelengthFact;
-    }
-
-    public TypesOfObs getTypesOfObs() {
-        return typesOfObs;
-    }
-
-    public void setTypesOfObs(TypesOfObs typesOfObs) {
-        this.typesOfObs = typesOfObs;
-    }
-
-    public LeapSeconds getLeapSeconds() {
-        return leapSeconds;
-    }
-
-    public void setLeapSeconds(LeapSeconds leapSeconds) {
-        this.leapSeconds = leapSeconds;
-    }
-
-    public List<Integer> getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(List<Integer> seconds) {
-        this.seconds = seconds;
-    }
-
-    public List<LocalDateTime> getTime() {
-        return time;
-    }
-
-    public void setTime(List<LocalDateTime> time) {
-        this.time = time;
-    }
-
-    public Map<ObsType, Observations> getObs() {
-        return obs;
-    }
-
-    public void setObs(Map<ObsType, Observations> obs) {
-        this.obs = obs;
-    }
-
-    public Set<Double> getEpoch() {
-        return epoch;
-    }
-
-    public void setEpoch(Set<Double> epoch) {
-        this.epoch = epoch;
-    }
-
-    public void setSections(SectionFinder.SectionsData sections) {
-        this.sections = sections;
-    }
-
-    public void setNumberOfObsTypes(int numberOfObsTypes) {
-        this.numberOfObsTypes = numberOfObsTypes;
-    }
 
     @Override
     public String toString() {
-        StringJoiner joiner = new StringJoiner(" ");
+        StringJoiner joiner = new StringJoiner(SPACE);
         joiner.add(antennaDelta.toString()).add(antType.toString()).add(approxPos.toString()).add(pgmRunByDate.toString()).
                 add(rinexVersionType.toString());
         return joiner.toString();
@@ -252,8 +175,8 @@ public @Data class ReceiverDataModel implements Gnss {
         }
     }
 
-    public Observations getObsByType(ObsType obsType) {
-        return obs.get(obsType);
+    public ObservationsModel getObsByType(ObsType obsType) {
+        return observations.get(obsType);
     }
 
     public enum ObservationMode {

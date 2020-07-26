@@ -1,18 +1,24 @@
 package octava.model.observation.header.impl;
 
 import lombok.Data;
+import octava.model.BaseModel;
 import octava.model.observation.header.HeaderLabel;
 
-public @Data class ObserverAgency implements HeaderLabel {
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-    public static final ObserverAgency NULL = new ObserverAgency.NullObserverAgency();
+@Entity
+@Table(name = "OBSERVER_AGENCIES")
+public @Data class ObserverAgencyModel extends BaseModel implements HeaderLabel {
+
+    public static final ObserverAgencyModel NULL = new NullObserverAgencyModel();
 
     private String observerName = EMPTY_STRING;
     private String agencyName = EMPTY_STRING;
 
-    private ObserverAgency() {}
+    protected ObserverAgencyModel() {}
 
-    public ObserverAgency(String observerName, String agencyName) {
+    public ObserverAgencyModel(final String observerName, final String agencyName) {
         this.observerName = observerName;
         this.agencyName = agencyName;
     }
@@ -22,7 +28,7 @@ public @Data class ObserverAgency implements HeaderLabel {
         return "Observer Name=" + observerName + " Agency Name=" + agencyName;
     }
 
-    private static class NullObserverAgency extends ObserverAgency {
+    private static class NullObserverAgencyModel extends ObserverAgencyModel {
         @Override
         public String toString() {
             return "NullObserverAgency";

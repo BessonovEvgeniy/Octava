@@ -24,7 +24,7 @@ public class RinexReaderServiceImpl implements RinexReaderService {
     @Autowired
     private ReadRinexObservationsDecorator readObservations;
 
-    public ReceiverDataModel read(InputStream inputStream) {
+    public ReceiverDataModel read(final InputStream inputStream) {
         if (inputStream == null) {
             return ReceiverDataModel.NULL;
         } else {
@@ -39,7 +39,6 @@ public class RinexReaderServiceImpl implements RinexReaderService {
                 readObservations.read(reader, data);
             } catch (Exception e) {
                 LOG.error("Can't read rinex.", e);
-                e.printStackTrace();
                 return ReceiverDataModel.NULL;
             }
             return data;
@@ -51,6 +50,7 @@ public class RinexReaderServiceImpl implements RinexReaderService {
         ReceiverDataModel receiverDataModel = ReceiverDataModel.NULL;
         try (InputStream inputStream = new FileInputStream(file)) {
             receiverDataModel = read(inputStream);
+            receiverDataModel.setFile(file);
         } catch (Exception e) {
             LOG.error("Invalid file " + file.getAbsoluteFile(), e);
         }
@@ -58,7 +58,7 @@ public class RinexReaderServiceImpl implements RinexReaderService {
     }
 
     @Override
-    public ReceiverDataModel read(RinexFileMediaModel file) {
+    public ReceiverDataModel read(final RinexFileMediaModel file) {
         final String fileName = file.getFullName();
 
         return read(new File(fileName));

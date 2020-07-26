@@ -1,22 +1,18 @@
 package octava.config;
 
 import octava.config.injector.FixedThreadPoolInjector;
+import octava.dao.BaseRepository;
+import octava.dao.impl.BaseRepositoryImpl;
+import octava.model.BaseModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.nio.file.*;
-
-import static octava.consts.PPAConstants.Properties.RINEX_FOLDER;
+import java.nio.file.FileSystems;
+import java.nio.file.WatchService;
 
 @Configuration
 public class PpaBeanConfiguration {
-
-    @Resource
-    private Environment environment;
 
     @Bean(name = "storageWatchService")
     public WatchService createWatchService() throws IOException {
@@ -26,5 +22,10 @@ public class PpaBeanConfiguration {
     @Bean(name = "threadPoolInjector")
     public FixedThreadPoolInjector fixedThreadPoolInjector() {
         return new FixedThreadPoolInjector();
+    }
+
+    @Bean(name = "baseRepository")
+    public BaseRepository<BaseModel> createDefaultBaseRepository() {
+        return new BaseRepositoryImpl<BaseModel>(){};
     }
 }

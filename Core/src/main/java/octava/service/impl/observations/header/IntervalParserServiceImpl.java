@@ -14,12 +14,12 @@ public class IntervalParserServiceImpl implements HeaderLabelParserService<Inter
     public final static Pattern PATTERN = Pattern.compile("(.{1,60})INTERVAL");
 
     @Override
-    public Interval parse(String line) {
+    public Interval parse(final String line) {
 
-        Matcher matcher = PATTERN.matcher(line);
+        final Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
-            double leapSeconds = Doubles.tryParse(matcher.group(1).trim());
+            final double leapSeconds = Doubles.tryParse(matcher.group(1).trim());
             return new Interval(leapSeconds);
         }
         return Interval.NULL;

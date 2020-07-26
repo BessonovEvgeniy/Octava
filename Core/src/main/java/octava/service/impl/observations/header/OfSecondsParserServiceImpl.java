@@ -15,12 +15,12 @@ public @Data class OfSecondsParserServiceImpl implements HeaderLabelParserServic
     public final static Pattern PATTERN = Pattern.compile("(.{1,60})# OF SATELLITES");
 
     @Override
-    public OfSatellites parse(String line) {
+    public OfSatellites parse(final String line) {
 
-        Matcher matcher = PATTERN.matcher(line);
+        final Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
-            int ofSats = Ints.tryParse(matcher.group(1).trim());
+            final int ofSats = Ints.tryParse(matcher.group(1).trim());
             return new OfSatellites(ofSats);
         }
         return OfSatellites.NULL;
