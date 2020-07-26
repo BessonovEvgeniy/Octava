@@ -14,11 +14,11 @@ public class RcvClockOffsApplParserServiceImpl implements HeaderLabelParserServi
     public final static Pattern PATTERN = Pattern.compile("(.{1,60})RCV CLOCK OFFS APPL ");
 
     @Override
-    public RcvClockOffsAppl parse(String line) {
-        Matcher matcher = PATTERN.matcher(line);
+    public RcvClockOffsAppl parse(final String line) {
+        final Matcher matcher = PATTERN.matcher(line);
 
         if (matcher.find()) {
-            boolean receiverOffset = Ints.tryParse(matcher.group(1).trim()).equals(1);
+            final boolean receiverOffset = Ints.tryParse(matcher.group(1).trim()).equals(1);
             return new RcvClockOffsAppl(receiverOffset);
         }
         return RcvClockOffsAppl.NULL;

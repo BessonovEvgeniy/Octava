@@ -2,12 +2,6 @@ package octava.constants;
 
 public class Constants {
 
-    public static class Profile {
-        public static final String DEV = "development";
-        public static final String PROD = "production";
-    }
-
-
     public static final class Controller {
 
         public static final class Project {
@@ -30,5 +24,9 @@ public class Constants {
                 public static final String UPLOAD = PREFIX + "/upload";
             }
         }
+    }
+
+    public interface Properties {
+        String RINEX_FOLDER = "ppa.rinex.folder";
     }
 }

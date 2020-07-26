@@ -1,15 +1,21 @@
 package octava.model.observation.header.impl;
 
 import lombok.Data;
+import octava.model.BaseModel;
 import octava.model.observation.header.HeaderLabel;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public @Data class WaveLengthFact implements HeaderLabel {
+@Entity
+@Table(name = "WAVE_LENGTH_FACTORS")
+public @Data class WaveLengthFactorModel extends BaseModel implements HeaderLabel {
 
-    public static final WaveLengthFact NULL = new WaveLengthFact.NullWaveLengthFact();
+    public static final WaveLengthFactorModel NULL = new NullWaveLengthFactorModel();
 
     @NotNull
     private Ambiguities freq1 = Ambiguities.NoFreq;
@@ -20,22 +26,23 @@ public @Data class WaveLengthFact implements HeaderLabel {
     @NotNull
     private Ambiguities cycles = Ambiguities.NoFreq;
 
-    private Collection<String> sats = new ArrayList<>();
+    @ElementCollection
+    private Collection<String> satellites = new ArrayList<>();
 
-    private WaveLengthFact() { }
+    protected WaveLengthFactorModel() { }
 
-    public WaveLengthFact(int freqL1Param, int freqL2Param, Collection<String> sats) {
+    public WaveLengthFactorModel(int freqL1Param, int freqL2Param, Collection<String> satellites) {
 
         this.freq1 = Ambiguities.values()[freqL1Param];
         this.freq2 = Ambiguities.values()[freqL2Param];
-        this.sats.addAll(sats);
+        this.satellites.addAll(satellites);
 
         if (freq1.equals(Ambiguities.NoFreq)) {
             throw new IllegalStateException("L1 param can't be zero, empty or blank");
         }
     }
 
-    public void add(WaveLengthFact waveLengthFact) {
+    public void add(WaveLengthFactorModel waveLengthFactorModel) {
 
     }
 
@@ -45,7 +52,7 @@ public @Data class WaveLengthFact implements HeaderLabel {
         Ambiguities() {}
     }
 
-    private static class NullWaveLengthFact extends WaveLengthFact {
+    private static class NullWaveLengthFactorModel extends WaveLengthFactorModel {
         @Override
         public String toString() {
             return "NullWaveLengthFact";

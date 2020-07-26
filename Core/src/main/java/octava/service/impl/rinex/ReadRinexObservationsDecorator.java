@@ -17,11 +17,11 @@ public class ReadRinexObservationsDecorator implements RinexSectionReader {
     @Autowired
     private ReadRinexObservationsFactory obsFactory;
 
-    public void read(BufferedReader reader, ReceiverDataModel data) {
+    public void read(final BufferedReader reader, final ReceiverDataModel data) {
 
-        String rinexVersion = data.getRinexVersionType().getVersion();
+        final String rinexVersion = data.getRinexVersionType().getVersion();
 
-        RinexSectionReader rinexObservationReader = obsFactory.getReadRinexObservationsReader(rinexVersion);
+        final RinexSectionReader rinexObservationReader = obsFactory.getReadRinexObservationsReader(rinexVersion);
         LOG.info("Perform processing of RINEX file version : " + rinexVersion);
         LOG.info("Observation reading...");
         rinexObservationReader.read(reader, data);

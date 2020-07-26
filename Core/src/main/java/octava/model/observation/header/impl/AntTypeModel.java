@@ -1,18 +1,26 @@
 package octava.model.observation.header.impl;
 
 import lombok.Data;
+import octava.model.BaseModel;
 import octava.model.observation.header.HeaderLabel;
 
-public @Data class AntType implements HeaderLabel {
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-    public static final AntType NULL = new AntType.NullAntType();
+@Entity
+@Table(name = "ANT_TYPES")
+public @Data class AntTypeModel extends BaseModel implements HeaderLabel {
+
+    @Transient
+    public static final AntTypeModel NULL = new NullAntTypeModel();
 
     private String antennaNumber = EMPTY_STRING;
     private String antennaType = EMPTY_STRING;
 
-    private AntType() {}
+    protected AntTypeModel() {}
 
-    public AntType(String antennaNumber, String antennaType) {
+    public AntTypeModel(String antennaNumber, String antennaType) {
         this.antennaNumber = antennaNumber;
         this.antennaType = antennaType;
     }
@@ -22,7 +30,7 @@ public @Data class AntType implements HeaderLabel {
         return "Antenna Number: " + antennaNumber + " Antenna Type: " + antennaType;
     }
 
-    private static class NullAntType extends AntType {
+    private static class NullAntTypeModel extends AntTypeModel {
         @Override
         public String toString() {
             return "NullAntType";

@@ -1,21 +1,32 @@
 package octava.model.observation.header.impl;
 
 import lombok.Data;
+import octava.model.BaseModel;
 import octava.model.observation.header.HeaderLabel;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public @Data class TypesOfObs implements HeaderLabel {
+import static org.apache.commons.lang3.StringUtils.SPACE;
 
-    public static final TypesOfObs NULL = new TypesOfObs.NullTypesOfObs();
+@Entity
+@Table(name = "TYPES_OF_OBSERVATIONS")
+public @Data class TypesOfObsModel extends BaseModel implements HeaderLabel {
 
+    @Transient
+    public static final TypesOfObsModel NULL = new NullTypesOfObsModel();
+
+    @ElementCollection
     private List<ObsType> obsTypes = new ArrayList<>();
 
-    private TypesOfObs() {}
+    protected TypesOfObsModel() {}
 
-    public TypesOfObs(List<ObsType> obsTypes) {
+    public TypesOfObsModel(List<ObsType> obsTypes) {
         this.obsTypes = obsTypes;
     }
 
@@ -29,13 +40,13 @@ public @Data class TypesOfObs implements HeaderLabel {
 
     @Override
     public String toString() {
-        StringJoiner joiner = new StringJoiner(" ");
+        StringJoiner joiner = new StringJoiner(SPACE);
         joiner.add("Observation Types");
         obsTypes.stream().forEachOrdered(obsType -> joiner.add(obsType.toString()));
         return joiner.toString();
     }
 
-    private static class NullTypesOfObs extends TypesOfObs {
+    private static class NullTypesOfObsModel extends TypesOfObsModel {
         @Override
         public String toString() {
             return "NullTypesOfObs";

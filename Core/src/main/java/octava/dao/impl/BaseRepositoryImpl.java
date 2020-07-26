@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Transactional
-@Repository("baseRepository")
 public abstract class BaseRepositoryImpl<T extends BaseModel> implements BaseRepository<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseRepositoryImpl.class);

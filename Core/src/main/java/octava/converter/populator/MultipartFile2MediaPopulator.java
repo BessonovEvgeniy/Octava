@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.StringJoiner;
 
+import static octava.constants.Constants.Properties.RINEX_FOLDER;
 import static org.apache.commons.lang3.BooleanUtils.negate;
 
 public class MultipartFile2MediaPopulator<S extends MultipartFile, T extends MediaModel> implements Populator<S, T> {
@@ -23,7 +24,7 @@ public class MultipartFile2MediaPopulator<S extends MultipartFile, T extends Med
 
         final String userPath = "admin";
 
-        fullPath.add(environment.getProperty("ppa.rinex.folder")).add(userPath);
+        fullPath.add(environment.getProperty(RINEX_FOLDER)).add(userPath);
 
         final String path = fullPath.toString().replace("\\\\","\\");
         final File folder = new File(path);

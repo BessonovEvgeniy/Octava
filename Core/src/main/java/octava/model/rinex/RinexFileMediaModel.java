@@ -1,6 +1,7 @@
 package octava.model.rinex;
 
 import lombok.Data;
+import octava.model.Status;
 import octava.model.media.MediaModel;
 
 import javax.persistence.Entity;
@@ -13,11 +14,6 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public @Data class RinexFileMediaModel extends MediaModel {
 
-    private Status status = Status.New;
+    private Status status = Status.NEW;
 
-    public RinexFileMediaModel(){}
-
-    public enum Status {
-        New, Ready, Processing, Procced
-    }
 }
